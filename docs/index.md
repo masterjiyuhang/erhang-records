@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: "ErHang Records"
-  text: "A VitePress Site"
+  text: "un dossier d'enregistrement"
   tagline: My great project tagline
   actions:
     - theme: brand
