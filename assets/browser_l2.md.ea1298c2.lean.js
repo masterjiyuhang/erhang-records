@@ -1,0 +1,1 @@
+import{_ as s,o as a,c as l,O as n}from"./chunks/framework.2cb66d06.js";const A=JSON.parse('{"title":"常见首屏性能优化技巧","description":"","frontmatter":{},"headers":[],"relativePath":"browser/l2.md","filePath":"browser/l2.md"}'),o={name:"browser/l2.md"},p=n("",36),e=[p];function t(r,c,i,D,y,F){return a(),l("div",null,e)}const d=s(o,[["render",t]]);export{A as __pageData,d as default};

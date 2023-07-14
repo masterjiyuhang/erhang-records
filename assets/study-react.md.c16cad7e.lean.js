@@ -1,1 +1,0 @@
-import{_ as s,o as n,c as a,O as l}from"./chunks/framework.be6ffedd.js";const i=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"study-react.md","filePath":"study-react.md"}'),p={name:"study-react.md"},o=l("",111),t=[o];function e(c,r,D,y,F,C){return n(),a("div",null,t)}const u=s(p,[["render",e]]);export{i as __pageData,u as default};
