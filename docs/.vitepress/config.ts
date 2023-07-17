@@ -37,7 +37,16 @@ export default defineConfig({
           },
           {
             text: '框架篇',
-            items: [{ text: 'Vue', link: '/framework/vue' }]
+            items: [
+              { text: 'Vue', link: '/framework/vue' },
+              { text: 'Vue-Router', link: '/framework/vue-router' },
+              { text: 'Vuex', link: '/framework/vuex' },
+              { text: 'React', link: '/framework/react' },
+              { text: 'React-Router', link: '/framework/react-router' },
+              { text: 'Redux', link: '/framework/redux' },
+              { text: 'Koa', link: '/framework/koa' },
+              { text: 'Vite Webpack', link: '/framework/vite-webpack' }
+            ]
           }
         ]
       }
