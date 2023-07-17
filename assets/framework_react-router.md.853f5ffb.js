@@ -1,0 +1,1 @@
+import{_ as e,o as r,c as t}from"./chunks/framework.2cb66d06.js";const d=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"framework/react-router.md","filePath":"framework/react-router.md"}'),a={name:"framework/react-router.md"};function o(c,s,n,m,f,p){return r(),t("div")}const i=e(a,[["render",o]]);export{d as __pageData,i as default};

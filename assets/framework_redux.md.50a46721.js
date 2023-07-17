@@ -1,0 +1,1 @@
+import{_ as e,o as r,c as t}from"./chunks/framework.2cb66d06.js";const _=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"framework/redux.md","filePath":"framework/redux.md"}'),a={name:"framework/redux.md"};function o(s,c,n,d,m,f){return r(),t("div")}const i=e(a,[["render",o]]);export{_ as __pageData,i as default};
