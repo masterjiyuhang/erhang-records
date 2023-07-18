@@ -2,6 +2,22 @@
 
 ### 1.1 proxy 怎么解决的 define property 的缺点？
 
+Proxy 是 ES6 引入的一个功能强大的内置对象，用于创建一个代理对象，可以拦截并改变底层对象的默认行为。通过使用 Proxy，我们可以解决 Object.defineProperty 的一些限制和缺点。
+
+下面是一些 Proxy 的特点和如何解决 defineProperty 的缺点：
+
+更全面的拦截操作：Proxy 提供了一系列拦截操作，比如 get、set、deleteProperty、apply 等。这使得我们可以拦截更多类型的操作，而不仅限于属性的读取和修改。
+
+动态属性拦截：使用 Proxy 可以动态地拦截属性的读取和设置，而不需要事先定义属性。这与 defineProperty 不同，后者需要在对象创建时定义属性。
+
+简化属性访问：通过使用 Proxy，我们可以通过在代理对象上直接访问属性，而无需通过特殊的 get 和 set 方法。这使得代码更简洁、易读。
+
+更好的性能：相比于 defineProperty，Proxy 的性能更好。这是因为 Proxy 在底层实现上更加优化，拦截操作更高效。
+
+需要注意的是，Proxy 是 ES6 引入的新特性，不支持老版本的浏览器。在使用 Proxy 时，需要确保目标环境支持它，或者使用相应的 polyfill 进行兼容处理。
+
+综上所述，Proxy 提供了更灵活和强大的对象拦截功能，可以解决 defineProperty 的一些限制，并提供了更好的性能和简化的语法。
+
 ### 1.2 vue3 相比较 vue2 的 diff 算法有哪些优化
 
 ### 1.3 setup 语法糖， setup 函数相当于 vue2 里面的什么呢？
