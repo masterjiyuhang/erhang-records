@@ -134,18 +134,72 @@ isRef 函数用于检查一个值是否是由 ref 创建的响应式数据。
 如果传入的值是由 ref 创建的，则返回 true；否则返回 false。
 示例代码：
 
+```javascript
+import { ref, isRef } from 'vue'
+
+const count = ref(0)
+const name = 'John'
+
+console.log(isRef(count)) // Output: true
+console.log(isRef(name)) // Output: false
+```
+
+### 1.6 readonly isReadOnly shallowReadonly 怎么使用?
+
+在 Vue 3 的 Composition API 中，`readonly`、`isReadOnly` 和 `shallowReadonly` 是用于处理只读数据的函数。
+
+1. `readonly`：
+   - `readonly` 函数用于将普通数据转换为只读的响应式数据，使其不能在组件中进行修改。
+   - 使用 `readonly` 函数创建的只读响应式数据是一个包装对象，可以通过 `.value` 属性来访问其原始值。
+   - 示例代码：
 
 ```javascript
-import { ref, isRef } from 'vue';
+import { readonly } from 'vue'
 
-const count = ref(0);
-const name = 'John';
+const data = { name: 'John', age: 30 }
+const readonlyData = readonly(data)
 
-console.log(isRef(count)); // Output: true
-console.log(isRef(name)); // Output: false
+console.log(readonlyData.name) // Output: "John"
 
+// Attempt to modify readonlyData will throw an error
+// readonlyData.name = 'Alice'; // This will throw an error
 ```
-### 1.6 readonly isReadOnly shallowReadonly 怎么使用?
+
+2. `isReadOnly`：
+   - `isReadOnly` 函数用于检查一个值是否是由 `readonly` 创建的只读响应式数据。
+   - 如果传入的值是由 `readonly` 创建的，则返回 `true`；否则返回 `false`。
+   - 示例代码：
+
+```javascript
+import { readonly, isReadOnly } from 'vue'
+
+const data = { name: 'John', age: 30 }
+const readonlyData = readonly(data)
+
+console.log(isReadOnly(readonlyData)) // Output: true
+console.log(isReadOnly(data)) // Output: false
+```
+
+3. `shallowReadonly`：
+   - `shallowReadonly` 函数用于将普通对象转换为只读的浅响应式对象，使对象的属性变成只读的，但不会递归将嵌套的对象属性转换为只读的。
+   - 使用 `shallowReadonly` 函数创建的只读浅响应式对象可以通过 `.value` 属性来访问其原始值。
+   - 示例代码：
+
+```javascript
+import { shallowReadonly } from 'vue'
+
+const data = { name: 'John', info: { age: 30 } }
+const shallowReadonlyData = shallowReadonly(data)
+
+console.log(shallowReadonlyData.name) // Output: "John"
+console.log(shallowReadonlyData.info.age) // Output: 30
+
+// Attempt to modify shallowReadonlyData will throw an error
+// shallowReadonlyData.name = 'Alice'; // This will throw an error
+// shallowReadonlyData.info.age = 31; // This will NOT throw an error
+```
+
+使用 `readonly`、`isReadOnly` 和 `shallowReadonly` 可以很方便地处理只读数据，并确保数据在组件中不会被修改。
 
 #### 1.6.1 readonly 和 const 有什么区别？
 
@@ -154,11 +208,378 @@ const 是赋值保护，使用 const 定义的变量，该变量不能重新赋�
 
 ### 1.7 vue3 生命周期的变化？
 
+在 Vue 3 中，由于采用了 Composition API 的设计，生命周期的使用方式发生了一些变化。传统的生命周期钩子函数被移除，取而代之的是可以在 `setup` 函数中使用特定的函数来模拟生命周期的行为。
+
+1. `setup` 函数：
+   - 在 Vue 3 中，组件的逻辑代码通常会写在 `setup` 函数中。
+   - `setup` 函数在组件创建过程中会被调用，用于初始化组件的状态和行为。
+   - 在 `setup` 函数中可以使用 Vue 提供的响应式函数和其他 API 来处理数据和逻辑。
+   - 示例代码：
+
+```javascript
+import { reactive, onMounted, onUpdated, onUnmounted } from 'vue'
+
+export default {
+  setup() {
+    // 声明响应式状态
+    const state = reactive({
+      count: 0
+    })
+
+    // 组件挂载后执行
+    onMounted(() => {
+      console.log('Component mounted')
+    })
+
+    // 组件更新后执行
+    onUpdated(() => {
+      console.log('Component updated')
+    })
+
+    // 组件卸载前执行
+    onUnmounted(() => {
+      console.log('Component unmounted')
+    })
+
+    // 返回响应式状态和模板中需要使用的方法
+    return {
+      state,
+      increment() {
+        state.count++
+      }
+    }
+  }
+}
+```
+
+2. 生命周期模拟函数：
+
+   - 在 `setup` 函数中，可以使用一些特定的函数来模拟传统的生命周期行为。
+   - 例如，可以使用 `onMounted`、`onUpdated` 和 `onUnmounted` 函数分别模拟组件的挂载、更新和卸载生命周期。
+   - `onMounted` 在组件挂载后执行，`onUpdated` 在组件更新后执行，`onUnmounted` 在组件卸载前执行。
+   - 示例代码见上面的 `setup` 函数示例。
+
+3. `beforeCreate` 和 `created`：
+
+   - 在 Vue 3 中，`beforeCreate` 和 `created` 生命周期钩子函数被移除了，取而代之的是使用 `setup` 函数来进行组件的初始化操作。
+
+4. 其他生命周期钩子函数：
+   - 在 Vue 3 中，其他传统的生命周期钩子函数（如 `beforeMount`、`mounted`、`beforeUpdate`、`updated`、`beforeDestroy` 和 `destroyed`）也被移除了。
+   - 相关的生命周期行为可以通过 `setup` 函数中的模拟函数来处理。
+
+总的来说，Vue 3 的生命周期变化主要体现在使用 `setup` 函数来处理组件的初始化和生命周期行为，同时移除了传统的生命周期钩子函数，使组件的逻辑更加集中和灵活。
+
 ### 1.8 组合式 api 和 选项式 api 的区别有哪些？
+
+组合式 API（Composition API）和选项式 API 是 Vue.js 中两种不同的组件编写风格和方式。它们有一些明显的区别，如下所示：
+
+选项式 API：
+
+1. 传统的 Vue.js 组件编写方式采用选项式 API。
+2. 使用选项式 API，组件的选项（data、methods、computed、watch 等）都是在一个对象中声明。
+3. 在大型组件中，选项式 API 可能导致代码复杂度增加，难以维护。
+
+组合式 API（Composition API）：
+
+1. 组合式 API 是 Vue.js 3 引入的一种新的组件编写方式。
+2. 使用组合式 API，可以通过将逻辑功能按照功能进行分组，将相关功能组织成一个独立的函数，从而使代码更加模块化、可读性更好。
+3. 组合式 API 中的函数可以在 `setup` 函数中被调用，并且可以返回数据、方法等供模板使用。
+4. 组合式 API 可以在多个组件之间共享逻辑，提高了代码的可重用性。
+
+主要区别：
+
+1. 组合式 API 更加灵活，能够更好地组织代码，使代码更加模块化和可读性更好。
+2. 组合式 API 支持在多个组件之间共享逻辑，而选项式 API 中的逻辑复用需要通过 mixins 或高阶组件来实现，不够直观和优雅。
+3. 组合式 API 可以更好地解决 Vue 2 中 mixins 带来的一些问题，例如命名冲突、混乱的调用顺序等。
+
+总的来说，组合式 API 是 Vue.js 3 中引入的一种更加灵活和强大的组件编写方式，它能够更好地解决 Vue 2 中选项式 API 在大型组件中的一些问题，提高了代码的可读性、可维护性和复用性。对于新的项目和组件，推荐使用组合式 API 编写。对于现有的 Vue 2 项目，也可以逐渐迁移到组合式 API 来提升代码质量和开发效率。
 
 ### 1.9 vue3 里面的 v-model 语法怎么实现。 对比 vue2 有区别吗？
 
+在 Vue 3 中，v-model 语法的实现与 Vue 2 有一些区别。
+
+在 Vue 2 中，v-model 用于实现表单元素和组件之间的双向绑定，可以通过在组件中使用 `props` 属性来接收外部传入的数据，并通过在组件内部使用 `$emit` 方法来触发事件，从而实现父组件和子组件之间的数据双向绑定。
+
+在 Vue 3 中，由于引入了组合式 API，v-model 的实现方式发生了变化。现在，v-model 被认为是一个语法糖，其实质是对组件内部的 `props` 和 `emit` 的包装，使得组件的双向绑定更加简洁和直观。
+
+在 Vue 3 中，可以通过 `defineProps` 函数来定义组件的 `props`，通过 `defineEmits` 函数来定义组件的事件，然后在模板中使用 `v-model` 来实现双向绑定。
+
+下面是一个示例，展示了 Vue 3 中如何使用 v-model：
+
+```javascript
+// 子组件 ChildComponent.vue
+<script setup>
+import { defineProps, defineEmits } from 'vue'
+
+const { value } = defineProps(['modelValue'])
+const emit = defineEmits()
+
+const handleChange = (newValue) => {
+  emit('update:modelValue', newValue)
+}
+</script>
+
+<template>
+  <input :value="value" @input="handleChange($event.target.value)" />
+</template>
+```
+
+```javascript
+// 父组件 ParentComponent.vue
+<template>
+  <child-component v-model="message" />
+</template>
+
+<script>
+import ChildComponent from './ChildComponent.vue'
+
+export default {
+  components: {
+    ChildComponent
+  },
+  data() {
+    return {
+      message: ''
+    }
+  }
+}
+</script>
+```
+
+在上述示例中，子组件 `ChildComponent` 中使用了 `defineProps` 定义了 `props`，并使用 `defineEmits` 定义了 `emit` 方法。在模板中，使用 `v-model` 来实现父组件和子组件之间的双向绑定。当子组件的输入框内容发生变化时，会通过 `emit` 方法触发事件 `update:modelValue`，从而将新的值传递给父组件，实现数据的双向绑定。
+
+需要注意的是，在 Vue 3 中，v-model 只是一个语法糖，其实质是基于 `props` 和 `emit` 实现的。因此，如果在子组件中需要使用 v-model，必须在组件选项中定义名为 `modelValue` 的 `props`，以及触发名为 `update:modelValue` 的事件。这样才能使 v-model 正常工作。
+
 ### 1.10 组件通信的方式有哪些？ 两个版本有什么变化吗？
+
+在 Vue 3 中，组件通信的方式与 Vue 2 有一些变化，主要是由于引入了组合式 API 和更加灵活的响应式系统。以下是 Vue 3 中常见的组件通信方式：
+
+1. Props 和 Events：这是 Vue 2 和 Vue 3 中最常见的组件通信方式。父组件通过 props 将数据传递给子组件，子组件通过 $emit 方法触发事件，将数据传递回父组件。在 Vue 3 中，可以使用 `defineProps` 和 `defineEmits` 来定义组件的 props 和 events。
+
+2. Provide 和 Inject：这是 Vue 2 中较少使用的一种组件通信方式，但在 Vue 3 中得到了改进和推广。通过在父组件中使用 `provide` 来提供数据，在子组件中使用 `inject` 来注入数据。这样可以实现跨层级的组件通信。
+
+3. Composables（组合式 API）：Vue 3 中引入了组合式 API，允许将相关的逻辑封装在一个独立的函数中，然后在组件中使用。通过组合式 API，可以更灵活地实现组件之间的通信和共享逻辑。
+
+4. Teleport（传送）：Vue 3 中引入了 Teleport，允许将组件的内容渲染到指定的 DOM 元素上，从而实现在 DOM 树中的不同位置渲染组件内容，实现更灵活的组件布局和通信。
+
+5. Custom Events（自定义事件）：Vue 3 中可以使用 `emits` 选项来定义组件支持的自定义事件，这样可以更明确地定义组件的通信行为。
+
+相比于 Vue 2，Vue 3 引入了组合式 API 和 Teleport，使得组件通信更加灵活和方便。通过组合式 API，可以将相关的逻辑封装在独立的函数中，实现逻辑的复用和组合。而 Teleport 则允许在 DOM 树中的不同位置渲染组件内容，从而实现更灵活的布局和通信。此外，在 Vue 3 中使用 `defineProps` 和 `defineEmits` 来定义组件的 props 和 events，使得组件通信更加直观和易于维护。总体而言，Vue 3 提供了更加强大和灵活的组件通信方式，让开发者可以更方便地构建复杂的应用程序。
+
+#### 举例说明
+
+当谈到 Vue 3 中组件通信的方式时，我们可以对每种方式进行更详细的解释，并提供具体的示例。
+
+1. Props 和 Events：
+
+在 Vue 3 中，Props 和 Events 的用法与 Vue 2 相似，父组件通过 Props 向子组件传递数据，子组件通过$emit 方法触发事件将数据传递回父组件。这是最常见的父子组件通信方式。
+
+```javascript
+<!-- ParentComponent.vue -->
+<template>
+  <div>
+    <!-- 将message作为prop传递给子组件 -->
+    <ChildComponent :message="message" @update-message="updateMessage" />
+  </div>
+</template>
+
+<script>
+import { ref } from 'vue'
+import ChildComponent from './ChildComponent.vue'
+
+export default {
+  components: {
+    ChildComponent
+  },
+  setup() {
+    const message = ref('Hello from parent')
+
+    // 监听子组件触发的update-message事件
+    const updateMessage = (newMessage) => {
+      message.value = newMessage
+    }
+
+    return {
+      message,
+      updateMessage
+    }
+  }
+}
+</script>
+
+<!-- ChildComponent.vue -->
+<template>
+  <div>
+    <button @click="sendMessageToParent">Send Message to Parent</button>
+  </div>
+</template>
+
+<script>
+import { defineProps, defineEmits } from 'vue'
+
+export default {
+  setup() {
+    // 定义子组件接收的props和发送的事件
+    const props = defineProps(['message'])
+    const emits = defineEmits(['updateMessage'])
+
+    // 子组件中的逻辑
+    const sendMessageToParent = () => {
+      // 触发update-message事件，将新的消息传递给父组件
+      emits('updateMessage', 'Hello from child')
+    }
+
+    return {
+      sendMessageToParent
+    }
+  }
+}
+</script>
+```
+
+2. Provide 和 Inject：
+
+Provide 和 Inject 是一种用于跨层级组件通信的方式。父组件通过 provide 提供数据，然后子孙组件通过 inject 来接收数据。这样可以在组件树的不同层级之间共享数据。
+
+```javascript
+<!-- ParentComponent.vue -->
+<template>
+  <div>
+    <!-- 提供数据给子组件 -->
+    <ChildComponent />
+  </div>
+</template>
+
+<script>
+import { provide, ref } from 'vue'
+import ChildComponent from './ChildComponent.vue'
+
+export default {
+  components: {
+    ChildComponent
+  },
+  setup() {
+    const message = ref('Hello from parent')
+
+    // 提供数据给子组件
+    provide('message', message)
+
+    return {
+      message
+    }
+  }
+}
+</script>
+
+<!-- ChildComponent.vue -->
+<template>
+  <div>
+    <!-- 接收父组件提供的数据 -->
+    <p>{{ injectedMessage }}</p>
+  </div>
+</template>
+
+<script>
+import { inject } from 'vue'
+
+export default {
+  setup() {
+    // 接收父组件提供的数据
+    const injectedMessage = inject('message')
+
+    return {
+      injectedMessage
+    }
+  }
+}
+</script>
+```
+
+3. Composables（组合式 API）：
+
+Composables 是 Vue 3 引入的一种新的组件通信方式。通过封装相关的逻辑在可重用的函数中，然后在组件中使用这些函数来实现通信和逻辑共享。
+
+```javascript
+<!-- ParentComponent.vue -->
+<template>
+  <div>
+    <!-- 使用composable实现通信 -->
+    <ChildComponent />
+  </div>
+</template>
+
+<script>
+import { ref } from 'vue'
+import { useMessage } from './composables/useMessage'
+import ChildComponent from './ChildComponent.vue'
+
+export default {
+  components: {
+    ChildComponent
+  },
+  setup() {
+    const { message, updateMessage } = useMessage()
+
+    return {
+      message,
+      updateMessage
+    }
+  }
+}
+</script>
+
+<!-- ChildComponent.vue -->
+<template>
+  <div>
+    <button @click="sendMessageToParent">Send Message to Parent</button>
+  </div>
+</template>
+
+<script>
+import { useMessage } from './composables/useMessage'
+
+export default {
+  setup() {
+    const { sendMessage } = useMessage()
+
+    // 子组件中的逻辑
+    const sendMessageToParent = () => {
+      sendMessage('Hello from child')
+    }
+
+    return {
+      sendMessageToParent
+    }
+  }
+}
+</script>
+```
+
+```javascript
+<!-- composables/useMessage.js -->
+import { ref } from 'vue';
+
+export function useMessage() {
+  const message = ref('Hello from parent');
+
+  const updateMessage = (newMessage) => {
+    message.value = newMessage;
+  };
+
+  const sendMessage = (newMessage) => {
+    updateMessage(newMessage);
+  };
+
+  return {
+    message,
+    updateMessage,
+    sendMessage,
+  };
+}
+
+```
+
+在 Vue 3 中，以上几种通信方式都是可用的，但由于组合式 API 的引入，使得 Composables 变得更加强大和灵活，可以更好地实现组件之间的通信和逻辑共享。而 Teleport 则是一个全新的特性，可以用于在 DOM 树中不同位置渲染组件内容，从而实现更灵活的布局和通信。总的来说，Vue 3 提供了更多的选择和更灵活的方式来进行组件通信。
 
 ### 1.11 Vue3 中父子传值 , 用 TS 怎么写，怎么设置默认值
 
@@ -233,7 +654,143 @@ watch：
 
 ### 4.1 vue 父组件能够监听到的子组件的生命周期有哪些？
 
+在 Vue 2 中，可以监听到的子组件的生命周期钩子函数有：
+
+beforeCreate：在实例初始化之后，数据观测(data observer) 和 event/watcher 事件配置之前被调用。
+created：实例创建完成后被立即调用。在这一步，实例已完成以下的配置：数据观测(data observer)，属性和方法的运算，watch/event 事件回调。然而，挂载阶段还没开始，$el 属性目前不可见。
+beforeMount：在挂载开始之前被调用：相关的 render 函数首次被调用。
+mounted：el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用该钩子。
+beforeUpdate：数据更新时调用，发生在虚拟 DOM 打补丁之前。
+updated：由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子。
+beforeDestroy：实例销毁之前调用。在这一步，实例仍然完全可用。
+destroyed：实例销毁后调用。调用后，所有的事件监听器会被移除，所有的子实例也会被销毁。
+在 Vue 3 中，组合式 API 的引入带来了一些变化。可以监听到的子组件的生命周期钩子函数有：
+
+onBeforeMount：在挂载开始之前被调用。
+onMounted：在挂载完成后被调用。
+onBeforeUpdate：在更新开始之前被调用。
+onUpdated：在更新完成后被调用。
+onBeforeUnmount：在卸载开始之前被调用。
+onUnmounted：在卸载完成后被调用。
+值得注意的是，在 Vue 3 中，beforeCreate 和 created 钩子函数不再被支持，取而代之的是 setup 函数，它在组件实例创建之前被调用，因此在 setup 函数中可以执行类似 beforeCreate 和 created 阶段的操作。此外，beforeDestroy 和 destroyed 钩子函数也被重命名为 onBeforeUnmount 和 onUnmounted。
+
 ## 5. 组件缓存 keep-alive 怎么做的？
+
+`<keep-alive>` 组件是 Vue 中用于组件缓存的特殊组件。它通过组合 Vue 的内部缓存机制和特殊的组件生命周期钩子来实现组件的缓存。
+
+具体实现方式如下：
+
+1. **组件缓存**：当一个组件被包裹在 `<keep-alive>` 中时，Vue 会创建一个内部缓存来存储需要缓存的组件实例。缓存使用一个简单的 JavaScript 对象来实现，组件的 `name` 或 `key` 作为键，组件实例作为值。
+
+2. **处理组件激活**：当一个组件被渲染在 `<keep-alive>` 中时，它会经历正常的生命周期，包括 `beforeMount`、`mounted`、`beforeUpdate`、`updated`、`beforeUnmount` 和 `unmounted` 等钩子。然而，当一个组件被停用（例如从 DOM 中移除），它不会立即销毁，而是保留在缓存中。
+
+3. **处理组件停用**：当一个组件被停用（例如切换到其他路由或在 DOM 中有条件地不渲染），它会触发 `deactivated` 生命周期钩子。此时，组件不会立即被销毁，而是保留在缓存中。
+
+4. **处理组件激活（重新渲染）**：如果一个组件被重新激活（例如切换回之前的路由或在 DOM 中有条件地重新渲染），它会触发 `activated` 生命周期钩子。此时，Vue 会检查组件实例是否存在于缓存中。如果存在，Vue 会重用缓存中的实例，而不是创建一个新的实例。这样，组件的状态和数据得以保留，看起来就像组件从未被销毁过一样。
+
+5. **缓存限制**：为了避免缓存无限增长，`<keep-alive>` 允许设置 `max` 属性来限制缓存的组件数量。如果缓存超过指定的限制，最近最少使用（LRU）的组件实例将从缓存中移除，为新的组件腾出空间。
+
+以下是使用 `<keep-alive>` 缓存组件的示例：
+
+```html
+<template>
+  <div>
+    <keep-alive>
+      <!-- 当组件不活动时，它会被缓存 -->
+      <MyComponent v-if="showComponent" />
+    </keep-alive>
+
+    <button @click="showComponent = !showComponent">切换组件</button>
+  </div>
+</template>
+
+<script>
+  import MyComponent from './MyComponent.vue'
+
+  export default {
+    components: {
+      MyComponent
+    },
+    data() {
+      return {
+        showComponent: true
+      }
+    }
+  }
+</script>
+```
+
+在这个示例中，当点击 "切换组件" 按钮时，`MyComponent` 会在 `<keep-alive>` 中有条件地渲染。当组件被停用时（即 `v-if` 的值为 `false`），它会被缓存在 `<keep-alive>` 组件中。当组件被重新激活时（即 `v-if` 的值为 `true`），Vue 会重用缓存中的组件实例，而不是创建一个新的实例。
+
+希望这样能够清楚地解释 `<keep-alive>` 在 Vue 中是如何实现组件缓存的。
+
+#### vue2 和 vue3 中 keep-alive 的区别
+
+在 Vue 2 和 Vue 3 中，`<keep-alive>` 的基本功能是相同的，即用于组件缓存。然而，Vue 3 中对 `<keep-alive>` 进行了一些优化和改进，使其更加灵活和高效。
+
+主要的区别如下：
+
+1. **语法糖的变化**：
+
+   - Vue 2 使用 `<keep-alive>` 包裹组件时，需要使用 `include` 和 `exclude` 属性来指定需要缓存的组件名或组件名称的正则表达式，或者排除不需要缓存的组件。例如：
+
+   ```html
+   <keep-alive :include="['ComponentA', /^ComponentB/]" :exclude="['ComponentC']">
+     <!-- 组件 A、B 将被缓存，组件 C 将不被缓存 -->
+     <router-view></router-view>
+   </keep-alive>
+   ```
+
+   - Vue 3 中，`<keep-alive>` 的语法更加简洁，使用 `v-slot` 来定义需要缓存的组件，并通过 `include` 和 `exclude` 属性来指定要缓存或排除的组件。例如：
+
+   ```html
+   <keep-alive :include="['ComponentA', /^ComponentB/]" :exclude="['ComponentC']">
+     <template v-slot:default>
+       <!-- 组件 A、B 将被缓存，组件 C 将不被缓存 -->
+       <router-view></router-view>
+     </template>
+   </keep-alive>
+   ```
+
+2. **内部实现优化**：
+
+   - Vue 3 中对 `<keep-alive>` 的内部实现进行了一些优化，提高了组件缓存的性能和效率。在 Vue 3 中，组件的状态和数据在缓存时会被更高效地管理，减少了不必要的更新和重新渲染。
+
+3. **组件实例的激活和停用钩子**：
+
+   - 在 Vue 2 中，`<keep-alive>` 使用 `activated` 和 `deactivated` 生命周期钩子来处理组件的激活和停用。在组件被缓存时，会触发 `deactivated` 钩子，而在组件被重新激活时，会触发 `activated` 钩子。
+
+   - 在 Vue 3 中，`<keep-alive>` 使用 `v-slot` 的方式来处理组件的激活和停用。在组件被缓存时，会触发相应组件的 `onVnodeUnmounted` 钩子，并在组件被重新激活时，触发相应组件的 `onVnodeMounted` 钩子。
+
+总体来说，Vue 3 中的 `<keep-alive>` 在使用语法糖方面更加简洁，并对组件缓存的实现进行了优化，提高了性能和效率。同时，针对组件实例的激活和停用也有一些变化，但其基本功能和用法与 Vue 2 是相同的。
+
+#### vue3 的 keep-alive 具体变化
+
+在 Vue 3 中，对 `<keep-alive>` 组件的内部实现进行了优化，主要包括以下方面：
+
+1. **虚拟 DOM 的 Diff 算法优化**：
+   在 Vue 3 中，使用了更高效的虚拟 DOM 的 Diff 算法，称为 `Fast Diff`，它能够更精确地计算出组件树的变化，减少不必要的更新和重新渲染。这使得在 `<keep-alive>` 缓存的组件在被重新激活时，能够更快速地恢复到之前的状态，从而提高了组件缓存的性能和效率。
+
+2. **缓存组件的实例状态**：
+   在 Vue 3 中，缓存的组件实例会被更精确地保存状态，包括组件的数据、状态和事件监听器等。这样，在组件被缓存时，其状态可以完整地保留，当组件被重新激活时，可以直接使用之前保存的状态，而无需重新创建组件实例和重新初始化状态，从而进一步提高了组件缓存的性能。
+
+3. **优化缓存策略**：
+   在 Vue 3 中，对于被 `<keep-alive>` 缓存的组件，内部的缓存策略也得到了优化。当组件被缓存时，它的 DOM 结构不会被销毁，而只是被隐藏起来。这样，在组件被重新激活时，无需重新创建 DOM 元素，只需要将之前隐藏的 DOM 元素重新显示出来，从而减少了不必要的 DOM 操作，进一步提高了组件缓存的性能。
+
+总的来说，Vue 3 对 `<keep-alive>` 组件的内部实现进行了一系列优化措施，包括改进了虚拟 DOM 的 Diff 算法、优化了组件实例的状态保存和恢复，以及优化了缓存策略，从而提高了组件缓存的性能和效率。这些优化措施使得在使用 `<keep-alive>` 缓存组件时，能够更快速、高效地管理组件的状态和渲染，从而提升了整体的性能表现。
+
+在 Vue 3 中，对 <keep-alive> 的内部实现进行了优化，具体包括以下几点：
+
+精确的状态保存：
+在 Vue 3 中，被 <keep-alive> 缓存的组件实例会被保存在内存中，而不会被销毁。这样，在组件被缓存时，组件的状态、数据和事件监听器等都得以保留。当组件被重新激活时，可以直接使用之前保存的组件实例和状态，而无需重新创建组件和初始化状态，从而提高了性能。
+
+虚拟 DOM 的保留：
+在 Vue 3 中，被 <keep-alive> 缓存的组件的虚拟 DOM 不会被销毁，而是被保留在内存中。这样，在组件被重新激活时，可以直接使用之前的虚拟 DOM，而无需重新创建和构建虚拟 DOM。这个优化措施可以减少不必要的 DOM 操作，提高渲染性能。
+
+更灵活的缓存策略：
+在 Vue 3 中，可以通过在 <keep-alive> 上使用 include 和 exclude 属性来指定需要缓存的组件和排除缓存的组件。include 属性用于指定要缓存的组件名称或组件实例，而 exclude 属性用于指定不需要缓存的组件名称或组件实例。这样，可以更灵活地控制哪些组件需要被缓存，哪些组件不需要被缓存，从而避免不必要的缓存和提高缓存的效率。
+
+总的来说，Vue 3 在 <keep-alive> 的实现上进行了优化，通过精确保存组件状态、保留虚拟 DOM 和提供更灵活的缓存策略，进一步提高了组件缓存的性能和效率。这些优化措施使得在使用 <keep-alive> 缓存组件时，能够更高效地管理组件的状态和渲染，从而提升了整体的性能表现。
 
 ## 6. 过滤器使用过吗
 
