@@ -61,12 +61,90 @@ Proxy 相比 Vue 2 的 Object.defineProperty 可以实现更细粒度的依赖�
 
 ### 1.3 setup 语法糖， setup 函数相当于 vue2 里面的什么呢？
 
+在 Vue 3 中，setup 是一个新的选项，它用于替代 Vue 2 中的一部分逻辑。setup 函数是组件的入口点，它在组件实例被创建之前被调用，并且在组件实例创建时被调用一次。setup 函数接收两个参数：props 和 context。
+
+props：props 是一个响应式对象，包含了从父组件传递过来的属性。在 setup 函数中，你可以直接使用 props 对象的属性，无需在 setup 函数中使用 this 访问。
+
+context：context 是一个包含了一些实用方法和属性的上下文对象。它包含了 attrs、slots、emit 等。你可以通过解构赋值或直接使用 context 对象来访问这些属性。
+
+在 setup 函数中，你可以执行一些初始化逻辑，设置响应式数据，定义计算属性，监听事件，调用其他函数等等。setup 函数中返回的数据会在组件的模板中使用。
+
+setup 函数相当于 Vue 2 中的 beforeCreate 和 created 钩子函数的组合，但是它比这两个钩子函数更加灵活，且能够访问到 props 和 context。在 setup 函数中，你可以自由地处理组件的状态和行为。
+
+需要注意的是，setup 函数是一个普通的 JavaScript 函数，而不是 Vue 2 中的选项对象，所以在其中无法使用 this 访问组件实例，也无法使用 Vue 2 中的一些选项，比如 data、computed、methods 等。如果你需要使用这些选项，可以在 setup 函数中使用其他方式实现，比如使用 ref、reactive、computed 等 Vue 3 的 Composition API 提供的函数。
+
+总结起来，setup 语法糖是 Vue 3 中提供的一个更灵活、更强大的组件初始化方式，它能够让你更好地组织和管理组件的状态和行为。
+
 #### 1.3.1 setup 中怎么设置组件 name?
 
 ### 1.4 reactive 和 shallow Reactive 有什么区别？
 
+reactive：
+reactive 函数会对整个对象进行递归响应式处理，即对象中的所有嵌套属性也会被转换成响应式对象。
+当通过 reactive 创建的响应式对象的属性值发生变化时，会触发依赖该属性的相关响应式更新。
+
+shallowReactive：
+shallowReactive 函数只会对对象的第一层属性进行响应式处理，而不会对嵌套的属性进行递归响应式处理。
+当通过 shallowReactive 创建的响应式对象的第一层属性值发生变化时，会触发依赖该属性的相关响应式更新。但是，如果该属性的值是一个对象，而这个对象内部的属性发生变化，将不会触发更新。
+
+在大多数情况下，推荐使用 reactive 来创建响应式对象，因为它可以深度递归地处理嵌套对象，使整个对象及其嵌套属性都能触发响应式更新。只有在特定的情况下，需要避免深度递归处理对象时，才会使用 shallowReactive。
+
 ### 1.5 ref toRefs isRef 怎么使用?
 
+在 Vue 3 的 Composition API 中，ref、toRefs 和 isRef 是用于处理响应式数据的函数。
+
+ref：
+ref 函数用于将普通数据转换为响应式数据，使其能够在组件中进行响应式更新。
+使用 ref 函数创建的响应式数据是一个包装对象，可以通过 .value 属性来访问其原始值。
+示例代码：
+
+```javascript
+import { ref } from 'vue'
+
+const count = ref(0)
+console.log(count.value) // Output: 0
+
+count.value = 10 // This will trigger reactivity
+console.log(count.value) // Output: 10
+```
+
+toRefs：
+toRefs 函数用于将响应式对象转换为普通对象，并将每个属性都转换为 ref 包装。
+使用 toRefs 后，可以通过 .value 属性来访问每个属性的原始值，使其在模板中能够正常使用响应式数据。
+示例代码：
+
+```javascript
+import { reactive, toRefs } from 'vue'
+
+const state = reactive({
+  name: 'John',
+  age: 30
+})
+
+const refs = toRefs(state)
+
+console.log(refs.name.value) // Output: "John"
+
+refs.name.value = 'Alice' // This will trigger reactivity
+console.log(state.name) // Output: "Alice"
+```
+
+isRef：
+isRef 函数用于检查一个值是否是由 ref 创建的响应式数据。
+如果传入的值是由 ref 创建的，则返回 true；否则返回 false。
+示例代码：
+
+
+```javascript
+import { ref, isRef } from 'vue';
+
+const count = ref(0);
+const name = 'John';
+
+console.log(isRef(count)); // Output: true
+console.log(isRef(name)); // Output: false
+
+```
 ### 1.6 readonly isReadOnly shallowReadonly 怎么使用?
 
 #### 1.6.1 readonly 和 const 有什么区别？
