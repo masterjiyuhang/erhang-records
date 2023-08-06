@@ -794,11 +794,124 @@ onUnmounted：在卸载完成后被调用。
 
 ## 6. 过滤器使用过吗
 
+
+
+**过滤器**是vue2中的一个特性，作用是用于对文本进行格式化的作用。
+
+
+
+过滤器只能应用在两个地方：**`双花括号插值`**和**`v-bind`表达式**。
+
+```js
+<!--在双花括号中使用 格式：{{值 | 过滤器的名称}}-->
+<div>{{3 | addZero}}</div>
+<!--在v-bind中使用 格式：v-bind:id="值 | 过滤器的名称"-->
+<div v-bind:id="1 | addZero">11</div>
+```
+
+
+
+vue3版本删除了过滤器，因为它和定义一个method没有啥本质的区别。
+
 ## 7. slot 插槽的使用
+
+插槽分为普通插槽和作用域插槽，它们可以解决不同的场景
+
+**扫盲**
+
+编译是发生在调用 `vm.$mount` 的时候，所以编译的顺序是先编译父组件，再编译子组件。
+
+- 首先编译父组件，在 `parse` 阶段，会执行 `processSlot` 处理 `slot`
+
+  - 当解析到标签上有 `slot` 属性的时候，会给对应的 AST 元素节点添加 `slotTarget` 属性，然后在 `codegen` 阶段，在 `genData` 中会处理 `slotTarget`
+  - 会给 `data` 添加一个 `slot` 属性，并指向 `slotTarget`
+
+- 接下来编译子组件，同样在 `parser` 阶段会执行 `processSlot` 处理函数
+
+  - 当遇到 `slot` 标签的时候会给对应的 AST 元素节点添加 `slotName` 属性，然后在 `codegen` 阶段，会判断如果当前 AST 元素节点是 `slot` 标签，则执行 `genSlot` 函数
+
+  - ~~~js
+    function genSlot (el: ASTElement, state: CodegenState): string {
+      const slotName = el.slotName || '"default"'
+      const children = genChildren(el, state)
+      let res = `_t(${slotName}${children ? `,${children}` : ''}`
+      const attrs = el.attrs && `{${el.attrs.map(a => `${camelize(a.name)}:${a.value}`).join(',')}}`
+      const bind = el.attrsMap['v-bind']
+      if ((attrs || bind) && !children) {
+        res += `,null`
+      }
+      if (attrs) {
+        res += `,${attrs}`
+      }
+      if (bind) {
+        res += `${attrs ? '' : ',null'},${bind}`
+      }
+      return res + ')'
+    }
+    ~~~
+
+  - 先不考虑 `slot` 标签上有 `attrs` 以及 `v-bind` 的情况
+
+  - `slotName` 从 AST 元素节点对应的属性上取，默认是 `default`，而 `children` 对应的就是 `slot` 开始和闭合标签包裹的内容
+
+- 最后 render-slot 方法
+
+  - `render-slot` 的参数 `name` 代表插槽名称 `slotName`，`fallback` 代表插槽的默认内容生成的 `vnode` 数组。
+  - 先忽略 `scoped-slot`，只看默认插槽逻辑。
+  - 如果 `this.$slot[name]` 有值，就返回它对应的 `vnode` 数组，否则返回 `fallback`。
+
+
+
+#### 默认插槽和作用域插槽的区别
+
+有一个很大的差别是数据作用域
+
+- 普通插槽是在父组件编译和渲染阶段生成 `vnodes`，所以数据的作用域是父组件实例，子组件渲染的时候直接拿到这些渲染好的 `vnodes`。
+- 对于作用域插槽，父组件在编译和渲染阶段并不会直接生成 `vnodes`，而是在父节点 `vnode` 的 `data` 中保留一个 `scopedSlots` 对象，存储着不同名称的插槽以及它们对应的渲染函数，只有在编译和渲染子组件阶段才会执行这个渲染函数生成 `vnodes`，由于是在子组件环境执行的，所以对应的数据作用域是子组件实例。
+
+简单地说，两种插槽的目的都是让子组件 `slot` 占位符生成的内容由父组件来决定，但数据的作用域会根据它们 `vnodes` 渲染时机不同而不同。
 
 ## 8. 为什么采用异步渲染？
 
+为了实时更新数据被。
+
+当你在 Vue 中更改响应式状态时，最终的 DOM 更新并不是同步生效的，而是由 Vue 将它们缓存在一个队列中，直到下一个“tick”才一起执行。这样是**为了确保每个组件无论发生多少状态改变，都仅执行一次更新**。
+
+`nextTick()` 可以在状态改变后立即使用，以等待 DOM 更新完成。你可以传递一个回调函数作为参数，或者 await 返回的 Promise。
+
 ### 8.1 nextTick 原理及作用
+
+其实就是为了引出`JavaScript`运行机制，进一步来讲宏任务和微任务。
+
+JS 执行是单线程的，它是基于事件循环的。事件循环大致分为以下几个步骤：
+
+（1）所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
+
+（2）主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
+
+（3）一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
+
+（4）主线程不断重复上面的第三步。
+
+
+
+主线程的执行过程就是一个 tick，而所有的异步结果都是通过 “任务队列” 来调度。 消息队列中存放的是一个个的任务（task）。
+
+ 规范中规定 task 分为两大类，分别是 macro task 和 micro task，并且每个 macro task 结束后，都要清空所有的 micro task。
+
+
+
+在浏览器环境中，常见的 macro task 有 setTimeout、MessageChannel、postMessage、setImmediate；常见的 micro task 有 MutationObsever 和 Promise.then
+
+
+
+vue2版本的实现
+
+`next-tick.js` 申明了 `microTimerFunc` 和 `macroTimerFunc` 2 个变量，它们分别对应的是 micro task 的函数和 macro task 的函数。对于 macro task 的实现，优先检测是否支持原生 `setImmediate`，这是一个高版本 IE 和 Edge 才支持的特性，不支持的话再去检测是否支持原生的 `MessageChannel`，如果也不支持的话就会降级为 `setTimeout 0`；而对于 micro task 的实现，则检测浏览器是否原生支持 Promise，不支持的话直接指向 macro task 的实现。
+
+`next-tick.js` 对外暴露了 2 个函数，先来看 `nextTick`，这就是我们在上一节执行 `nextTick(flushSchedulerQueue)` 所用到的函数。它的逻辑也很简单，把传入的回调函数 `cb` 压入 `callbacks` 数组，最后一次性地根据 `useMacroTask` 条件执行 `macroTimerFunc` 或者是 `microTimerFunc`，而它们都会在下一个 tick 执行 `flushCallbacks`，`flushCallbacks` 的逻辑非常简单，对 `callbacks` 遍历，然后执行相应的回调函数。
+
+这里使用 `callbacks` 而不是直接在 `nextTick` 中执行回调函数的原因是保证在同一个 tick 内多次执行 `nextTick`，不会开启多个异步任务，而把这些异步任务都压成一个同步任务，在下一个 tick 执行完毕。
 
 ## 9. 如何动态的给 vue2 的 data 添加属性值？
 
@@ -818,7 +931,53 @@ onUnmounted：在卸载完成后被调用。
 
 ## 12. 简单说一下 template 到 render 的过程，怎么实现？ 源码 compiler 的原理
 
+`Vue` 只能通过 new 关键字初始化，然后会调用 `this._init` 方法，会初始化一些配置，主要包括
+
+- 合并配置，初始化生命周期，初始化事件中心，初始化渲染
+- 初始化 data、props、computed、watcher 等等
+
+`vm.$createElement` 方法定义是在执行 `initRender` 方法的时候，可以看到除了 `vm.$createElement` 方法，还有一个 `vm._c` 方法，它是被模板编译成的 `render` 函数使用，而 `vm.$createElement` 是用户手写 `render` 方法使用的， 这俩个方法支持的参数相同，并且内部都调用了 `createElement` 方法
+
+Vue 中我们是通过 `$mount` 实例方法去挂载 `vm` 的。compiler里面包括了$mount重新定义的具体实现。
+
+- 首先缓存了原型上的 `$mount` 方法，再重新定义该方法。
+- 它对 `el` 做了限制，Vue 不能挂载在 `body`、`html` 这样的根节点上。
+  - 如果没有定义 `render` 方法，则会把 `el` 或者 `template` 字符串转换成 `render` 方法。
+  - 在 Vue 2.0 版本中，所有 Vue 的组件的渲染最终都需要 `render` 方法，无论我们是用单文件 .vue 方式开发组件，还是写了 `el` 或者 `template` 属性，最终都会转换成 `render` 方法，那么这个过程是 Vue 的一个“在线编译”的过程，它是调用 `compileToFunctions` 方法实现的。
+- 最后，调用原先原型上的 `$mount` 方法挂载。
+
+
+
+$mount 具体干啥了
+
+- `$mount` 方法支持传入 2 个参数
+  - 第一个是 `el`，它表示挂载的元素，可以是字符串，也可以是 DOM 对象，
+    - 如果是字符串在浏览器环境下会调用 `query` 方法转换成 DOM 对象的。
+  - 第二个参数是和服务端渲染相关，在浏览器环境下我们不需要传第二个参数。
+- `$mount` 方法实际上会去调用 `mountComponent` 方法。
+  - 这个方法定义在 `src/core/instance/lifecycle.js`
+  - `mountComponent` 核心就是先实例化一个渲染`Watcher`，在它的回调函数中会调用 `updateComponent` 方法，在此方法中调用 `vm._render` 方法先生成虚拟 Node，最终调用 `vm._update` 更新 DOM。
+  - `Watcher` 在这里起到两个作用
+    - 一个是初始化的时候会执行回调函数
+    - 另一个是当 vm 实例中的监测的数据发生变化的时候执行回调函数
+
+- 函数最后判断为根节点的时候设置 `vm._isMounted` 为 `true`， 表示这个实例已经挂载了，同时执行 `mounted` 钩子函数
+
 ## 13. 听过虚拟 dom 吗 在 vue 中怎么体现的
+
+Virtual DOM 就是用一个原生的 JS 对象去描述一个 DOM 节点，所以它比创建一个 DOM 的代价要小很多。
+
+核心定义无非就几个关键属性，标签名、数据、子节点、键值等，其它属性都是用来扩展 VNode 的灵活性以及实现一些特殊 feature 的。
+
+document
+
+Virtual DOM 除了它的数据结构的定义，映射到真实的 DOM 实际上要经历 VNode 的 create、diff、patch 等过程。那么在 Vue.js 中，VNode 的 create 是通过 `createElement` 方法创建的，具体利用 createElement 方法创建 VNode，它定义在 `src/core/vdom/create-element.js` 中。
+
+Virtual DOM 实际上是一个树状结构，每一个 VNode 可能会有若干个子节点，这些子节点应该也是 VNode 的类型。`_createElement` 接收的第 4 个参数 children 是任意类型的，因此我们需要把它们规范成 VNode 类型。
+
+规范化 `children` 后，接下来会去创建一个 VNode 的实例。
+
+先对 `tag` 做判断，如果是 `string` 类型，则接着判断如果是内置的一些节点，则直接创建一个普通 VNode，如果是为已注册的组件名，则通过 `createComponent` 创建一个组件类型的 VNode，否则创建一个未知的标签的 VNode。 如果是 `tag` 一个 `Component` 类型，则直接调用 `createComponent` 创建一个组件类型的 VNode 节点
 
 ## 14. 简单说一下 vue 的 diff 算法
 
