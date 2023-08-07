@@ -9,7 +9,7 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
+      { text: 'Records', link: '/JavaScript/l1' }
     ],
     outline: 'deep',
     sidebar: [
@@ -29,10 +29,13 @@ export default defineConfig({
             items: [{ text: '模块化', link: '/JavaScript/l1' }]
           },
           {
-            text: 'Browser Related Knowledge',
+            text: '浏览器相关知识',
+            // text: 'Browser Related Knowledge',
             items: [
-              { text: 'Rendering Process', link: '/browser/l1' },
-              { text: 'Rendering Optimization', link: '/browser/l2' }
+              { text: '渲染流程', link: '/browser/l1' },
+              // { text: 'Rendering Process', link: '/browser/l1' },
+              { text: '渲染优化', link: '/browser/l2' }
+              // { text: 'Rendering Optimization', link: '/browser/l2' }
             ]
           },
           {
