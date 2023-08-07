@@ -45,7 +45,8 @@ export default defineConfig({
               { text: 'React-Router', link: '/framework/react-router' },
               { text: 'Redux', link: '/framework/redux' },
               { text: 'Koa', link: '/framework/koa' },
-              { text: 'Vite Webpack', link: '/framework/vite-webpack' }
+              { text: 'Vite Webpack', link: '/framework/vite-webpack' },
+              { text: 'Vue3 Source Code', link: '/framework/vue3Source' },
             ]
           }
         ]
