@@ -678,91 +678,13 @@ onUnmounted：在卸载完成后被调用。
 
 `<keep-alive>` 组件是 Vue 中用于组件缓存的特殊组件。它通过组合 Vue 的内部缓存机制和特殊的组件生命周期钩子来实现组件的缓存。
 
-具体实现方式如下：
 
-1. **组件缓存**：当一个组件被包裹在 `<keep-alive>` 中时，Vue 会创建一个内部缓存来存储需要缓存的组件实例。缓存使用一个简单的 JavaScript 对象来实现，组件的 `name` 或 `key` 作为键，组件实例作为值。
-
-2. **处理组件激活**：当一个组件被渲染在 `<keep-alive>` 中时，它会经历正常的生命周期，包括 `beforeMount`、`mounted`、`beforeUpdate`、`updated`、`beforeUnmount` 和 `unmounted` 等钩子。然而，当一个组件被停用（例如从 DOM 中移除），它不会立即销毁，而是保留在缓存中。
-
-3. **处理组件停用**：当一个组件被停用（例如切换到其他路由或在 DOM 中有条件地不渲染），它会触发 `deactivated` 生命周期钩子。此时，组件不会立即被销毁，而是保留在缓存中。
-
-4. **处理组件激活（重新渲染）**：如果一个组件被重新激活（例如切换回之前的路由或在 DOM 中有条件地重新渲染），它会触发 `activated` 生命周期钩子。此时，Vue 会检查组件实例是否存在于缓存中。如果存在，Vue 会重用缓存中的实例，而不是创建一个新的实例。这样，组件的状态和数据得以保留，看起来就像组件从未被销毁过一样。
-
-5. **缓存限制**：为了避免缓存无限增长，`<keep-alive>` 允许设置 `max` 属性来限制缓存的组件数量。如果缓存超过指定的限制，最近最少使用（LRU）的组件实例将从缓存中移除，为新的组件腾出空间。
-
-以下是使用 `<keep-alive>` 缓存组件的示例：
-
-```html
-<template>
-  <div>
-    <keep-alive>
-      <!-- 当组件不活动时，它会被缓存 -->
-      <MyComponent v-if="showComponent" />
-    </keep-alive>
-
-    <button @click="showComponent = !showComponent">切换组件</button>
-  </div>
-</template>
-
-<script>
-  import MyComponent from './MyComponent.vue'
-
-  export default {
-    components: {
-      MyComponent
-    },
-    data() {
-      return {
-        showComponent: true
-      }
-    }
-  }
-</script>
-```
-
-在这个示例中，当点击 "切换组件" 按钮时，`MyComponent` 会在 `<keep-alive>` 中有条件地渲染。当组件被停用时（即 `v-if` 的值为 `false`），它会被缓存在 `<keep-alive>` 组件中。当组件被重新激活时（即 `v-if` 的值为 `true`），Vue 会重用缓存中的组件实例，而不是创建一个新的实例。
-
-希望这样能够清楚地解释 `<keep-alive>` 在 Vue 中是如何实现组件缓存的。
 
 #### vue2 和 vue3 中 keep-alive 的区别
 
 在 Vue 2 和 Vue 3 中，`<keep-alive>` 的基本功能是相同的，即用于组件缓存。然而，Vue 3 中对 `<keep-alive>` 进行了一些优化和改进，使其更加灵活和高效。
 
-主要的区别如下：
 
-1. **语法糖的变化**：
-
-   - Vue 2 使用 `<keep-alive>` 包裹组件时，需要使用 `include` 和 `exclude` 属性来指定需要缓存的组件名或组件名称的正则表达式，或者排除不需要缓存的组件。例如：
-
-   ```html
-   <keep-alive :include="['ComponentA', /^ComponentB/]" :exclude="['ComponentC']">
-     <!-- 组件 A、B 将被缓存，组件 C 将不被缓存 -->
-     <router-view></router-view>
-   </keep-alive>
-   ```
-
-   - Vue 3 中，`<keep-alive>` 的语法更加简洁，使用 `v-slot` 来定义需要缓存的组件，并通过 `include` 和 `exclude` 属性来指定要缓存或排除的组件。例如：
-
-   ```html
-   <keep-alive :include="['ComponentA', /^ComponentB/]" :exclude="['ComponentC']">
-     <template v-slot:default>
-       <!-- 组件 A、B 将被缓存，组件 C 将不被缓存 -->
-       <router-view></router-view>
-     </template>
-   </keep-alive>
-   ```
-
-2. **内部实现优化**：
-
-   - Vue 3 中对 `<keep-alive>` 的内部实现进行了一些优化，提高了组件缓存的性能和效率。在 Vue 3 中，组件的状态和数据在缓存时会被更高效地管理，减少了不必要的更新和重新渲染。
-
-3. **组件实例的激活和停用钩子**：
-
-   - 在 Vue 2 中，`<keep-alive>` 使用 `activated` 和 `deactivated` 生命周期钩子来处理组件的激活和停用。在组件被缓存时，会触发 `deactivated` 钩子，而在组件被重新激活时，会触发 `activated` 钩子。
-
-   - 在 Vue 3 中，`<keep-alive>` 使用 `v-slot` 的方式来处理组件的激活和停用。在组件被缓存时，会触发相应组件的 `onVnodeUnmounted` 钩子，并在组件被重新激活时，触发相应组件的 `onVnodeMounted` 钩子。
-
-总体来说，Vue 3 中的 `<keep-alive>` 在使用语法糖方面更加简洁，并对组件缓存的实现进行了优化，提高了性能和效率。同时，针对组件实例的激活和停用也有一些变化，但其基本功能和用法与 Vue 2 是相同的。
 
 #### vue3 的 keep-alive 具体变化
 
@@ -778,19 +700,6 @@ onUnmounted：在卸载完成后被调用。
    在 Vue 3 中，对于被 `<keep-alive>` 缓存的组件，内部的缓存策略也得到了优化。当组件被缓存时，它的 DOM 结构不会被销毁，而只是被隐藏起来。这样，在组件被重新激活时，无需重新创建 DOM 元素，只需要将之前隐藏的 DOM 元素重新显示出来，从而减少了不必要的 DOM 操作，进一步提高了组件缓存的性能。
 
 总的来说，Vue 3 对 `<keep-alive>` 组件的内部实现进行了一系列优化措施，包括改进了虚拟 DOM 的 Diff 算法、优化了组件实例的状态保存和恢复，以及优化了缓存策略，从而提高了组件缓存的性能和效率。这些优化措施使得在使用 `<keep-alive>` 缓存组件时，能够更快速、高效地管理组件的状态和渲染，从而提升了整体的性能表现。
-
-在 Vue 3 中，对 <keep-alive> 的内部实现进行了优化，具体包括以下几点：
-
-精确的状态保存：
-在 Vue 3 中，被 <keep-alive> 缓存的组件实例会被保存在内存中，而不会被销毁。这样，在组件被缓存时，组件的状态、数据和事件监听器等都得以保留。当组件被重新激活时，可以直接使用之前保存的组件实例和状态，而无需重新创建组件和初始化状态，从而提高了性能。
-
-虚拟 DOM 的保留：
-在 Vue 3 中，被 <keep-alive> 缓存的组件的虚拟 DOM 不会被销毁，而是被保留在内存中。这样，在组件被重新激活时，可以直接使用之前的虚拟 DOM，而无需重新创建和构建虚拟 DOM。这个优化措施可以减少不必要的 DOM 操作，提高渲染性能。
-
-更灵活的缓存策略：
-在 Vue 3 中，可以通过在 <keep-alive> 上使用 include 和 exclude 属性来指定需要缓存的组件和排除缓存的组件。include 属性用于指定要缓存的组件名称或组件实例，而 exclude 属性用于指定不需要缓存的组件名称或组件实例。这样，可以更灵活地控制哪些组件需要被缓存，哪些组件不需要被缓存，从而避免不必要的缓存和提高缓存的效率。
-
-总的来说，Vue 3 在 <keep-alive> 的实现上进行了优化，通过精确保存组件状态、保留虚拟 DOM 和提供更灵活的缓存策略，进一步提高了组件缓存的性能和效率。这些优化措施使得在使用 <keep-alive> 缓存组件时，能够更高效地管理组件的状态和渲染，从而提升了整体的性能表现。
 
 ## 6. 过滤器使用过吗
 
