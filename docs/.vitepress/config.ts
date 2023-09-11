@@ -18,7 +18,7 @@ export default defineConfig({
         items: [
           { text: 'Markdown Examples', link: '/markdown-examples' },
           { text: 'Runtime API Examples', link: '/api-examples' },
-          { text: 'Generate A React Template', link: '/study-react' }
+          { text: 'React Template', link: '/study-react' }
         ]
       },
       {
@@ -56,6 +56,30 @@ export default defineConfig({
               { text: 'Redux', link: '/framework/redux' },
               { text: 'Koa', link: '/framework/koa' },
               { text: 'Vite Webpack', link: '/framework/vite-webpack' }
+            ]
+          }
+        ]
+      },
+
+      {
+        text: 'Node-Learn',
+        items: [
+          {
+            text: 'NodeJs基础',
+            items: [
+              {
+                text: '第一课',
+                link: '/nodejs/basic/lesson1'
+              }
+            ]
+          },
+          {
+            text: 'NodeJs进阶',
+            items: [
+              {
+                text: '第一课',
+                link: '/nodejs/other/lesson1'
+              }
             ]
           }
         ]
