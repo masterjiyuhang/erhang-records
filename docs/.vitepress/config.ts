@@ -81,6 +81,15 @@ export default defineConfig({
                 link: '/nodejs/other/lesson1'
               }
             ]
+          },
+          {
+            text: 'NestJS',
+            items: [
+              {
+                text: '概述',
+                link: '/nodejs/nestjs/overview'
+              }
+            ]
           }
         ]
       }
