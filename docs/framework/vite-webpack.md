@@ -1,4 +1,4 @@
-## vite 和 webpack 有什么区别？
+## Vite 和 webpack 有什么区别？
 
 ## 如何在项目中使用 webpack ? 描述一下 webpack 的基本工作原理？
 
