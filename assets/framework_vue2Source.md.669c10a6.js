@@ -1,1 +1,0 @@
-import{_ as e,o as r,c as t}from"./chunks/framework.2cb66d06.js";const _=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"framework/vue2Source.md","filePath":"framework/vue2Source.md"}'),o={name:"framework/vue2Source.md"};function a(c,s,n,m,u,f){return r(),t("div")}const d=e(o,[["render",a]]);export{_ as __pageData,d as default};

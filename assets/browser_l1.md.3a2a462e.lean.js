@@ -1,1 +1,0 @@
-import{_ as l,o as i,c as a,O as e}from"./chunks/framework.2cb66d06.js";const d=JSON.parse('{"title":"基本渲染流程","description":"","frontmatter":{},"headers":[],"relativePath":"browser/l1.md","filePath":"browser/l1.md"}'),r={name:"browser/l1.md"},t=e("",18),s=[t];function S(o,u,p,c,n,h){return i(),a("div",null,s)}const T=l(r,[["render",S]]);export{d as __pageData,T as default};
