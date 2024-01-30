@@ -46,15 +46,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
         id: deployment
-        uses: actions/deploy-pages@v2
-      # - name: Deploy
-      #   uses: peaceiris/actions-gh-pages@v3
-      #   id: deployment
-      #   with:
-      #     github_token: ${{ secrets.ACCESS_TOKEN }}
-      #     publish_dir: docs/.vitepress/dist
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: docs/.vitepress/dist
       # - name: Checkout
       #   uses: actions/checkout@v3
       #   with:
