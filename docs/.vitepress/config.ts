@@ -5,11 +5,19 @@ export default defineConfig({
   base: '/erhang-records/',
   title: 'ErHang Records',
   description: 'A VitePress Site',
+
+  head: [
+    ['link', { rel: 'icon', type: 'image/png', href: '/logo.png' }]
+  ],
   themeConfig: {
+    logo: '/logo.png',
+    search: {
+      provider: 'local'
+    },
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Records', link: '/JavaScript/l1' }
+      { text: '首页', link: '/' },
+      { text: '笔记', link: '/JavaScript/l1' }
     ],
     outline: 'deep',
     sidebar: [
@@ -47,10 +55,14 @@ export default defineConfig({
               { text: 'Vue 生命周期', link: '/framework/vue-life' },
 
               { text: 'Vue2 源码', link: '/framework/vue2Source' },
-              { text: 'Vue3 源码', link: '/framework/vue3Source' },
+              {
+                text: 'Vue3 源码',
+                link: '/framework/vue3Source',
+                items: [{ text: '第5章', link: '/Vue3/lesson5' }]
+              },
 
               { text: 'React', link: '/framework/react' },
-             
+
               { text: 'Koa', link: '/framework/koa' },
               {
                 text: 'Vue生态工具篇',
@@ -64,7 +76,7 @@ export default defineConfig({
                 text: 'React生态工具篇',
                 items: [
                   { text: 'React-Router', link: '/framework/react-router' },
-                  { text: 'Redux', link: '/framework/redux' },
+                  { text: 'Redux', link: '/framework/redux' }
                 ]
               }
             ]
@@ -110,6 +122,7 @@ export default defineConfig({
       }
     ],
 
-    socialLinks: [{ icon: 'github', link: 'https://github.com/vuejs/vitepress' }]
-  }
+    socialLinks: [{ icon: 'github', link: 'https://github.com/masterjiyuhang' }]
+  },
+  lastUpdated: true
 })
