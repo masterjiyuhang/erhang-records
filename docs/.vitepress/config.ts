@@ -52,7 +52,7 @@ export default defineConfig({
               { text: 'Vue 组件通信', link: '/framework/vue-component' },
               { text: 'Vue 生命周期', link: '/framework/vue-life' },
 
-              { text: 'Vue2 源码', link: '/framework/vue2Source' },
+              { text: 'Vue2 源码', link: '/framework/vue2Source', items: [{ text: '响应式', link: '/framework/Vue2/reactive' }] },
               {
                 text: 'Vue3 源码',
                 link: '/framework/vue3Source',
