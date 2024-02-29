@@ -104,7 +104,7 @@ export default defineConfig({
             {
               text: '基础篇',
               items: [
-                { text: '模块化', link: '/learnRecord/l1' },
+                { text: '模块化知识', link: '/learnRecord/l1' },
                 { text: '基础知识', link: '/learnRecord/basic' },
                 { text: '常见手写', link: '/learnRecord/handlingWriting' }
               ]
