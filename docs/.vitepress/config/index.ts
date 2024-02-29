@@ -62,11 +62,28 @@ export default defineConfig({
     sidebar: {
       '/interviewBook/': [
         {
-          text: '面试手册',
           items: [
             {
-              text: '基础部分',
-              link: '/interviewBook/fundamental'
+              text: '面试手册',
+              link: '/interviewBook/',
+              items: [
+                {
+                  text: '高频基础面试题',
+                  link: '/interviewBook/fundamental'
+                },
+                {
+                  text: '高频手写面试题',
+                  link: '/interviewBook/write'
+                },
+                {
+                  text: '高频框架面试题',
+                  link: '/interviewBook/framework'
+                },
+                {
+                  text: '高频CSS面试题',
+                  link: '/interviewBook/css'
+                }
+              ]
             }
           ]
         }
@@ -82,6 +99,7 @@ export default defineConfig({
         },
         {
           text: '学习笔记',
+          link: '/learnRecord/',
           items: [
             {
               text: '基础篇',

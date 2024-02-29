@@ -17,7 +17,7 @@ hero:
       link: /markdownExamples
     - theme: alt
       text: Learn 学习笔记
-      link: /apiExamples
+      link: /learnRecord/index
     - theme: brand
       text: React 项目搭建
       link: /studyReact
