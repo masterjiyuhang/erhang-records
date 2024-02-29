@@ -41,8 +41,8 @@ export default defineConfig({
     }
   },
   head: [
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
-    // ['link', { rel: 'icon', type: 'image/png', href: '/logo.png' }]
+    // ['link', { rel: 'icon', type: 'image/svg+xml', href: '/erhang-records/logo.svg' }],
+    ['link', { rel: 'icon', type: 'image/png', href: '/erhang-records/logo.png' }]
   ],
   themeConfig: {
     logo: '/logo.png',

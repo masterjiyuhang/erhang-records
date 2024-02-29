@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy VitePress site to Pages
 on:
   workflow_dispatch: {}
   push:
@@ -21,20 +21,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Setup Pages
-        uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: npm
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
       - name: Install dependencies
         run: npm ci
       - name: Build with VitePress
         run: npm run docs:build
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: docs/.vitepress/dist
 
@@ -47,11 +49,8 @@ jobs:
     name: Deploy
     steps:
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
         id: deployment
-        with:
-          github_token: ${{ secrets.ACCESS_TOKEN }}
-          publish_dir: docs/.vitepress/dist
+        uses: actions/deploy-pages@v4
       # - name: Checkout
       #   uses: actions/checkout@v3
       #   with:
