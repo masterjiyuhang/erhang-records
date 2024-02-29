@@ -14,13 +14,13 @@ hero:
   actions:
     - theme: brand
       text: Markdown 示例
-      link: /markdown-examples
+      link: /markdownExamples
     - theme: alt
       text: Learn 学习笔记
-      link: /api-examples
+      link: /apiExamples
     - theme: brand
       text: React 项目搭建
-      link: /study-react
+      link: /studyReact
 
 features:
   - title: 咸鱼想翻身 🐟

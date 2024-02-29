@@ -1,12 +1,11 @@
 // https://vitepress.dev/guide/custom-theme
 import { h } from 'vue'
-import Theme from 'vitepress/theme'
-import './style.css'
+import DefaultTheme from 'vitepress/theme'
 
 export default {
-  extends: Theme,
+  extends: DefaultTheme,
   Layout: () => {
-    return h(Theme.Layout, null, {
+    return h(DefaultTheme.Layout, null, {
       // https://vitepress.dev/guide/extending-default-theme#layout-slots
     })
   },

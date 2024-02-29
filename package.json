@@ -7,11 +7,12 @@
   "devDependencies": {
     "scss": "^0.2.4",
     "stylus": "^0.59.0",
-    "vitepress": "1.0.0-rc.40",
+    "vitepress": "1.0.0-rc.44",
     "vue": "^3.3.4"
   },
   "scripts": {
     "docs": "vitepress dev docs",
+    "dev": "vitepress dev docs --port 5566",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
