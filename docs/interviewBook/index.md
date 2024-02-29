@@ -1,4 +1,4 @@
-- [高频基础面试题](/interviewBook/fundmental)
+- [高频基础面试题](/interviewBook/fundamental)
 - [高频手写面试题](/interviewBook/write)
-- [高频框架面试题](/interviewBook/frameword)
+- [高频框架面试题](/interviewBook/framework)
 - [高频CSS面试题](/interviewBook/css)
