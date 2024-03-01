@@ -6,9 +6,9 @@ title: erHang
 titleTemplate: The Front-end study notes
 
 hero:
-  name: ErHang's Park
+  name: ErHang's 公园
   text: '👋 '
-  tagline: Hi, my bro. Welcome to my learn about front web development website.
+  tagline: 欢迎来到我的小破站。
   image:
     src: /logo.png
   actions:
