@@ -39,18 +39,31 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/.vitepress/dist
-
+  # 工作流的名称
   deploy:
+    needs: build # 这指定了此部署任务依赖于另一个名为build的任务。确保在开始部署之前完成了构建任务。
+
+    permissions:
+      pages: write
+      id-token: write
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
+
     runs-on: ubuntu-latest
-    name: Deploy
+
     steps:
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v4
+      # - name: Deploy to Github pages
+      #   id: deployment
+      #   uses: actions/deploy-pages@v4
+      - name: Deploy with gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/master'
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: docs/.vitepress/dist
+
       # - name: Checkout
       #   uses: actions/checkout@v3
       #   with:
