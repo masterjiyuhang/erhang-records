@@ -133,7 +133,15 @@ export default defineConfig({
                         { text: 'Pinia', link: '/framework/pinia' }
                       ]
                     },
-                    { text: 'Vue2 源码', link: '/framework/vue2Source', items: [{ text: '响应式', link: '/framework/Vue2/reactive' }] },
+                    {
+                      text: 'Vue2 源码',
+                      link: '/framework/vue2Source',
+                      items: [
+                        { text: '数据挂载', link: '/framework/Vue2/vue2data' },
+                        { text: '组件化基础', link: '/framework/Vue2/component' },
+                        { text: '响应式', link: '/framework/Vue2/reactive' }
+                      ]
+                    },
                     {
                       text: 'Vue3 源码',
                       link: '/framework/vue3Source',
