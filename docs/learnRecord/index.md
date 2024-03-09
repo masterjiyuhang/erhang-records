@@ -1,3 +1,3 @@
-- [基础篇](/learnRecord/l1): JavaScript基础知识。
-- [浏览器篇](/browser/l1): 浏览器相关知识，基本渲染流程，渲染优化，高阶API使用等。
-- [框架篇](/framework/vue): 框架相关知识，包含Vue和React。
+- [基础篇](/learnRecord/l1): JavaScript 基础知识。
+- [浏览器篇](/browser/l1): 浏览器相关知识，基本渲染流程，渲染优化，高阶 API 使用等。
+- [框架篇](/framework/vue): 框架相关知识，包含 Vue 和 React。
