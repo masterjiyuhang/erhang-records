@@ -1,8 +1,8 @@
-import { defineConfig } from 'vitepress'
+import { defineConfig } from 'vitepress';
 
-const rControl = /[\u0000-\u001f]/g
-const rSpecial = /[\s~`!@#$%^&*()\-_+=[\]{}|\\;:"'“”‘’<>,.?/]+/g
-const rCombining = /[\u0300-\u036F]/g
+const rControl = /[\u0000-\u001f]/g;
+const rSpecial = /[\s~`!@#$%^&*()\-_+=[\]{}|\\;:"'“”‘’<>,.?/]+/g;
+const rCombining = /[\u0300-\u036F]/g;
 
 /**
  * Default slugification function
@@ -17,32 +17,35 @@ export const slugify = (str: string): string =>
     // Replace special characters
     .replace(rSpecial, '-')
     // ensure it doesn't start with a number
-    .replace(/^(\d)/, '_$1')
+    .replace(/^(\d)/, '_$1');
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  base: '/erhang-records/',
+  base: '/',
   title: 'ErHang Records',
   description: 'A VitePress Site',
   appearance: 'dark',
   markdown: {
     theme: {
       dark: 'dracula-soft',
-      light: 'vitesse-light'
+      light: 'vitesse-light',
     },
 
     attrs: {
       leftDelimiter: '%{',
-      rightDelimiter: '}%'
+      rightDelimiter: '}%',
     },
 
     anchor: {
-      slugify
-    }
+      slugify,
+    },
   },
   head: [
     // ['link', { rel: 'icon', type: 'image/svg+xml', href: '/erhang-records/logo.svg' }],
-    ['link', { rel: 'icon', type: 'image/png', href: '/erhang-records/logo.png' }]
+    [
+      'link',
+      { rel: 'icon', type: 'image/png', href: '/erhang-records/logo.png' },
+    ],
   ],
   themeConfig: {
     logo: '/logo.png',
@@ -52,12 +55,20 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: '首页', link: '/' },
-      { text: '学习笔记', link: '/learnRecord/', activeMatch: '^/learnRecord/' },
-      { text: '面试手册', link: '/interviewBook/', activeMatch: '^/interviewBook/' }
+      {
+        text: '学习笔记',
+        link: '/learnRecord/',
+        activeMatch: '^/learnRecord/',
+      },
+      {
+        text: '面试手册',
+        link: '/interviewBook/',
+        activeMatch: '^/interviewBook/',
+      },
     ],
     outline: {
       level: [2, 3],
-      label: '本页内容'
+      label: '本页内容',
     },
     sidebar: {
       '/interviewBook/': [
@@ -69,24 +80,24 @@ export default defineConfig({
               items: [
                 {
                   text: '高频基础面试题',
-                  link: '/interviewBook/fundamental'
+                  link: '/interviewBook/fundamental',
                 },
                 {
                   text: '高频手写面试题',
-                  link: '/interviewBook/write'
+                  link: '/interviewBook/write',
                 },
                 {
                   text: '高频框架面试题',
-                  link: '/interviewBook/framework'
+                  link: '/interviewBook/framework',
                 },
                 {
                   text: '高频CSS面试题',
-                  link: '/interviewBook/css'
-                }
-              ]
-            }
-          ]
-        }
+                  link: '/interviewBook/css',
+                },
+              ],
+            },
+          ],
+        },
       ],
       '/': [
         {
@@ -94,8 +105,8 @@ export default defineConfig({
           items: [
             { text: 'Markdown Examples', link: '/markdownExamples' },
             { text: 'Runtime API Examples', link: '/apiExamples' },
-            { text: 'React Template', link: '/studyReact' }
-          ]
+            { text: 'React Template', link: '/studyReact' },
+          ],
         },
         {
           text: '学习笔记',
@@ -106,15 +117,15 @@ export default defineConfig({
               items: [
                 { text: '模块化知识', link: '/learnRecord/l1' },
                 { text: '基础知识', link: '/learnRecord/basic' },
-                { text: '常见手写', link: '/learnRecord/handlingWriting' }
-              ]
+                { text: '常见手写', link: '/learnRecord/handlingWriting' },
+              ],
             },
             {
               text: '浏览器相关知识',
               items: [
                 { text: '渲染流程', link: '/browser/l1' },
-                { text: '渲染优化', link: '/browser/l2' }
-              ]
+                { text: '渲染优化', link: '/browser/l2' },
+              ],
             },
             {
               text: '框架篇',
@@ -130,24 +141,27 @@ export default defineConfig({
                       items: [
                         { text: 'Vue-Router', link: '/framework/vueRouter' },
                         { text: 'Vuex', link: '/framework/vuex' },
-                        { text: 'Pinia', link: '/framework/pinia' }
-                      ]
+                        { text: 'Pinia', link: '/framework/pinia' },
+                      ],
                     },
                     {
                       text: 'Vue2 源码',
                       link: '/framework/vue2Source',
                       items: [
                         { text: '数据挂载', link: '/framework/Vue2/vue2data' },
-                        { text: '组件化基础', link: '/framework/Vue2/component' },
-                        { text: '响应式', link: '/framework/Vue2/reactive' }
-                      ]
+                        {
+                          text: '组件化基础',
+                          link: '/framework/Vue2/component',
+                        },
+                        { text: '响应式', link: '/framework/Vue2/reactive' },
+                      ],
                     },
                     {
                       text: 'Vue3 源码',
                       link: '/framework/vue3Source',
-                      items: [{ text: '第5章', link: '/Vue3/lesson5' }]
-                    }
-                  ]
+                      items: [{ text: '第5章', link: '/Vue3/lesson5' }],
+                    },
+                  ],
                 },
 
                 {
@@ -157,19 +171,24 @@ export default defineConfig({
                     {
                       text: 'React生态工具篇',
                       items: [
-                        { text: 'React-Router', link: '/framework/reactRouter' },
-                        { text: 'Redux', link: '/framework/redux' }
-                      ]
-                    }
-                  ]
-                }
-              ]
+                        {
+                          text: 'React-Router',
+                          link: '/framework/reactRouter',
+                        },
+                        { text: 'Redux', link: '/framework/redux' },
+                      ],
+                    },
+                  ],
+                },
+              ],
             },
             {
               text: '打包工具篇',
-              items: [{ text: 'Vite Webpack', link: '/framework/ViteAndWebpack' }]
-            }
-          ]
+              items: [
+                { text: 'Vite Webpack', link: '/framework/ViteAndWebpack' },
+              ],
+            },
+          ],
         },
 
         {
@@ -177,11 +196,11 @@ export default defineConfig({
           items: [
             {
               text: '基础部分',
-              link: '/nodejs/basic/lesson1'
+              link: '/nodejs/basic/lesson1',
             },
             {
               text: '进阶部分',
-              link: '/nodejs/other/lesson1'
+              link: '/nodejs/other/lesson1',
             },
             { text: 'Koa', link: '/nodejs/Koa/koa' },
             {
@@ -189,13 +208,13 @@ export default defineConfig({
               items: [
                 {
                   text: '概述',
-                  link: '/nodejs/nestjs/overview'
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  link: '/nodejs/nestjs/overview',
+                },
+              ],
+            },
+          ],
+        },
+      ],
     },
     // sidebar: [
     //   {
@@ -300,13 +319,15 @@ export default defineConfig({
     // ],
     footer: {
       copyright: 'Copyright © 2019-present ErHang',
-      message: 'Released under the MIT License.'
+      message: 'Released under the MIT License.',
     },
     docFooter: {
       prev: '上一页',
-      next: '下一页'
+      next: '下一页',
     },
-    socialLinks: [{ icon: 'github', link: 'https://github.com/masterjiyuhang' }]
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/masterjiyuhang' },
+    ],
   },
-  lastUpdated: true
-})
+  lastUpdated: true,
+});
