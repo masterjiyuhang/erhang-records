@@ -9,5 +9,11 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/erhang-records/assets/:path*",
+      "destination": "/assets/:path*"
+    }
   ]
 }
