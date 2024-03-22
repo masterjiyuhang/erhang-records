@@ -12,8 +12,8 @@
   ],
   "rewrites": [
     {
-      "source": "/erhang-records/assets/:path*",
-      "destination": "/assets/:path*"
+      "source": "/erhang-records/:path*",
+      "destination": "/:path*"
     }
   ]
 }
