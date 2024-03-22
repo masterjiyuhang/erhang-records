@@ -21,7 +21,7 @@ export const slugify = (str: string): string =>
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  base: '/',
+  base: '/erhang-records/',
   title: 'ErHang Records',
   description: 'A VitePress Site',
   appearance: 'dark',
