@@ -210,6 +210,10 @@ export default defineConfig({
                   text: '概述',
                   link: '/nodejs/nestjs/overview',
                 },
+                {
+                  text: '创建一个NestJS应用',
+                  link: '/nodejs/nestjs/record',
+                },
               ],
             },
           ],
