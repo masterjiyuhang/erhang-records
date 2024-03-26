@@ -109,6 +109,13 @@ export default defineConfig({
           ],
         },
         {
+          text: 'MySQL',
+          items: [
+            { text: '基础入门', link: '/sql/1' },
+            { text: '语法展示', link: '/sql/2' },
+          ],
+        },
+        {
           text: '学习笔记',
           link: '/learnRecord/',
           items: [

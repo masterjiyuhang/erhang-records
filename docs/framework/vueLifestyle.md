@@ -2,7 +2,7 @@
 
 ### Vue3 生命周期
 
-<img src="../public/assets/iamges/lifecycleVue.png"/>
+<img src="../public/assets/images/lifecycleVue.png"/>
 
 ### Vue 父组件能够监听到的子组件的生命周期有哪些？
 
