@@ -113,6 +113,7 @@ export default defineConfig({
           items: [
             { text: '基础入门', link: '/sql/1' },
             { text: '语法展示', link: '/sql/2' },
+            { text: '运算符', link: '/sql/3' },
           ],
         },
         {
