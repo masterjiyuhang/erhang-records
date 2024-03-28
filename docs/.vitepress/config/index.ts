@@ -114,6 +114,7 @@ export default defineConfig({
             { text: '基础入门', link: '/sql/1' },
             { text: '语法展示', link: '/sql/2' },
             { text: '运算符', link: '/sql/3' },
+            { text: '常见操作', link: '/sql/4' },
           ],
         },
         {
