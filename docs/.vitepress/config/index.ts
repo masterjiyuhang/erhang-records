@@ -179,9 +179,13 @@ export default defineConfig({
                       link: '/framework/vue3Source',
                       items: [{ text: '第5章', link: '/Vue3/lesson5' }],
                     },
+                  
                   ],
                 },
-
+                {
+                  text: 'Nuxt',
+                  items: [{ text: '项目初始化', link: '/framework/Nuxt/Nuxt项目初始化.md' }],
+                },
                 {
                   text: 'React',
                   link: '/framework/react',
