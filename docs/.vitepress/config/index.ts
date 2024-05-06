@@ -122,7 +122,10 @@ export default defineConfig({
           items: [
             {
               text: '上午',
-              items: [{ text: '数据库相关', link: '/software/am/数据库相关' }],
+              items: [
+                { text: '知识版权相关', link: '/software/am/知识版权相关' },
+                { text: '数据库相关', link: '/software/am/数据库相关' },
+              ],
             },
             {
               text: '下午',
