@@ -118,6 +118,19 @@ export default defineConfig({
           ],
         },
         {
+          text: '软考',
+          items: [
+            {
+              text: '上午',
+              items: [{ text: '数据库相关', link: '/software/am/数据库相关' }],
+            },
+            {
+              text: '下午',
+              items: [{ text: '下午第一题', link: '/software/pm/1' }],
+            },
+          ],
+        },
+        {
           text: 'MySQL',
           items: [
             { text: '基础入门', link: '/sql/1' },
@@ -179,12 +192,16 @@ export default defineConfig({
                       link: '/framework/vue3Source',
                       items: [{ text: '第5章', link: '/Vue3/lesson5' }],
                     },
-                  
                   ],
                 },
                 {
                   text: 'Nuxt',
-                  items: [{ text: '项目初始化', link: '/framework/Nuxt/Nuxt项目初始化.md' }],
+                  items: [
+                    {
+                      text: '项目初始化',
+                      link: '/framework/Nuxt/Nuxt项目初始化.md',
+                    },
+                  ],
                 },
                 {
                   text: 'React',
