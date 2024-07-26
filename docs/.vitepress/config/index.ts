@@ -118,6 +118,12 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Locks',
+          items: [
+            { text: 'Lock Comp Examples', link: '/locks/demo01' },
+          ],
+        },
+        {
           text: '软考',
           items: [
             {

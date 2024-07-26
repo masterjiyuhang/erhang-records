@@ -1,6 +1,7 @@
 // https://vitepress.dev/guide/custom-theme
 import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
+import PasswordProtect from '../../components/PasswordProtect.vue'
 
 export default {
   extends: DefaultTheme,
@@ -11,5 +12,6 @@ export default {
   },
   enhanceApp({ app, router, siteData }) {
     // ...
+    app.component('PasswordProtect', PasswordProtect)
   }
 }
