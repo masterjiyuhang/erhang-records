@@ -131,6 +131,7 @@ export default defineConfig({
               items: [
                 { text: '知识版权相关', link: '/software/am/知识版权相关' },
                 { text: '数据库相关', link: '/software/am/数据库相关' },
+                { text: 'UML图相关', link: '/software/am/UML图相关' },
               ],
             },
             {
