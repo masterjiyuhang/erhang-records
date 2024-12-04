@@ -372,7 +372,7 @@ export default defineConfig({
     // ],
     footer: {
       copyright: 'Copyright © 2019-present ErHang',
-      message: 'Released under the MIT License.',
+      message: ' <a href="https://beian.miit.gov.cn/" target="_blank">辽ICP备2023008348号-3 </a>',
     },
     docFooter: {
       prev: '上一页',

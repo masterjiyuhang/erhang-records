@@ -3,7 +3,7 @@
 layout: home
 
 title: erHang
-titleTemplate: The Front-end study notes
+titleTemplate: 二航的生活记录
 
 hero:
   name: ErHang's 公园
@@ -25,7 +25,7 @@ hero:
 features:
   - title: 咸鱼想翻身 🐟
     details: 做一只有梦想的咸鱼
-  - title: 二航大魔王 😈
+  - title: 二航大魔王 🚀
     details: 一个前端切图仔 cy大师
   - title: 我们都在默默变好 🌹
     details: 愿你眼睛会笑，心里有光。
