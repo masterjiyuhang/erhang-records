@@ -74,6 +74,11 @@ export default defineConfig({
         link: '/interviewBook/',
         activeMatch: '^/interviewBook/',
       },
+      {
+        text: '看看文采哇',
+        link: '/titles/',
+        activeMatch: '^/titles/',
+      },
     ],
     outline: {
       level: [2, 3],
