@@ -85,6 +85,7 @@ export default defineConfig({
       label: '本页内容',
     },
     sidebar: {
+      '/titles/': [],
       '/interviewBook/': [
         {
           items: [

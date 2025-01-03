@@ -1,8 +1,3 @@
-# 常见手写
-
-## debounce 防抖
-
-```js
 export const debounce = (fn, delay = 500) => {
   let timer = undefined
   let active = true
@@ -27,4 +22,3 @@ export const debounce = (fn, delay = 500) => {
 
   return debounced
 }
-```
