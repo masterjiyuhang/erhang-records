@@ -1,8 +1,10 @@
 import { defineConfig } from 'vitepress';
+import { getSidebarConfig } from '../../util/index'
 
 const rControl = /[\u0000-\u001f]/g;
 const rSpecial = /[\s~`!@#$%^&*()\-_+=[\]{}|\\;:"'“”‘’<>,.?/]+/g;
 const rCombining = /[\u0300-\u036F]/g;
+
 
 /**
  * Default slugification function
@@ -85,7 +87,10 @@ export default defineConfig({
       label: '本页内容',
     },
     sidebar: {
-      '/titles/': [],
+      '/titles/': [
+        { text: '概述', link: '/titles/' },
+       getSidebarConfig('/titles/202501')
+      ],
       '/interviewBook/': [
         {
           items: [
