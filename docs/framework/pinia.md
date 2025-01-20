@@ -9,13 +9,12 @@
 支持服务端渲染
 :::
 
-
 ```javascript
-import { createPinia } from 'pinia'
+import { createPinia } from "pinia";
 
-const pinia = createPinia()
+const pinia = createPinia();
 
-app.use(pinia)
+app.use(pinia);
 ```
 
 ## 源码

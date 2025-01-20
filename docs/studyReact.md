@@ -2,18 +2,16 @@
 
 ## 1. 创建项目
 
-~~~js
+```js
 pnpm create vite@latest
 
-~~~
-
-
+```
 
 ## 2. 安装依赖
 
-~~~shell
+```shell
 # redux 相关
-pnpm i react-redux react-thunk redux 
+pnpm i react-redux react-thunk redux
 pnpm i redux-persist redux-promise immer
 pnpm i @reduxjs/toolkit
 
@@ -24,7 +22,7 @@ pnpm i react-router-dom
 pnpm i @types/react-router-dom --save-dev
 
 # react 样式 动画相关
-pnpm i react-transition-group react-activation 
+pnpm i react-transition-group react-activation
 
 #react 国际化相关
 pnpm i react-i18next i18next
@@ -36,13 +34,11 @@ pnpm i vite-plugin-compression vite-plugin-html rollup-plugin-visualizer --save-
 pnpm i axios intro.js js-md5 nprogress@^0.2.0 screenfull
 pnpm i @types/intro.js @types/nprogress --save-dev
 
-~~~
-
-
+```
 
 #### 配置vite.config.ts
 
-~~~typescript
+```typescript
 import { ConfigEnv, UserConfig, defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
@@ -54,100 +50,95 @@ import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vitejs.dev/config/
 export default defineConfig((mode: ConfigEnv): UserConfig => {
-	const env = loadEnv(mode.mode, process.cwd());
-	const viteEnv = wrapperEnv(env);
-	return {
-		plugins: [
-			react(),
+  const env = loadEnv(mode.mode, process.cwd());
+  const viteEnv = wrapperEnv(env);
+  return {
+    plugins: [
+      react(),
 
-			createHtmlPlugin({
-				inject: {
-					data: {
-						title: viteEnv.VITE_GLOBAL_APP_TITLE
-					}
-				}
-			}),
+      createHtmlPlugin({
+        inject: {
+          data: {
+            title: viteEnv.VITE_GLOBAL_APP_TITLE,
+          },
+        },
+      }),
 
-			// * EsLint 报错信息显示在浏览器界面上
-			eslintPlugin(),
+      // * EsLint 报错信息显示在浏览器界面上
+      eslintPlugin(),
 
-			// * 是否生成包预览
-			// @ts-ignore
-			viteEnv.VITE_REPORT && visualizer(),
+      // * 是否生成包预览
+      // @ts-ignore
+      viteEnv.VITE_REPORT && visualizer(),
 
-			// * gzip compress
-			viteEnv.VITE_BUILD_GZIP &&
-				viteCompression({
-					verbose: true,
-					disable: false,
-					threshold: 10240,
-					algorithm: "gzip",
-					ext: ".gz"
-				})
-		],
-		esbuild: {
-			pure: viteEnv.VITE_DROP_CONSOLE ? ["console.log", "debugger"] : []
-		},
-		server: {
-			host: "0.0.0.0",
-			port: viteEnv.VITE_PORT,
-			open: viteEnv.VITE_OPEN,
-			cors: true,
-			proxy: {
-				// 选项写法
-				"/api": {
-					target: "http://101.42.21.153:8033/mock/649982d61d5a0a36692f05dc",
-					changeOrigin: true,
-					rewrite: (path: string) => path.replace(/^\/api/, "")
-				}
-			}
-		},
-		css: {
-			preprocessorOptions: {
-				scss: {
-					additionalData: `@import "@/styles/var.scss";`
-				}
-			}
-		},
-		resolve: {
-			alias: {
-				"@": path.resolve(__dirname, "./src")
-			}
-		},
-		build: {
-			outDir: "dist",
-			// esbuild 打包更快，但是不能去除 console.log，去除 console 使用 terser 模式
-			minify: "esbuild",
-			// minify: "terser",
-			// terserOptions: {
-			// 	compress: {
-			// 		drop_console: viteEnv.VITE_DROP_CONSOLE,
-			// 		drop_debugger: true
-			// 	}
-			// },
-			rollupOptions: {
-				output: {
-					chunkFileNames: "assets/js/[name]-[hash].js",
-					entryFileNames: "assets/js/[name]-[hash].js",
-					assetFileNames: "assets/[ext]/[name]-[hash].[ext]"
-				}
-			}
-		}
-	};
+      // * gzip compress
+      viteEnv.VITE_BUILD_GZIP &&
+        viteCompression({
+          verbose: true,
+          disable: false,
+          threshold: 10240,
+          algorithm: "gzip",
+          ext: ".gz",
+        }),
+    ],
+    esbuild: {
+      pure: viteEnv.VITE_DROP_CONSOLE ? ["console.log", "debugger"] : [],
+    },
+    server: {
+      host: "0.0.0.0",
+      port: viteEnv.VITE_PORT,
+      open: viteEnv.VITE_OPEN,
+      cors: true,
+      proxy: {
+        // 选项写法
+        "/api": {
+          target: "http://101.42.21.153:8033/mock/649982d61d5a0a36692f05dc",
+          changeOrigin: true,
+          rewrite: (path: string) => path.replace(/^\/api/, ""),
+        },
+      },
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@import "@/styles/var.scss";`,
+        },
+      },
+    },
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+      },
+    },
+    build: {
+      outDir: "dist",
+      // esbuild 打包更快，但是不能去除 console.log，去除 console 使用 terser 模式
+      minify: "esbuild",
+      // minify: "terser",
+      // terserOptions: {
+      // 	compress: {
+      // 		drop_console: viteEnv.VITE_DROP_CONSOLE,
+      // 		drop_debugger: true
+      // 	}
+      // },
+      rollupOptions: {
+        output: {
+          chunkFileNames: "assets/js/[name]-[hash].js",
+          entryFileNames: "assets/js/[name]-[hash].js",
+          assetFileNames: "assets/[ext]/[name]-[hash].[ext]",
+        },
+      },
+    },
+  };
 });
-
-~~~
-
-
+```
 
 ## 3. 初始化配置
 
-
-
 ### 3.1 增加husky校验
 
-~~~bash
-# Install Husky 
+```bash
+# Install Husky
 pnpm dlx husky-init && pnpm install
 
 # 1. Add prepare script to package.json
@@ -169,25 +160,21 @@ git add .husky/pre-commit
 # Try to make a commit
 git commit -m "Keep calm and commit"
 
-~~~
+```
 
-
-
-~~~shell
-# uninstall 
+```shell
+# uninstall
 pnpm uninstall husky && git config --unset core.hooksPath
 
 # You can bypass pre-commit and commit-msg hooks using Git -n/--no-verify option:
 
 git commit -m "yolo!" --no-verify
 
-~~~
-
-
+```
 
 ### 3.2 增加commit lint校验
 
-~~~bash
+```bash
 # Install commitlint and a commitlint-config-* of your choice as devDependency and configure commitlint to use it.
 pnpm install --save-dev commitizen @commitlint/config-conventional @commitlint/cli cz-git
 
@@ -200,281 +187,269 @@ npx husky add .husky/commit-msg  'npx --no -- commitlint --edit ${1}'
 
 
 pnpm pkg set config.commitizen.path="node_modules/cz-git"
-~~~
-
-
+```
 
 #### 创建lint-staged.config.js
 
-~~~javascript
+```javascript
 module.exports = {
-	"*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
-	"{!(package)*.json,*.code-snippets,.!(browserslist)*rc}": ["prettier --write--parser json"],
-	"package.json": ["prettier --write"],
-	"*.{scss,less,styl,html}": ["stylelint --fix", "prettier --write"],
-	"*.md": ["prettier --write"]
+  "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
+  "{!(package)*.json,*.code-snippets,.!(browserslist)*rc}": [
+    "prettier --write--parser json",
+  ],
+  "package.json": ["prettier --write"],
+  "*.{scss,less,styl,html}": ["stylelint --fix", "prettier --write"],
+  "*.md": ["prettier --write"],
 };
-
-~~~
-
-
+```
 
 #### 创建commitlint.config.js
 
-~~~javascript
+```javascript
 // @see: https://cz-git.qbenben.com/zh/guide
 /** @type {import('cz-git').UserConfig} */
 
 module.exports = {
-	ignores: [commit => commit.includes("init")],
-	extends: ["@commitlint/config-conventional"],
-	rules: {
-		// @see: https://commitlint.js.org/#/reference-rules
-		"body-leading-blank": [2, "always"],
-		"footer-leading-blank": [1, "always"],
-		"header-max-length": [2, "always", 108],
-		"subject-empty": [2, "never"],
-		"type-empty": [2, "never"],
-		"subject-case": [0],
-		"type-enum": [
-			2,
-			"always",
-			[
-				"feat",
-				"fix",
-				"docs",
-				"style",
-				"refactor",
-				"perf",
-				"test",
-				"build",
-				"ci",
-				"chore",
-				"revert",
-				"wip",
-				"workflow",
-				"types",
-				"release"
-			]
-		]
-	},
-	prompt: {
-		messages: {
-			type: "Select the type of change that you're committing:",
-			scope: "Denote the SCOPE of this change (optional):",
-			customScope: "Denote the SCOPE of this change:",
-			subject: "Write a SHORT, IMPERATIVE tense description of the change:\n",
-			body: 'Provide a LONGER description of the change (optional). Use "|" to break new line:\n',
-			breaking: 'List any BREAKING CHANGES (optional). Use "|" to break new line:\n',
-			footerPrefixsSelect: "Select the ISSUES type of changeList by this change (optional):",
-			customFooterPrefixs: "Input ISSUES prefix:",
-			footer: "List any ISSUES by this change. E.g.: #31, #34:\n",
-			confirmCommit: "Are you sure you want to proceed with the commit above?"
-			// 中文版
-			// type: "选择你要提交的类型 :",
-			// scope: "选择一个提交范围（可选）:",
-			// customScope: "请输入自定义的提交范围 :",
-			// subject: "填写简短精炼的变更描述 :\n",
-			// body: '填写更加详细的变更描述（可选）。使用 "|" 换行 :\n',
-			// breaking: '列举非兼容性重大的变更（可选）。使用 "|" 换行 :\n',
-			// footerPrefixsSelect: "选择关联issue前缀（可选）:",
-			// customFooterPrefixs: "输入自定义issue前缀 :",
-			// footer: "列举关联issue (可选) 例如: #31, #I3244 :\n",
-			// confirmCommit: "是否提交或修改commit ?"
-		},
-		types: [
-			{
-				value: "feat",
-				name: "feat:     🚀  A new feature",
-				emoji: "🚀"
-			},
-			{
-				value: "fix",
-				name: "fix:      🧩  A bug fix",
-				emoji: "🧩"
-			},
-			{
-				value: "docs",
-				name: "docs:     📚  Documentation only changes",
-				emoji: "📚"
-			},
-			{
-				value: "style",
-				name: "style:    🎨  Changes that do not affect the meaning of the code",
-				emoji: "🎨"
-			},
-			{
-				value: "refactor",
-				name: "refactor: ♻️   A code change that neither fixes a bug nor adds a feature",
-				emoji: "♻️"
-			},
-			{
-				value: "perf",
-				name: "perf:     ⚡️  A code change that improves performance",
-				emoji: "⚡️"
-			},
-			{
-				value: "test",
-				name: "test:     ✅  Adding missing tests or correcting existing tests",
-				emoji: "✅"
-			},
-			{
-				value: "build",
-				name: "build:    📦️   Changes that affect the build system or external dependencies",
-				emoji: "📦️"
-			},
-			{
-				value: "ci",
-				name: "ci:       🎡  Changes to our CI configuration files and scripts",
-				emoji: "🎡"
-			},
-			{
-				value: "chore",
-				name: "chore:    🔨  Other changes that don't modify src or test files",
-				emoji: "🔨"
-			},
-			{
-				value: "revert",
-				name: "revert:   ⏪️  Reverts a previous commit",
-				emoji: "⏪️"
-			}
-			// 中文版
-			// { value: "特性", name: "特性:   🚀  新增功能", emoji: "🚀" },
-			// { value: "修复", name: "修复:   🧩  修复缺陷", emoji: "🧩" },
-			// { value: "文档", name: "文档:   📚  文档变更", emoji: "📚" },
-			// { value: "格式", name: "格式:   🎨  代码格式（不影响功能，例如空格、分号等格式修正）", emoji: "🎨" },
-			// { value: "重构", name: "重构:   ♻️  代码重构（不包括 bug 修复、功能新增）", emoji: "♻️" },
-			// { value: "性能", name: "性能:   ⚡️  性能优化", emoji: "⚡️" },
-			// { value: "测试", name: "测试:   ✅  添加疏漏测试或已有测试改动", emoji: "✅" },
-			// { value: "构建", name: "构建:   📦️  构建流程、外部依赖变更（如升级 npm 包、修改 webpack 配置等）", emoji: "📦️" },
-			// { value: "集成", name: "集成:   🎡  修改 CI 配置、脚本", emoji: "🎡" },
-			// { value: "回退", name: "回退:   ⏪️  回滚 commit", emoji: "⏪️" },
-			// { value: "其他", name: "其他:   🔨  对构建过程或辅助工具和库的更改（不影响源文件、测试用例）", emoji: "🔨" }
-		],
-		useEmoji: true,
-		themeColorCode: "",
-		scopes: [],
-		allowCustomScopes: true,
-		allowEmptyScopes: true,
-		customScopesAlign: "bottom",
-		customScopesAlias: "custom",
-		emptyScopesAlias: "empty",
-		upperCaseSubject: false,
-		allowBreakingChanges: ["feat", "fix"],
-		breaklineNumber: 100,
-		breaklineChar: "|",
-		skipQuestions: [],
-		issuePrefixs: [{ value: "closed", name: "closed:   ISSUES has been processed" }],
-		customIssuePrefixsAlign: "top",
-		emptyIssuePrefixsAlias: "skip",
-		customIssuePrefixsAlias: "custom",
-		allowCustomIssuePrefixs: true,
-		allowEmptyIssuePrefixs: true,
-		confirmColorize: true,
-		maxHeaderLength: Infinity,
-		maxSubjectLength: Infinity,
-		minSubjectLength: 0,
-		scopeOverrides: undefined,
-		defaultBody: "",
-		defaultIssues: "",
-		defaultScope: "",
-		defaultSubject: ""
-	}
+  ignores: [(commit) => commit.includes("init")],
+  extends: ["@commitlint/config-conventional"],
+  rules: {
+    // @see: https://commitlint.js.org/#/reference-rules
+    "body-leading-blank": [2, "always"],
+    "footer-leading-blank": [1, "always"],
+    "header-max-length": [2, "always", 108],
+    "subject-empty": [2, "never"],
+    "type-empty": [2, "never"],
+    "subject-case": [0],
+    "type-enum": [
+      2,
+      "always",
+      [
+        "feat",
+        "fix",
+        "docs",
+        "style",
+        "refactor",
+        "perf",
+        "test",
+        "build",
+        "ci",
+        "chore",
+        "revert",
+        "wip",
+        "workflow",
+        "types",
+        "release",
+      ],
+    ],
+  },
+  prompt: {
+    messages: {
+      type: "Select the type of change that you're committing:",
+      scope: "Denote the SCOPE of this change (optional):",
+      customScope: "Denote the SCOPE of this change:",
+      subject: "Write a SHORT, IMPERATIVE tense description of the change:\n",
+      body: 'Provide a LONGER description of the change (optional). Use "|" to break new line:\n',
+      breaking:
+        'List any BREAKING CHANGES (optional). Use "|" to break new line:\n',
+      footerPrefixsSelect:
+        "Select the ISSUES type of changeList by this change (optional):",
+      customFooterPrefixs: "Input ISSUES prefix:",
+      footer: "List any ISSUES by this change. E.g.: #31, #34:\n",
+      confirmCommit: "Are you sure you want to proceed with the commit above?",
+      // 中文版
+      // type: "选择你要提交的类型 :",
+      // scope: "选择一个提交范围（可选）:",
+      // customScope: "请输入自定义的提交范围 :",
+      // subject: "填写简短精炼的变更描述 :\n",
+      // body: '填写更加详细的变更描述（可选）。使用 "|" 换行 :\n',
+      // breaking: '列举非兼容性重大的变更（可选）。使用 "|" 换行 :\n',
+      // footerPrefixsSelect: "选择关联issue前缀（可选）:",
+      // customFooterPrefixs: "输入自定义issue前缀 :",
+      // footer: "列举关联issue (可选) 例如: #31, #I3244 :\n",
+      // confirmCommit: "是否提交或修改commit ?"
+    },
+    types: [
+      {
+        value: "feat",
+        name: "feat:     🚀  A new feature",
+        emoji: "🚀",
+      },
+      {
+        value: "fix",
+        name: "fix:      🧩  A bug fix",
+        emoji: "🧩",
+      },
+      {
+        value: "docs",
+        name: "docs:     📚  Documentation only changes",
+        emoji: "📚",
+      },
+      {
+        value: "style",
+        name: "style:    🎨  Changes that do not affect the meaning of the code",
+        emoji: "🎨",
+      },
+      {
+        value: "refactor",
+        name: "refactor: ♻️   A code change that neither fixes a bug nor adds a feature",
+        emoji: "♻️",
+      },
+      {
+        value: "perf",
+        name: "perf:     ⚡️  A code change that improves performance",
+        emoji: "⚡️",
+      },
+      {
+        value: "test",
+        name: "test:     ✅  Adding missing tests or correcting existing tests",
+        emoji: "✅",
+      },
+      {
+        value: "build",
+        name: "build:    📦️   Changes that affect the build system or external dependencies",
+        emoji: "📦️",
+      },
+      {
+        value: "ci",
+        name: "ci:       🎡  Changes to our CI configuration files and scripts",
+        emoji: "🎡",
+      },
+      {
+        value: "chore",
+        name: "chore:    🔨  Other changes that don't modify src or test files",
+        emoji: "🔨",
+      },
+      {
+        value: "revert",
+        name: "revert:   ⏪️  Reverts a previous commit",
+        emoji: "⏪️",
+      },
+      // 中文版
+      // { value: "特性", name: "特性:   🚀  新增功能", emoji: "🚀" },
+      // { value: "修复", name: "修复:   🧩  修复缺陷", emoji: "🧩" },
+      // { value: "文档", name: "文档:   📚  文档变更", emoji: "📚" },
+      // { value: "格式", name: "格式:   🎨  代码格式（不影响功能，例如空格、分号等格式修正）", emoji: "🎨" },
+      // { value: "重构", name: "重构:   ♻️  代码重构（不包括 bug 修复、功能新增）", emoji: "♻️" },
+      // { value: "性能", name: "性能:   ⚡️  性能优化", emoji: "⚡️" },
+      // { value: "测试", name: "测试:   ✅  添加疏漏测试或已有测试改动", emoji: "✅" },
+      // { value: "构建", name: "构建:   📦️  构建流程、外部依赖变更（如升级 npm 包、修改 webpack 配置等）", emoji: "📦️" },
+      // { value: "集成", name: "集成:   🎡  修改 CI 配置、脚本", emoji: "🎡" },
+      // { value: "回退", name: "回退:   ⏪️  回滚 commit", emoji: "⏪️" },
+      // { value: "其他", name: "其他:   🔨  对构建过程或辅助工具和库的更改（不影响源文件、测试用例）", emoji: "🔨" }
+    ],
+    useEmoji: true,
+    themeColorCode: "",
+    scopes: [],
+    allowCustomScopes: true,
+    allowEmptyScopes: true,
+    customScopesAlign: "bottom",
+    customScopesAlias: "custom",
+    emptyScopesAlias: "empty",
+    upperCaseSubject: false,
+    allowBreakingChanges: ["feat", "fix"],
+    breaklineNumber: 100,
+    breaklineChar: "|",
+    skipQuestions: [],
+    issuePrefixs: [
+      { value: "closed", name: "closed:   ISSUES has been processed" },
+    ],
+    customIssuePrefixsAlign: "top",
+    emptyIssuePrefixsAlias: "skip",
+    customIssuePrefixsAlias: "custom",
+    allowCustomIssuePrefixs: true,
+    allowEmptyIssuePrefixs: true,
+    confirmColorize: true,
+    maxHeaderLength: Infinity,
+    maxSubjectLength: Infinity,
+    minSubjectLength: 0,
+    scopeOverrides: undefined,
+    defaultBody: "",
+    defaultIssues: "",
+    defaultScope: "",
+    defaultSubject: "",
+  },
 };
-~~~
-
-
-
-
+```
 
 ### 3.3 增加 stylelint 配置
 
-~~~shell
+```shell
 pnpm i postcss sass autoprefixer --save-dev
 pnpm i stylelint stylelint-config-prettier stylelint-config-recess-order stylelint-config-standard stylelint-config-standard-scss stylelint-order --save-dev
-~~~
+```
 
 #### 创建postcss.config.js
 
-~~~javascript
+```javascript
 module.exports = {
-	plugins: {
-		autoprefixer: {}
-	}
+  plugins: {
+    autoprefixer: {},
+  },
 };
-~~~
-
-
+```
 
 #### 创建.stylelintigonre
 
-~~~typescript
+```typescript
 // 文件名称 .stylelintigonre
 /dist/*
 /public/*
 public/*
-~~~
+```
 
 #### 创建.stylelintrc.js
 
-~~~javascript
+```javascript
 // @see: https://stylelint.io
 
 module.exports = {
-	extends: [
-		"stylelint-config-standard", // 配置stylelint拓展插件
-		"stylelint-config-prettier", // 配置stylelint和prettier兼容
-		"stylelint-config-recess-order", // 配置stylelint css属性书写顺序插件,
-		"stylelint-config-standard-scss" // 配置stylelint scss插件
-	],
-	rules: {
-		indentation: null, // 指定缩进空格
-		"no-descending-specificity": null, // 禁止在具有较高优先级的选择器后出现被其覆盖的较低优先级的选择器
-		"function-url-quotes": "always", // 要求或禁止 URL 的引号 "always(必须加上引号)"|"never(没有引号)"
-		"string-quotes": "double", // 指定字符串使用单引号或双引号
-		"unit-case": null, // 指定单位的大小写 "lower(全小写)"|"upper(全大写)"
-		"color-hex-case": "lower", // 指定 16 进制颜色的大小写 "lower(全小写)"|"upper(全大写)"
-		"color-hex-length": "long", // 指定 16 进制颜色的简写或扩写 "short(16进制简写)"|"long(16进制扩写)"
-		"rule-empty-line-before": "never", // 要求或禁止在规则之前的空行 "always(规则之前必须始终有一个空行)"|"never(规则前绝不能有空行)"|"always-multi-line(多行规则之前必须始终有一个空行)"|"never-multi-line(多行规则之前绝不能有空行。)"
-		"font-family-no-missing-generic-family-keyword": null, // 禁止在字体族名称列表中缺少通用字体族关键字
-		"block-opening-brace-space-before": "always", // 要求在块的开大括号之前必须有一个空格或不能有空白符 "always(大括号前必须始终有一个空格)"|"never(左大括号之前绝不能有空格)"|"always-single-line(在单行块中的左大括号之前必须始终有一个空格)"|"never-single-line(在单行块中的左大括号之前绝不能有空格)"|"always-multi-line(在多行块中，左大括号之前必须始终有一个空格)"|"never-multi-line(多行块中的左大括号之前绝不能有空格)"
-		"property-no-unknown": null, // 禁止未知的属性(true 为不允许)
-		"no-empty-source": null, // 禁止空源码
-		"declaration-block-trailing-semicolon": null, // 要求或不允许在声明块中使用尾随分号 string："always(必须始终有一个尾随分号)"|"never(不得有尾随分号)"
-		"selector-class-pattern": null, // 强制选择器类名的格式
-		"value-no-vendor-prefix": null, // 关闭 vendor-prefix(为了解决多行省略 -webkit-box)
-		"selector-pseudo-class-no-unknown": [
-			true,
-			{
-				ignorePseudoClasses: ["global", "v-deep", "deep"]
-			}
-		]
-	}
+  extends: [
+    "stylelint-config-standard", // 配置stylelint拓展插件
+    "stylelint-config-prettier", // 配置stylelint和prettier兼容
+    "stylelint-config-recess-order", // 配置stylelint css属性书写顺序插件,
+    "stylelint-config-standard-scss", // 配置stylelint scss插件
+  ],
+  rules: {
+    indentation: null, // 指定缩进空格
+    "no-descending-specificity": null, // 禁止在具有较高优先级的选择器后出现被其覆盖的较低优先级的选择器
+    "function-url-quotes": "always", // 要求或禁止 URL 的引号 "always(必须加上引号)"|"never(没有引号)"
+    "string-quotes": "double", // 指定字符串使用单引号或双引号
+    "unit-case": null, // 指定单位的大小写 "lower(全小写)"|"upper(全大写)"
+    "color-hex-case": "lower", // 指定 16 进制颜色的大小写 "lower(全小写)"|"upper(全大写)"
+    "color-hex-length": "long", // 指定 16 进制颜色的简写或扩写 "short(16进制简写)"|"long(16进制扩写)"
+    "rule-empty-line-before": "never", // 要求或禁止在规则之前的空行 "always(规则之前必须始终有一个空行)"|"never(规则前绝不能有空行)"|"always-multi-line(多行规则之前必须始终有一个空行)"|"never-multi-line(多行规则之前绝不能有空行。)"
+    "font-family-no-missing-generic-family-keyword": null, // 禁止在字体族名称列表中缺少通用字体族关键字
+    "block-opening-brace-space-before": "always", // 要求在块的开大括号之前必须有一个空格或不能有空白符 "always(大括号前必须始终有一个空格)"|"never(左大括号之前绝不能有空格)"|"always-single-line(在单行块中的左大括号之前必须始终有一个空格)"|"never-single-line(在单行块中的左大括号之前绝不能有空格)"|"always-multi-line(在多行块中，左大括号之前必须始终有一个空格)"|"never-multi-line(多行块中的左大括号之前绝不能有空格)"
+    "property-no-unknown": null, // 禁止未知的属性(true 为不允许)
+    "no-empty-source": null, // 禁止空源码
+    "declaration-block-trailing-semicolon": null, // 要求或不允许在声明块中使用尾随分号 string："always(必须始终有一个尾随分号)"|"never(不得有尾随分号)"
+    "selector-class-pattern": null, // 强制选择器类名的格式
+    "value-no-vendor-prefix": null, // 关闭 vendor-prefix(为了解决多行省略 -webkit-box)
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        ignorePseudoClasses: ["global", "v-deep", "deep"],
+      },
+    ],
+  },
 };
-
-~~~
-
-
+```
 
 ### 3.4 增加 eslint && prettier 配置
 
-
-
-~~~shell
+```shell
 # install eslint
 pnpm i eslint eslint-config-prettier eslint-plugin-prettier eslint-plugin-react eslint-plugin-react-hooks --save-dev
 # install prettier
 pnpm i prettier --save-dev
 
-# 
+#
 pnpm i vite-plugin-eslit --save-dev
-~~~
-
-
+```
 
 #### 创建.prettierignore
 
-~~~javascript
+```javascript
 /dist/*
 .local
 /node_modules/**
@@ -484,62 +459,55 @@ pnpm i vite-plugin-eslit --save-dev
 
 /public/*
 
-~~~
-
-
+```
 
 #### 创建 .prettierrc.js
 
-~~~javascript
+```javascript
 // @see: https://www.prettier.cn
 
 module.exports = {
-	// 超过最大值换行
-	printWidth: 130,
-	// 缩进字节数
-	tabWidth: 2,
-	// 使用制表符而不是空格缩进行
-	useTabs: true,
-	// 结尾不用分号(true有，false没有)
-	semi: true,
-	// 使用单引号(true单双引号，false双引号)
-	singleQuote: false,
-	// 更改引用对象属性的时间 可选值"<as-needed|consistent|preserve>"
-	quoteProps: "as-needed",
-	// 在对象，数组括号与文字之间加空格 "{ foo: bar }"
-	bracketSpacing: true,
-	// 多行时尽可能打印尾随逗号。（例如，单行数组永远不会出现逗号结尾。） 可选值"<none|es5|all>"，默认none
-	trailingComma: "none",
-	// 在JSX中使用单引号而不是双引号
-	jsxSingleQuote: false,
-	//  (x) => {} 箭头函数参数只有一个时是否要有小括号。avoid：省略括号 ,always：不省略括号
-	arrowParens: "avoid",
-	// 如果文件顶部已经有一个 doclock，这个选项将新建一行注释，并打上@format标记。
-	insertPragma: false,
-	// 指定要使用的解析器，不需要写文件开头的 @prettier
-	requirePragma: false,
-	// 默认值。因为使用了一些折行敏感型的渲染器（如GitHub comment）而按照markdown文本样式进行折行
-	proseWrap: "preserve",
-	// 在html中空格是否是敏感的 "css" - 遵守CSS显示属性的默认值， "strict" - 空格被认为是敏感的 ，"ignore" - 空格被认为是不敏感的
-	htmlWhitespaceSensitivity: "css",
-	// 换行符使用 lf 结尾是 可选值"<auto|lf|crlf|cr>"
-	endOfLine: "auto",
-	// 这两个选项可用于格式化以给定字符偏移量（分别包括和不包括）开始和结束的代码
-	rangeStart: 0,
-	rangeEnd: Infinity,
-	// Vue文件脚本和样式标签缩进
-	vueIndentScriptAndStyle: false
+  // 超过最大值换行
+  printWidth: 130,
+  // 缩进字节数
+  tabWidth: 2,
+  // 使用制表符而不是空格缩进行
+  useTabs: true,
+  // 结尾不用分号(true有，false没有)
+  semi: true,
+  // 使用单引号(true单双引号，false双引号)
+  singleQuote: false,
+  // 更改引用对象属性的时间 可选值"<as-needed|consistent|preserve>"
+  quoteProps: "as-needed",
+  // 在对象，数组括号与文字之间加空格 "{ foo: bar }"
+  bracketSpacing: true,
+  // 多行时尽可能打印尾随逗号。（例如，单行数组永远不会出现逗号结尾。） 可选值"<none|es5|all>"，默认none
+  trailingComma: "none",
+  // 在JSX中使用单引号而不是双引号
+  jsxSingleQuote: false,
+  //  (x) => {} 箭头函数参数只有一个时是否要有小括号。avoid：省略括号 ,always：不省略括号
+  arrowParens: "avoid",
+  // 如果文件顶部已经有一个 doclock，这个选项将新建一行注释，并打上@format标记。
+  insertPragma: false,
+  // 指定要使用的解析器，不需要写文件开头的 @prettier
+  requirePragma: false,
+  // 默认值。因为使用了一些折行敏感型的渲染器（如GitHub comment）而按照markdown文本样式进行折行
+  proseWrap: "preserve",
+  // 在html中空格是否是敏感的 "css" - 遵守CSS显示属性的默认值， "strict" - 空格被认为是敏感的 ，"ignore" - 空格被认为是不敏感的
+  htmlWhitespaceSensitivity: "css",
+  // 换行符使用 lf 结尾是 可选值"<auto|lf|crlf|cr>"
+  endOfLine: "auto",
+  // 这两个选项可用于格式化以给定字符偏移量（分别包括和不包括）开始和结束的代码
+  rangeStart: 0,
+  rangeEnd: Infinity,
+  // Vue文件脚本和样式标签缩进
+  vueIndentScriptAndStyle: false,
 };
-
-~~~
-
-
-
-
+```
 
 #### 创建 .eslintignore
 
-~~~bashc
+```bashc
 *.sh
 node_modules
 *.md
@@ -558,94 +526,87 @@ dist
 /src/mock/*
 
 
-~~~
-
-
+```
 
 #### 创建 .eslintrc.js
 
-~~~javascript
+```javascript
 // @see: http://eslint.cn
 
 module.exports = {
-	settings: {
-		react: {
-			version: "detect"
-		}
-	},
-	root: true,
-	env: {
-		browser: true,
-		node: true,
-		es6: true
-	},
-	/* 指定如何解析语法 */
-	parser: "@typescript-eslint/parser",
-	/* 优先级低于 parse 的语法解析配置 */
-	parserOptions: {
-		ecmaVersion: 2020,
-		sourceType: "module",
-		jsxPragma: "React",
-		ecmaFeatures: {
-			jsx: true
-		}
-	},
-	plugins: ["react", "@typescript-eslint", "react-hooks", "prettier"],
-	/* 继承某些已有的规则 */
-	extends: [
-		"eslint:recommended",
-		"plugin:react/recommended",
-		"plugin:@typescript-eslint/recommended",
-		"plugin:react/jsx-runtime",
-		"plugin:react-hooks/recommended",
-		"prettier",
-		"plugin:prettier/recommended"
-	],
-	/*
-	 * "off" 或 0    ==>  关闭规则
-	 * "warn" 或 1   ==>  打开的规则作为警告（不影响代码执行）
-	 * "error" 或 2  ==>  规则作为一个错误（代码不能执行，界面报错）
-	 */
-	rules: {
-		// eslint (http://eslint.cn/docs/rules)
-		"no-var": "error", // 要求使用 let 或 const 而不是 var
-		"no-multiple-empty-lines": ["error", { max: 1 }], // 不允许多个空行
-		"no-use-before-define": "off", // 禁止在 函数/类/变量 定义之前使用它们
-		"prefer-const": "off", // 此规则旨在标记使用 let 关键字声明但在初始分配后从未重新分配的变量，要求使用 const
-		"no-irregular-whitespace": "off", // 禁止不规则的空白
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
+  root: true,
+  env: {
+    browser: true,
+    node: true,
+    es6: true,
+  },
+  /* 指定如何解析语法 */
+  parser: "@typescript-eslint/parser",
+  /* 优先级低于 parse 的语法解析配置 */
+  parserOptions: {
+    ecmaVersion: 2020,
+    sourceType: "module",
+    jsxPragma: "React",
+    ecmaFeatures: {
+      jsx: true,
+    },
+  },
+  plugins: ["react", "@typescript-eslint", "react-hooks", "prettier"],
+  /* 继承某些已有的规则 */
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
+    "prettier",
+    "plugin:prettier/recommended",
+  ],
+  /*
+   * "off" 或 0    ==>  关闭规则
+   * "warn" 或 1   ==>  打开的规则作为警告（不影响代码执行）
+   * "error" 或 2  ==>  规则作为一个错误（代码不能执行，界面报错）
+   */
+  rules: {
+    // eslint (http://eslint.cn/docs/rules)
+    "no-var": "error", // 要求使用 let 或 const 而不是 var
+    "no-multiple-empty-lines": ["error", { max: 1 }], // 不允许多个空行
+    "no-use-before-define": "off", // 禁止在 函数/类/变量 定义之前使用它们
+    "prefer-const": "off", // 此规则旨在标记使用 let 关键字声明但在初始分配后从未重新分配的变量，要求使用 const
+    "no-irregular-whitespace": "off", // 禁止不规则的空白
 
-		// typeScript (https://typescript-eslint.io/rules)
-		"@typescript-eslint/no-unused-vars": "error", // 禁止定义未使用的变量
-		"@typescript-eslint/no-inferrable-types": "off", // 可以轻松推断的显式类型可能会增加不必要的冗长
-		"@typescript-eslint/no-namespace": "off", // 禁止使用自定义 TypeScript 模块和命名空间。
-		"@typescript-eslint/no-explicit-any": "off", // 禁止使用 any 类型
-		"@typescript-eslint/ban-ts-ignore": "off", // 禁止使用 @ts-ignore
-		"@typescript-eslint/ban-types": "off", // 禁止使用特定类型
-		"@typescript-eslint/explicit-function-return-type": "off", // 不允许对初始化为数字、字符串或布尔值的变量或参数进行显式类型声明
-		"@typescript-eslint/no-var-requires": "off", // 不允许在 import 语句中使用 require 语句
-		"@typescript-eslint/no-empty-function": "off", // 禁止空函数
-		"@typescript-eslint/no-use-before-define": "off", // 禁止在变量定义之前使用它们
-		"@typescript-eslint/ban-ts-comment": "off", // 禁止 @ts-<directive> 使用注释或要求在指令后进行描述
-		"@typescript-eslint/no-non-null-assertion": "off", // 不允许使用后缀运算符的非空断言(!)
-		"@typescript-eslint/explicit-module-boundary-types": "off", // 要求导出函数和类的公共类方法的显式返回和参数类型
+    // typeScript (https://typescript-eslint.io/rules)
+    "@typescript-eslint/no-unused-vars": "error", // 禁止定义未使用的变量
+    "@typescript-eslint/no-inferrable-types": "off", // 可以轻松推断的显式类型可能会增加不必要的冗长
+    "@typescript-eslint/no-namespace": "off", // 禁止使用自定义 TypeScript 模块和命名空间。
+    "@typescript-eslint/no-explicit-any": "off", // 禁止使用 any 类型
+    "@typescript-eslint/ban-ts-ignore": "off", // 禁止使用 @ts-ignore
+    "@typescript-eslint/ban-types": "off", // 禁止使用特定类型
+    "@typescript-eslint/explicit-function-return-type": "off", // 不允许对初始化为数字、字符串或布尔值的变量或参数进行显式类型声明
+    "@typescript-eslint/no-var-requires": "off", // 不允许在 import 语句中使用 require 语句
+    "@typescript-eslint/no-empty-function": "off", // 禁止空函数
+    "@typescript-eslint/no-use-before-define": "off", // 禁止在变量定义之前使用它们
+    "@typescript-eslint/ban-ts-comment": "off", // 禁止 @ts-<directive> 使用注释或要求在指令后进行描述
+    "@typescript-eslint/no-non-null-assertion": "off", // 不允许使用后缀运算符的非空断言(!)
+    "@typescript-eslint/explicit-module-boundary-types": "off", // 要求导出函数和类的公共类方法的显式返回和参数类型
 
-		// react (https://github.com/jsx-eslint/eslint-plugin-react)
-		"react-hooks/rules-of-hooks": "off",
-		"react-hooks/exhaustive-deps": "off"
-	}
+    // react (https://github.com/jsx-eslint/eslint-plugin-react)
+    "react-hooks/rules-of-hooks": "off",
+    "react-hooks/exhaustive-deps": "off",
+  },
 };
-
-~~~
-
-
-
-
+```
 
 ### 3.5 编译器配置
 
 #### 创建.editorconfig
 
-~~~bash
+```bash
 # @see: http://editorconfig.org
 
 root = true
@@ -662,13 +623,11 @@ max_line_length = 130 # 最大行长度
 max_line_length = off # 关闭最大行长度限制
 trim_trailing_whitespace = false # 关闭末尾空格修剪
 
-~~~
-
-
+```
 
 ### 3.6 创建package.json的script
 
-~~~bash
+```bash
 # lint:eslint script
 pnpm pkg set scripts.lint:eslint="eslint --fix --ext .js,.ts,.tsx ./src"
 
@@ -693,15 +652,11 @@ pnpm pkg set scripts.build:test="tsc && vite build --mode test"
 
 # build:prod
 pnpm pkg set scripts.build:prod="tsc && vite build --mode production"
-~~~
-
-
-
-
+```
 
 ## 4. 初始化路由配置
 
-~~~javascript
+```javascript
 # 安装依赖
 pnpm i react-router-dom
 
@@ -742,13 +697,11 @@ const Router = () => {
 };
 
 export default Router;
-~~~
-
-
+```
 
 ### 引用路由
 
-~~~javascript
+```javascript
 # src/app.tsx
 
 import Router from './routers';
@@ -761,9 +714,7 @@ function App() {
     </BrowserRouter>
   )
 }
-~~~
-
-
+```
 
 ## 5. 初始化layouts布局
 
@@ -773,32 +724,31 @@ function App() {
 
   - 里面引入Outlet占位
 
-  - ~~~javascript
+  - ```javascript
     import React from "react";
     import { Outlet } from "react-router-dom";
     const LayoutIndex = () => {
-    	return (
-    		<section>
-    			<div>some in layout</div>
-    			<div>
-    				<Outlet />
-    			</div>
-    		</section>
-    	);
+      return (
+        <section>
+          <div>some in layout</div>
+          <div>
+            <Outlet />
+          </div>
+        </section>
+      );
     };
-    
-    export default LayoutIndex;
-    
-    ~~~
 
-  - 
+    export default LayoutIndex;
+    ```
+
+  -
 
 - 配置路由文件
 
-  - ~~~javascript
+  - ```javascript
     import LayoutIndex from "@/layouts";
     import Dashboard from "@/views/dashboard";
-    
+
     export const rootRouter = [
       ...,
       {
@@ -813,25 +763,23 @@ function App() {
     	},
       ...
     ]
-    
+
     const Router = () => {
     	return useRoutes(rootRouter as any);
     };
-    
-    export default Router;
-    ~~~
 
-  - 
+    export default Router;
+    ```
+
+  -
 
 ## 6. 初始化tabs和menu联动
 
 其实就是给layouts里面的tabs和menu 配置点击事件
 
-
-
 ## 7. 路由懒加载
 
-~~~javascript
+```javascript
 import { Spin } from "antd";
 import React, { Suspense } from "react";
 
@@ -861,58 +809,53 @@ export default function lazyLoad(Comp: React.LazyExoticComponent<any>): React.Re
 		// element: <Login />
 		element: lazyLoad(React.lazy(() => import("@/views/login/index")))
 	},
-~~~
-
-
-
-
+```
 
 ## 8. 新增错误请求页面
 
 - 403
 
-  - ~~~javascript
+  - ```javascript
     import { Button, Result } from "antd";
     import { useNavigate } from "react-router-dom";
     import "./index.scss";
     import { HOME_URL } from "@/config/config";
-    
+
     const NoAuth = () => {
-    	const navigate = useNavigate();
-    	const goHome = () => navigate(HOME_URL);
-    	return (
-    		<Result
-    			status={"403"}
-    			title="403"
-    			subTitle={"Sorry, you are not authorized to access this page"}
-    			extra={
-    				<Button type="primary" onClick={goHome}>
-    					{" "}
-    					Back Home
-    				</Button>
-    			}
-    		></Result>
-    	);
+      const navigate = useNavigate();
+      const goHome = () => navigate(HOME_URL);
+      return (
+        <Result
+          status={"403"}
+          title="403"
+          subTitle={"Sorry, you are not authorized to access this page"}
+          extra={
+            <Button type="primary" onClick={goHome}>
+              {" "}
+              Back Home
+            </Button>
+          }
+        ></Result>
+      );
     };
-    
+
     export default NoAuth;
-    
-    ~~~
+    ```
 
 - 404
 
-  - ~~~javascript
+  - ```javascript
     import React from "react";
     import "./index.scss";
     import { useNavigate } from "react-router-dom";
     import { Button, Result } from "antd";
     import { HOME_URL } from "@/config/config";
-    
+
     const NotFound: React.FC = () => {
     	const navigate = useNavigate();
-    
+
     	const goHome = () => navigate(HOME_URL);
-    
+
     	return (
     		<Result
     			status={"404"}
@@ -926,50 +869,49 @@ export default function lazyLoad(Comp: React.LazyExoticComponent<any>): React.Re
     		></Result>
     	);
     };
-    
+
     export default NotFound;
-    
-    
-    ~~~
+
+
+    ```
 
 - 500
 
-  - ~~~javascript
+  - ```javascript
     import { Button, Result } from "antd";
     import { useNavigate } from "react-router-dom";
     import "./index.scss";
     import { HOME_URL } from "@/config/config";
-    
-    const NotNetwork = () => {
-    	const navigate = useNavigate();
-    	const goHome = () => {
-    		navigate(HOME_URL);
-    	};
-    	return (
-    		<Result
-    			status="500"
-    			title="500"
-    			subTitle="Sorry, something went wrong."
-    			extra={
-    				<Button type="primary" onClick={goHome}>
-    					Back Home
-    				</Button>
-    			}
-    		/>
-    	);
-    };
-    
-    export default NotNetwork;
-    
-    ~~~
 
-- 
+    const NotNetwork = () => {
+      const navigate = useNavigate();
+      const goHome = () => {
+        navigate(HOME_URL);
+      };
+      return (
+        <Result
+          status="500"
+          title="500"
+          subTitle="Sorry, something went wrong."
+          extra={
+            <Button type="primary" onClick={goHome}>
+              Back Home
+            </Button>
+          }
+        />
+      );
+    };
+
+    export default NotNetwork;
+    ```
+
+-
 
 ## 9. 新增http请求配置
 
 ### 基础请求
 
-~~~javascript
+```javascript
 import { showFullScreenLoading, tryHideFullScreenLoading } from "@/config/serviceLoading";
 import axios, { AxiosInstance, AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { AxiosCanceler } from "./helper/axiosCancel";
@@ -1083,13 +1025,11 @@ const config = {
 };
 export default new RequestHttp(config);
 
-~~~
-
-
+```
 
 ### 取消请求
 
-~~~javascript
+```javascript
 import axios, { AxiosRequestConfig, Canceler } from "axios";
 import { isFunction } from "@/utils";
 import qs from "qs";
@@ -1153,13 +1093,11 @@ export class AxiosCanceler {
 	}
 }
 
-~~~
-
-
+```
 
 ### 检查状态
 
-~~~javascript
+```javascript
 import { message } from "antd";
 
 /**
@@ -1204,11 +1142,11 @@ export const checkStatus = (status: number): void => {
 	}
 };
 
-~~~
+```
 
 ### 类型定义
 
-~~~javascript
+```javascript
 // * 请求响应参数(不包含data)
 export interface Result {
 	code: string;
@@ -1272,13 +1210,11 @@ export namespace User {
 	}
 }
 
-~~~
-
-
+```
 
 ### 枚举类型
 
-~~~javascript
+```javascript
 // * 请求枚举配置
 /**
  * @description：请求配置
@@ -1316,160 +1252,150 @@ export enum ContentTypeEnum {
 	FORM_DATA = "multipart/form-data;charset=UTF-8"
 }
 
-~~~
-
-
+```
 
 ### 进度条初始化
 
-~~~javascript
+```javascript
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 
 NProgress.configure({
-	easing: "ease", // 动画方式
-	speed: 500, // 递增进度条的速度
-	showSpinner: true, // 是否显示加载ico
-	trickleSpeed: 200, // 自动递增间隔
-	minimum: 0.3 // 初始化时的最小百分比
+  easing: "ease", // 动画方式
+  speed: 500, // 递增进度条的速度
+  showSpinner: true, // 是否显示加载ico
+  trickleSpeed: 200, // 自动递增间隔
+  minimum: 0.3, // 初始化时的最小百分比
 });
 
 export default NProgress;
-
-~~~
-
-
-
-
+```
 
 ## 10. 登陆页面逻辑
 
 ### 基础组件
 
-~~~javascript
+```javascript
 import "./index.scss";
 import LoginForm from "./components/LoginForm";
 import LoginLeft from "@/assets/images/login_left4.png";
 import logo from "@/assets/images/logo.png";
 
 const Login = () => {
-	return (
-		<div className="login-container">
-			<div className="login-content">
-				<div className="login-left">
-					<img src={LoginLeft} alt="login" />
-				</div>
-				<div className="login-form">
-					<div className="login-logo">
-						<img src={logo} alt="" className="login-icon" />
-						<span className="login-text">Cch-Admin</span>
-					</div>
-					<LoginForm />
-				</div>
-			</div>
-		</div>
-	);
+  return (
+    <div className="login-container">
+      <div className="login-content">
+        <div className="login-left">
+          <img src={LoginLeft} alt="login" />
+        </div>
+        <div className="login-form">
+          <div className="login-logo">
+            <img src={logo} alt="" className="login-icon" />
+            <span className="login-text">Cch-Admin</span>
+          </div>
+          <LoginForm />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Login;
-
-~~~
+```
 
 ### 页面样式
 
-~~~scss
+```scss
 .login-container {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	min-width: 550px;
-	height: 100%;
-	background-color: #eeeeee;
-	background-image: url("@/assets/images/login_bg.svg");
-	background-position: 50%;
-	background-size: 100% 100%;
-	background-size: cover;
-	.login-content {
-		box-sizing: border-box;
-		display: flex;
-		align-items: center;
-		justify-content: space-around;
-		width: 100%;
-		height: 90%;
-		pad: 0 4% 0 20px;
-		overflow: hidden;
-		background-color: hsl(0deg 0 100% / 80%);
-		border-radius: 10px;
-		.login-left {
-			width: 750px;
-			img {
-				width: 100%;
-				height: 100%;
-			}
-		}
-		.login-form {
-			padding: 40px;
-			background-color: rgba($color: #ffffff, $alpha: 100%);
-			border-radius: 10px;
-			box-shadow: 2px 3px 7px rgb(0 0 0 / 20%);
-			.login-logo {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				margin-bottom: 40px;
-				.login-icon {
-					width: 70px;
-				}
-				.login-text {
-					padding-left: 25px;
-					font-size: 48px;
-					font-weight: bold;
-					color: #475768;
-					white-space: nowrap;
-				}
-			}
-			.ant-form-item {
-				height: 75px;
-				margin-bottom: 0;
-				.ant-input-prefix {
-					margin-right: 10px;
-				}
-				.ant-input-affix-wrapper {
-					font-size: 14px;
-					color: #b3b6bc;
-				}
-				.ant-input-lg {
-					font-size: 14px;
-				}
-			}
-			.login-btn {
-				width: 100%;
-				margin-top: 10px;
-				white-space: nowrap;
-				.ant-form-item-control-input-content {
-					display: flex;
-					justify-content: space-between;
-					.ant-btn {
-						width: 180px;
-						span {
-							font-size: 14px;
-						}
-					}
-					.ant-btn-default {
-						color: #606260;
-					}
-				}
-			}
-		}
-	}
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 550px;
+  height: 100%;
+  background-color: #eeeeee;
+  background-image: url("@/assets/images/login_bg.svg");
+  background-position: 50%;
+  background-size: 100% 100%;
+  background-size: cover;
+  .login-content {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 90%;
+    pad: 0 4% 0 20px;
+    overflow: hidden;
+    background-color: hsl(0deg 0 100% / 80%);
+    border-radius: 10px;
+    .login-left {
+      width: 750px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .login-form {
+      padding: 40px;
+      background-color: rgba($color: #ffffff, $alpha: 100%);
+      border-radius: 10px;
+      box-shadow: 2px 3px 7px rgb(0 0 0 / 20%);
+      .login-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 40px;
+        .login-icon {
+          width: 70px;
+        }
+        .login-text {
+          padding-left: 25px;
+          font-size: 48px;
+          font-weight: bold;
+          color: #475768;
+          white-space: nowrap;
+        }
+      }
+      .ant-form-item {
+        height: 75px;
+        margin-bottom: 0;
+        .ant-input-prefix {
+          margin-right: 10px;
+        }
+        .ant-input-affix-wrapper {
+          font-size: 14px;
+          color: #b3b6bc;
+        }
+        .ant-input-lg {
+          font-size: 14px;
+        }
+      }
+      .login-btn {
+        width: 100%;
+        margin-top: 10px;
+        white-space: nowrap;
+        .ant-form-item-control-input-content {
+          display: flex;
+          justify-content: space-between;
+          .ant-btn {
+            width: 180px;
+            span {
+              font-size: 14px;
+            }
+          }
+          .ant-btn-default {
+            color: #606260;
+          }
+        }
+      }
+    }
+  }
 }
-
-~~~
-
+```
 
 ### 登录表单
 
-~~~javascript
+```javascript
 // 登录表单 LoginForm.tsx
 import { Login } from "@/api/interface";
 import { CloseCircleOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
@@ -1535,15 +1461,13 @@ const LoginForm = () => {
 
 export default LoginForm;
 
-~~~
-
-
+```
 
 ## 11. 新增全局loading
 
 ### loading组件
 
-~~~javascript
+```javascript
 // @/components/Loading
 import { Spin } from "antd";
 import "./index.scss";
@@ -1578,13 +1502,11 @@ export default Loading;
 	background: rgb(0 0 0 / 70%);
 }
 
-~~~
-
-
+```
 
 ### serviceLoading组件
 
-~~~javascript
+```javascript
 import Loading from "@/components/Loading";
 import ReactDOM from "react-dom";
 
@@ -1610,17 +1532,13 @@ export const tryHideFullScreenLoading = () => {
 	}
 };
 
-~~~
-
-
-
-
+```
 
 ## 12. 拆分路由，修改路由配置
 
 ### 新增模块
 
-~~~javascript
+```javascript
 import { RouteObject } from "@/routers/interface";
 
 type MetaRouters = {
@@ -1646,15 +1564,11 @@ const rootRouter: RouteObject[] = [
   ...routerArray
 ]
 
-~~~
-
-
-
-
+```
 
 ### 类型文件
 
-~~~javascript
+```javascript
 // 类型文件
 export interface MetaProps {
 	keepAlive?: boolean;
@@ -1672,26 +1586,20 @@ export interface RouteObject {
 	meta?: MetaProps;
 	isLink?: string;
 }
-~~~
-
-
+```
 
 ## 13. 初始化redux
 
-
-
 ### 安装依赖
 
-~~~javascript
+```javascript
 pnpm i redux react-redux redux-persist redux-promise redux-thunk
 pnpm i @types/react-redux @types/redux-promise --save-dev
-~~~
-
-
+```
 
 ### 初始化文件
 
-~~~javascript
+```javascript
 import { legacy_createStore as createStore, combineReducers, Store, compose } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -1730,13 +1638,11 @@ const persistor = persistStore(store);
 
 export { store, persistor };
 
-~~~
-
-
+```
 
 ### redux持久化
 
-~~~javascript
+```javascript
 // src/main.tsx
 // import React from "react";
 import ReactDOM from "react-dom/client";
@@ -1759,13 +1665,11 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	</Provider>
 );
 
-~~~
-
-
+```
 
 ### 操作类型
 
-~~~javascript
+```javascript
 // 更新 menu 折叠状态
 export const UPDATE_COLLAPSE = "UPDATE_ASIDE_COLLAPSE";
 // 设置 menuList
@@ -1792,14 +1696,11 @@ export const SET_THEME_CONFIG = "SET_THEME_CONFIG";
 export const INCREMENT = "INCREMENT";
 
 export const DECREMENT = "DECREMENT";
-
-~~~
-
-
+```
 
 ### 模块文件
 
-~~~javascript
+```javascript
 // ./moudles/reducer.ts
 import { DECREMENT, INCREMENT } from "@/redux/mutation-types";
 import produce from "immer";
@@ -1871,13 +1772,11 @@ export const getMenuListActionPromise = async (): Promise<MenuProps> => {
 	};
 };
 
-~~~
-
-
+```
 
 ### 具体使用
 
-~~~javascript
+```javascript
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { updateCollapse } from "@/redux/modules/menu/action";
@@ -1899,15 +1798,13 @@ const mapDispatchToProps = { updateCollapse };
 const mapStateToProps = (state: any) => state.menu;
 export default connect(mapStateToProps, mapDispatchToProps)(CollapseIcon);
 
-~~~
-
-
+```
 
 ## 14. 添加路由守卫
 
 ### 初始化文件
 
-~~~javascript
+```javascript
 import { Navigate, useLocation } from "react-router-dom";
 import { rootRouter } from "@/routers/index";
 import { searchRoute } from "@/utils/util";
@@ -1949,13 +1846,11 @@ const AuthRouter = (props: { children: JSX.Element }) => {
 
 export default AuthRouter;
 
-~~~
-
-
+```
 
 ### 具体使用
 
-~~~javascript
+```javascript
 // App.tsx
 
 import Router from "@/routers/index";
@@ -2007,48 +1902,41 @@ const mapStateToProps = (state: any) => state.globalReducer;
 const mapDispatchToProps = { setLanguage };
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 
-~~~
-
-
-
-
+```
 
 ## 15. 国际化处理 i18n
 
 ### 初始化语言文件
 
-~~~javascript
+```javascript
 import i18n from "i18next";
 import enUsTrans from "./modules/en";
 import zhCnTrans from "./modules/zh";
 import { initReactI18next } from "react-i18next";
 
 i18n.use(initReactI18next).init({
-	resources: {
-		en: {
-			translation: enUsTrans
-		},
-		zh: {
-			translation: zhCnTrans
-		}
-	},
-	// 选择默认语言，选择内容为上述配置中的 key，即 en/zh
-	fallbackLng: "zh",
-	debug: false,
-	interpolation: {
-		escapeValue: false // not needed for react as it escapes by default
-	}
+  resources: {
+    en: {
+      translation: enUsTrans,
+    },
+    zh: {
+      translation: zhCnTrans,
+    },
+  },
+  // 选择默认语言，选择内容为上述配置中的 key，即 en/zh
+  fallbackLng: "zh",
+  debug: false,
+  interpolation: {
+    escapeValue: false, // not needed for react as it escapes by default
+  },
 });
 
 export default i18n;
-
-~~~
-
-
+```
 
 ### 具体使用
 
-~~~javascript
+```javascript
 // main.tsx中引入
 import "@/language/index";
 
@@ -2115,13 +2003,11 @@ const MoreButton = (props: any) => {
 export default MoreButton;
 
 
-~~~
-
-
+```
 
 ### 动态设置
 
-~~~javascript
+```javascript
 import i18n from "@/language";
 import { setLanguage } from "@/redux/modules/global/action";
 import { getBrowserLang } from "@/utils/util";
@@ -2186,11 +2072,7 @@ export const getBrowserLang = () => {
 	return defaultBrowserLang;
 };
 
-~~~
-
-
-
-
+```
 
 通过redux串联起来全局的变化。
 
@@ -2198,7 +2080,7 @@ export const getBrowserLang = () => {
 
 ### 具体设置
 
-~~~javascript
+```javascript
 import Router from "@/routers/index";
 import { ConfigProvider } from "antd";
 import { connect } from "react-redux";
@@ -2237,9 +2119,4 @@ const App = (props: any) => {
 const mapStateToProps = (state: any) => state.globalReducer;
 export default connect(mapStateToProps)(App);
 
-~~~
-
-
-
-
-
+```

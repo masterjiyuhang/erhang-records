@@ -6,7 +6,7 @@ Vue 实际上是一个用 Function 实现的类。
 
 ```js
 function Vue(options) {
-  this._init(options)
+  this._init(options);
 }
 ```
 

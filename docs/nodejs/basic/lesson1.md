@@ -130,7 +130,7 @@ JavaScript 运行时实际上维护了一组用于执行 JavaScript 代码的代
 ```javascript
 queueMicrotask(() => {
   /* 微任务中将运行的代码 */
-})
+});
 ```
 
 ### 微任务的使用场景
@@ -145,14 +145,15 @@ queueMicrotask(() => {
 :::
 
 ```javascript
-let callback = () => console.log('Regular timeout callback has run')
+let callback = () => console.log("Regular timeout callback has run");
 
-let urgentCallback = () => console.log('*** Oh noes! An urgent callback has run!')
+let urgentCallback = () =>
+  console.log("*** Oh noes! An urgent callback has run!");
 
-console.log('Main program started')
-setTimeout(callback, 0)
-queueMicrotask(urgentCallback)
-console.log('Main program exiting')
+console.log("Main program started");
+setTimeout(callback, 0);
+queueMicrotask(urgentCallback);
+console.log("Main program exiting");
 
 /**
  * 运行结果：

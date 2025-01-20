@@ -4,27 +4,27 @@
 
 ```js
 export const debounce = (fn, delay = 500) => {
-  let timer = undefined
-  let active = true
+  let timer = undefined;
+  let active = true;
 
   const debounced = (...args) => {
     if (active) {
-      clearTimeout(timer)
+      clearTimeout(timer);
       timer = setTimeout(() => {
-        active && fn(...args)
-        timer = undefined
-      }, delay)
+        active && fn(...args);
+        timer = undefined;
+      }, delay);
     } else {
-      fn(...args)
+      fn(...args);
     }
-  }
+  };
 
-  debounced.isPending = () => timer !== undefined
+  debounced.isPending = () => timer !== undefined;
 
-  debounced.cancel = () => active = false
+  debounced.cancel = () => (active = false);
 
-  debounced.flush = (...args) => fn(...args)
+  debounced.flush = (...args) => fn(...args);
 
-  return debounced
-}
+  return debounced;
+};
 ```

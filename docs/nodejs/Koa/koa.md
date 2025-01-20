@@ -13,25 +13,25 @@ Koa 是一个基于 Node.js 的轻量级 web 框架，它由 Express 的原作�
 5. 轻量级： Koa 本身的代码量相对较小，它并没有集成像 Express 那样的大量功能，而是鼓励使用中间件进行定制。这使得开发者可以根据项目的需求选择性地添加功能，保持应用的轻量性。
 
 ```javascript
-const Koa = require('koa')
-const app = new Koa()
+const Koa = require("koa");
+const app = new Koa();
 
 // 中间件1
 app.use(async (ctx, next) => {
-  console.log('Middleware 1 - Before')
-  await next()
-  console.log('Middleware 1 - After')
-})
+  console.log("Middleware 1 - Before");
+  await next();
+  console.log("Middleware 1 - After");
+});
 
 // 中间件2
 app.use(async (ctx, next) => {
-  console.log('Middleware 2 - Before')
-  await next()
-  console.log('Middleware 2 - After')
-  ctx.response.body = 'Hello, Koa!'
-})
+  console.log("Middleware 2 - Before");
+  await next();
+  console.log("Middleware 2 - After");
+  ctx.response.body = "Hello, Koa!";
+});
 
-app.listen(3000)
+app.listen(3000);
 ```
 
 ### 自己实现过中间件吗？

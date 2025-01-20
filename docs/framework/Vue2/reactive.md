@@ -115,22 +115,22 @@ export function observe(value: any, asRootData: ?boolean): Observer | void {
 
 ```ts
 export class Observer {
-  value: any
-  dep: Dep
-  vmCount: number // number of vms that has this object as root $data
+  value: any;
+  dep: Dep;
+  vmCount: number; // number of vms that has this object as root $data
 
   constructor(value: any) {
-    this.value = value
-    this.dep = new Dep()
-    this.vmCount = 0
-    def(value, '__ob__', this)
+    this.value = value;
+    this.dep = new Dep();
+    this.vmCount = 0;
+    def(value, "__ob__", this);
 
     if (Array.isArray(value)) {
-      const argument = hasProto ? protoAugment : copyAugment
-      argument(value, arrayMethods, arrayKeys)
-      this.observeArray(value)
+      const argument = hasProto ? protoAugment : copyAugment;
+      argument(value, arrayMethods, arrayKeys);
+      this.observeArray(value);
     } else {
-      this.walk(value)
+      this.walk(value);
     }
   }
 
@@ -139,7 +139,7 @@ export class Observer {
    */
   observeArray(items: Array<any>) {
     for (let i = 0, l = items.length; i < l; i++) {
-      observe(items[i])
+      observe(items[i]);
     }
   }
 
@@ -149,9 +149,9 @@ export class Observer {
    * value type is Object.
    */
   walk(obj: Object) {
-    const keys = Object.keys(obj)
+    const keys = Object.keys(obj);
     for (let i = 0; i < keys.length; i++) {
-      defineReactive(obj, keys[i])
+      defineReactive(obj, keys[i]);
     }
   }
 }
@@ -312,9 +312,9 @@ class Dep {
   // ...
   notify() {
     // stabilize the subscriber list first
-    const subs = this.subs.slice()
+    const subs = this.subs.slice();
     for (let i = 0, l = subs.length; i < l; i++) {
-      subs[i].update()
+      subs[i].update();
     }
   }
 }
@@ -335,18 +335,18 @@ class Watcher {
         // so we simply mark the watcher as dirty. The actual computation is
         // performed just-in-time in this.evaluate() when the computed property
         // is accessed.
-        this.dirty = true
+        this.dirty = true;
       } else {
         // In activated mode, we want to proactively perform the computation
         // but only notify our subscribers when the value has indeed changed.
         this.getAndInvoke(() => {
-          this.dep.notify()
-        })
+          this.dep.notify();
+        });
       }
     } else if (this.sync) {
-      this.run()
+      this.run();
     } else {
-      queueWatcher(this)
+      queueWatcher(this);
     }
   }
 }
@@ -553,7 +553,7 @@ export function nextTick(cb?: Function, ctx?: Object) {
 
 ```js
 // updates
-vm.$el = vm.__patch__(prevVnode, vnode)
+vm.$el = vm.__patch__(prevVnode, vnode);
 ```
 
 调用 patch 方法
@@ -597,85 +597,96 @@ vm.$el = vm.__patch__(prevVnode, vnode)
 function sameVnode(a, b) {
   return (
     a.key === b.key &&
-    ((a.tag === b.tag && a.isComment === b.isComment && isDef(a.data) === isDef(b.data) && sameInputType(a, b)) ||
-      (isTrue(a.isAsyncPlaceholder) && a.asyncFactory === b.asyncFactory && isUndef(b.asyncFactory.error)))
-  )
+    ((a.tag === b.tag &&
+      a.isComment === b.isComment &&
+      isDef(a.data) === isDef(b.data) &&
+      sameInputType(a, b)) ||
+      (isTrue(a.isAsyncPlaceholder) &&
+        a.asyncFactory === b.asyncFactory &&
+        isUndef(b.asyncFactory.error)))
+  );
 }
 
 function patchVnode(oldVnode, vnode, insertedVnodeQueue, removeOnly) {
   if (oldVnode === vnode) {
-    return
+    return;
   }
 
-  const elm = (vnode.elm = oldVnode.elm)
+  const elm = (vnode.elm = oldVnode.elm);
 
   if (isTrue(oldVnode.isAsyncPlaceholder)) {
     if (isDef(vnode.asyncFactory.resolved)) {
-      hydrate(oldVnode.elm, vnode, insertedVnodeQueue)
+      hydrate(oldVnode.elm, vnode, insertedVnodeQueue);
     } else {
-      vnode.isAsyncPlaceholder = true
+      vnode.isAsyncPlaceholder = true;
     }
-    return
+    return;
   }
 
   // reuse element for static trees.
   // note we only do this if the vnode is cloned -
   // if the new node is not cloned it means the render functions have been
   // reset by the hot-reload-api and we need to do a proper re-render.
-  if (isTrue(vnode.isStatic) && isTrue(oldVnode.isStatic) && vnode.key === oldVnode.key && (isTrue(vnode.isCloned) || isTrue(vnode.isOnce))) {
-    vnode.componentInstance = oldVnode.componentInstance
-    return
+  if (
+    isTrue(vnode.isStatic) &&
+    isTrue(oldVnode.isStatic) &&
+    vnode.key === oldVnode.key &&
+    (isTrue(vnode.isCloned) || isTrue(vnode.isOnce))
+  ) {
+    vnode.componentInstance = oldVnode.componentInstance;
+    return;
   }
 
-  let i
-  const data = vnode.data
+  let i;
+  const data = vnode.data;
   if (isDef(data) && isDef((i = data.hook)) && isDef((i = i.prepatch))) {
-    i(oldVnode, vnode)
+    i(oldVnode, vnode);
   }
 
-  const oldCh = oldVnode.children
-  const ch = vnode.children
+  const oldCh = oldVnode.children;
+  const ch = vnode.children;
   if (isDef(data) && isPatchable(vnode)) {
-    for (i = 0; i < cbs.update.length; ++i) cbs.update[i](oldVnode, vnode)
-    if (isDef((i = data.hook)) && isDef((i = i.update))) i(oldVnode, vnode)
+    for (i = 0; i < cbs.update.length; ++i) cbs.update[i](oldVnode, vnode);
+    if (isDef((i = data.hook)) && isDef((i = i.update))) i(oldVnode, vnode);
   }
   if (isUndef(vnode.text)) {
     if (isDef(oldCh) && isDef(ch)) {
-      if (oldCh !== ch) updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly)
+      if (oldCh !== ch)
+        updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly);
     } else if (isDef(ch)) {
-      if (isDef(oldVnode.text)) nodeOps.setTextContent(elm, '')
-      addVnodes(elm, null, ch, 0, ch.length - 1, insertedVnodeQueue)
+      if (isDef(oldVnode.text)) nodeOps.setTextContent(elm, "");
+      addVnodes(elm, null, ch, 0, ch.length - 1, insertedVnodeQueue);
     } else if (isDef(oldCh)) {
-      removeVnodes(elm, oldCh, 0, oldCh.length - 1)
+      removeVnodes(elm, oldCh, 0, oldCh.length - 1);
     } else if (isDef(oldVnode.text)) {
-      nodeOps.setTextContent(elm, '')
+      nodeOps.setTextContent(elm, "");
     }
   } else if (oldVnode.text !== vnode.text) {
-    nodeOps.setTextContent(elm, vnode.text)
+    nodeOps.setTextContent(elm, vnode.text);
   }
   if (isDef(data)) {
-    if (isDef((i = data.hook)) && isDef((i = i.postpatch))) i(oldVnode, vnode)
+    if (isDef((i = data.hook)) && isDef((i = i.postpatch))) i(oldVnode, vnode);
   }
 }
 
 return function patch(oldVnode, vnode, hydrating, removeOnly) {
   if (isUndef(vnode)) {
-    if (isDef(oldVnode)) invokeDestroyHook(oldVnode)
-    return
+    if (isDef(oldVnode)) invokeDestroyHook(oldVnode);
+    return;
   }
 
-  let isInitialPatch = false
-  const insertedVnodeQueue = []
+  let isInitialPatch = false;
+  const insertedVnodeQueue = [];
 
   if (isUndef(oldVnode)) {
     // empty mount (likely as component), create new root element
-    isInitialPatch = true
-    createElm(vnode, insertedVnodeQueue)
+    isInitialPatch = true;
+    createElm(vnode, insertedVnodeQueue);
   } else {
-    const isRealElement = isDef(oldVnode.nodeType)
+    const isRealElement = isDef(oldVnode.nodeType);
     if (!isRealElement && sameVnode(oldVnode, vnode)) {
       // patch existing root node
-      patchVnode(oldVnode, vnode, insertedVnodeQueue, removeOnly)
+      patchVnode(oldVnode, vnode, insertedVnodeQueue, removeOnly);
     } else {
       // 新旧节点不同时执行的逻辑
       if (isRealElement) {
@@ -683,8 +694,8 @@ return function patch(oldVnode, vnode, hydrating, removeOnly) {
       }
 
       // replacing existing element
-      const oldElm = oldVnode.elm
-      const parentElm = nodeOps.parentNode(oldElm)
+      const oldElm = oldVnode.elm;
+      const parentElm = nodeOps.parentNode(oldElm);
 
       // create new node
       createElm(
@@ -694,158 +705,197 @@ return function patch(oldVnode, vnode, hydrating, removeOnly) {
         // leaving transition. Only happens when combining transition +
         // keep-alive + HOCs. (#4590)
         oldElm._leaveCb ? null : parentElm,
-        nodeOps.nextSibling(oldElm)
-      )
+        nodeOps.nextSibling(oldElm),
+      );
 
       // update parent placeholder node element, recursively
       if (isDef(vnode.parent)) {
-        let ancestor = vnode.parent
-        const patchable = isPatchable(vnode)
+        let ancestor = vnode.parent;
+        const patchable = isPatchable(vnode);
         while (ancestor) {
           for (let i = 0; i < cbs.destroy.length; ++i) {
-            cbs.destroy[i](ancestor)
+            cbs.destroy[i](ancestor);
           }
-          ancestor.elm = vnode.elm
+          ancestor.elm = vnode.elm;
           if (patchable) {
             for (let i = 0; i < cbs.create.length; ++i) {
-              cbs.create[i](emptyNode, ancestor)
+              cbs.create[i](emptyNode, ancestor);
             }
             // #6513
             // invoke insert hooks that may have been merged by create hooks.
             // e.g. for directives that uses the "inserted" hook.
-            const insert = ancestor.data.hook.insert
+            const insert = ancestor.data.hook.insert;
             if (insert.merged) {
               // start at index 1 to avoid re-invoking component mounted hook
               for (let i = 1; i < insert.fns.length; i++) {
-                insert.fns[i]()
+                insert.fns[i]();
               }
             }
           } else {
-            registerRef(ancestor)
+            registerRef(ancestor);
           }
-          ancestor = ancestor.parent
+          ancestor = ancestor.parent;
         }
       }
 
       // destroy old node
       if (isDef(parentElm)) {
-        removeVnodes(parentElm, [oldVnode], 0, 0)
+        removeVnodes(parentElm, [oldVnode], 0, 0);
       } else if (isDef(oldVnode.tag)) {
-        invokeDestroyHook(oldVnode)
+        invokeDestroyHook(oldVnode);
       }
     }
   }
 
-  invokeInsertHook(vnode, insertedVnodeQueue, isInitialPatch)
-  return vnode.elm
-}
+  invokeInsertHook(vnode, insertedVnodeQueue, isInitialPatch);
+  return vnode.elm;
+};
 ```
 
 ### updateChildren
 
 ```js
-function updateChildren(parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly) {
-  let oldStartIdx = 0 // 初始化旧虚拟节点的起始索引为 0。
-  let newStartIdx = 0 // 初始化新虚拟节点的起始索引为 0。
-  let oldEndIdx = oldCh.length - 1 // 初始化旧虚拟节点的结束索引为旧虚拟节点数组的长度减 1。
-  let oldStartVnode = oldCh[0] // 获取旧虚拟节点数组中的第一个节点作为起始节点。
-  let oldEndVnode = oldCh[oldEndIdx] // 获取旧虚拟节点数组中的最后一个节点作为结束节点。
-  let newEndIdx = newCh.length - 1 // 初始化新虚拟节点的结束索引为新虚拟节点数组的长度减 1。
-  let newStartVnode = newCh[0] // 获取新虚拟节点数组中的第一个节点作为起始节点。
-  let newEndVnode = newCh[newEndIdx] // 获取新虚拟节点数组中的最后一个节点作为结束节点。
-  let oldKeyToIdx, idxInOld, vnodeToMove, refElm // 定义一些变量，用于后续的逻辑处理。
+function updateChildren(
+  parentElm,
+  oldCh,
+  newCh,
+  insertedVnodeQueue,
+  removeOnly,
+) {
+  let oldStartIdx = 0; // 初始化旧虚拟节点的起始索引为 0。
+  let newStartIdx = 0; // 初始化新虚拟节点的起始索引为 0。
+  let oldEndIdx = oldCh.length - 1; // 初始化旧虚拟节点的结束索引为旧虚拟节点数组的长度减 1。
+  let oldStartVnode = oldCh[0]; // 获取旧虚拟节点数组中的第一个节点作为起始节点。
+  let oldEndVnode = oldCh[oldEndIdx]; // 获取旧虚拟节点数组中的最后一个节点作为结束节点。
+  let newEndIdx = newCh.length - 1; // 初始化新虚拟节点的结束索引为新虚拟节点数组的长度减 1。
+  let newStartVnode = newCh[0]; // 获取新虚拟节点数组中的第一个节点作为起始节点。
+  let newEndVnode = newCh[newEndIdx]; // 获取新虚拟节点数组中的最后一个节点作为结束节点。
+  let oldKeyToIdx, idxInOld, vnodeToMove, refElm; // 定义一些变量，用于后续的逻辑处理。
 
   // removeOnly is a special flag used only by <transition-group>
   // to ensure removed elements stay in correct relative positions
   // during leaving transitions
-  const canMove = !removeOnly //  如果 removeOnly 不为 true，则设置 canMove 为 true。 removeOnly 是一个特殊的标志，用于确保在离开过渡期间移除的元素保持在正确的相对位置。
+  const canMove = !removeOnly; //  如果 removeOnly 不为 true，则设置 canMove 为 true。 removeOnly 是一个特殊的标志，用于确保在离开过渡期间移除的元素保持在正确的相对位置。
 
-  if (process.env.NODE_ENV !== 'production') {
-    checkDuplicateKeys(newCh)
+  if (process.env.NODE_ENV !== "production") {
+    checkDuplicateKeys(newCh);
   }
 
   // 当旧虚拟节点的起始索引小于等于结束索引，且新虚拟节点的起始索引小于等于结束索引时，执行循环体内的代码。
   while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
     // 处理了旧虚拟节点数组中可能存在的空节点（undefined）
     if (isUndef(oldStartVnode)) {
-      oldStartVnode = oldCh[++oldStartIdx] // 如果 oldStartVnode 为空，则将 oldStartIdx 向右移动一位，并将 oldStartVnode 设置为新的旧起始节点
+      oldStartVnode = oldCh[++oldStartIdx]; // 如果 oldStartVnode 为空，则将 oldStartIdx 向右移动一位，并将 oldStartVnode 设置为新的旧起始节点
     } else if (isUndef(oldEndVnode)) {
-      oldEndVnode = oldCh[--oldEndIdx] // 如果 oldEndVnode 为空，则将 oldEndIdx 向左移动一位，并将 oldEndVnode 设置为新的旧结束节点
+      oldEndVnode = oldCh[--oldEndIdx]; // 如果 oldEndVnode 为空，则将 oldEndIdx 向左移动一位，并将 oldEndVnode 设置为新的旧结束节点
     }
     // 用于比较旧起始节点和新起始节点是否相同
     else if (sameVnode(oldStartVnode, newStartVnode)) {
       // 如果它们相同，则调用 patchVnode 函数更新节点，并将旧和新的起始索引都向右移动一位。
-      patchVnode(oldStartVnode, newStartVnode, insertedVnodeQueue)
-      oldStartVnode = oldCh[++oldStartIdx]
-      newStartVnode = newCh[++newStartIdx]
+      patchVnode(oldStartVnode, newStartVnode, insertedVnodeQueue);
+      oldStartVnode = oldCh[++oldStartIdx];
+      newStartVnode = newCh[++newStartIdx];
     }
     // 用于比较旧结束节点和新结束节点是否相同
     else if (sameVnode(oldEndVnode, newEndVnode)) {
       // 如果它们相同，则调用 patchVnode 函数更新节点，并将旧和新的结束索引都向左移动一位。
-      patchVnode(oldEndVnode, newEndVnode, insertedVnodeQueue)
-      oldEndVnode = oldCh[--oldEndIdx]
-      newEndVnode = newCh[--newEndIdx]
+      patchVnode(oldEndVnode, newEndVnode, insertedVnodeQueue);
+      oldEndVnode = oldCh[--oldEndIdx];
+      newEndVnode = newCh[--newEndIdx];
     }
     // 用于处理旧起始节点移动到了新结束节点的情况
     else if (sameVnode(oldStartVnode, newEndVnode)) {
       // Vnode moved right
       // 首先调用 patchVnode 函数更新节点，然后将旧起始节点移动到新结束节点的后面。最后，更新旧和新的起始索引。
-      patchVnode(oldStartVnode, newEndVnode, insertedVnodeQueue)
-      canMove && nodeOps.insertBefore(parentElm, oldStartVnode.elm, nodeOps.nextSibling(oldEndVnode.elm))
-      oldStartVnode = oldCh[++oldStartIdx]
-      newEndVnode = newCh[--newEndIdx]
+      patchVnode(oldStartVnode, newEndVnode, insertedVnodeQueue);
+      canMove &&
+        nodeOps.insertBefore(
+          parentElm,
+          oldStartVnode.elm,
+          nodeOps.nextSibling(oldEndVnode.elm),
+        );
+      oldStartVnode = oldCh[++oldStartIdx];
+      newEndVnode = newCh[--newEndIdx];
     }
     // 用于处理旧结束节点移动到了新起始节点的情况。
     else if (sameVnode(oldEndVnode, newStartVnode)) {
       // Vnode moved left
       // 首先调用 patchVnode 函数更新节点，然后将旧结束节点移动到旧起始节点的前面。最后，更新旧和新的结束索引。
-      patchVnode(oldEndVnode, newStartVnode, insertedVnodeQueue)
-      canMove && nodeOps.insertBefore(parentElm, oldEndVnode.elm, oldStartVnode.elm)
-      oldEndVnode = oldCh[--oldEndIdx]
-      newStartVnode = newCh[++newStartIdx]
+      patchVnode(oldEndVnode, newStartVnode, insertedVnodeQueue);
+      canMove &&
+        nodeOps.insertBefore(parentElm, oldEndVnode.elm, oldStartVnode.elm);
+      oldEndVnode = oldCh[--oldEndIdx];
+      newStartVnode = newCh[++newStartIdx];
     }
     // 这个 else 分支处理了旧节点和新节点不匹配的情况
     else {
       // 根据新节点是否存在于旧节点中来决定是创建新节点还是更新旧节点。
       // 检查是否已经创建了 oldKeyToIdx 对象。  如果没有，则调用 createKeyToOldIdx 函数创建一个以旧节点的 key 为键，索引为值的对象，用于快速查找新节点是否存在于旧节点中。
-      if (isUndef(oldKeyToIdx)) oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx)
+      if (isUndef(oldKeyToIdx))
+        oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx);
       // 如果新节点有 key 属性，则通过 oldKeyToIdx 对象快速查找新节点在旧节点数组中的索引位置； 否则，通过 findIdxInOld 函数线性搜索新节点在旧节点数组中的位置。
-      idxInOld = isDef(newStartVnode.key) ? oldKeyToIdx[newStartVnode.key] : findIdxInOld(newStartVnode, oldCh, oldStartIdx, oldEndIdx)
+      idxInOld = isDef(newStartVnode.key)
+        ? oldKeyToIdx[newStartVnode.key]
+        : findIdxInOld(newStartVnode, oldCh, oldStartIdx, oldEndIdx);
 
       // 如果在旧节点数组中找不到与新节点相匹配的节点（即 idxInOld 为 undefined） 则表示新节点是一个全新的节点，需要创建它
       if (isUndef(idxInOld)) {
         // 调用 createElm 函数来创建新节点，并将其插入到旧节点数组中。
-        createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm, false, newCh, newStartIdx)
+        createElm(
+          newStartVnode,
+          insertedVnodeQueue,
+          parentElm,
+          oldStartVnode.elm,
+          false,
+          newCh,
+          newStartIdx,
+        );
       }
       // 如果在旧节点数组中找到了与新节点相匹配的节点（即 idxInOld 不为 undefined）
       else {
         // 获取在旧节点数组中找到的与新节点相匹配的节点，并将其保存在 vnodeToMove 变量中
-        vnodeToMove = oldCh[idxInOld]
+        vnodeToMove = oldCh[idxInOld];
         // 然后，比较这两个节点是否相同。
         if (sameVnode(vnodeToMove, newStartVnode)) {
           // 如果它们相同，则调用 patchVnode 函数来更新旧节点，并将旧节点数组中对应位置的节点设为 undefined。
-          patchVnode(vnodeToMove, newStartVnode, insertedVnodeQueue)
-          oldCh[idxInOld] = undefined
+          patchVnode(vnodeToMove, newStartVnode, insertedVnodeQueue);
+          oldCh[idxInOld] = undefined;
           // 最后，如果允许移动节点，则将找到的节点移动到旧起始节点的前面
-          canMove && nodeOps.insertBefore(parentElm, vnodeToMove.elm, oldStartVnode.elm)
+          canMove &&
+            nodeOps.insertBefore(parentElm, vnodeToMove.elm, oldStartVnode.elm);
         } else {
           // same key but different element. treat as new element
           // 如果它们不相同，则将新节点视为全新的节点，并调用 createElm 函数来创建它。
-          createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm, false, newCh, newStartIdx)
+          createElm(
+            newStartVnode,
+            insertedVnodeQueue,
+            parentElm,
+            oldStartVnode.elm,
+            false,
+            newCh,
+            newStartIdx,
+          );
         }
       }
-      newStartVnode = newCh[++newStartIdx]
+      newStartVnode = newCh[++newStartIdx];
     }
   }
   // 在处理剩余的节点，如果旧节点数组中有剩余的节点，或者新节点数组中有剩余的节点，就会继续执行相应的操作
   if (oldStartIdx > oldEndIdx) {
     // 如果旧节点数组的起始索引大于结束索引，说明旧节点数组中有剩余的节点，需要将这些节点从 DOM 中移除。
-    refElm = isUndef(newCh[newEndIdx + 1]) ? null : newCh[newEndIdx + 1].elm
+    refElm = isUndef(newCh[newEndIdx + 1]) ? null : newCh[newEndIdx + 1].elm;
     // 根据新节点数组中是否还有节点，决定新节点的插入位置，然后调用 addVnodes 函数将剩余的新节点插入到 DOM 中。
-    addVnodes(parentElm, refElm, newCh, newStartIdx, newEndIdx, insertedVnodeQueue)
+    addVnodes(
+      parentElm,
+      refElm,
+      newCh,
+      newStartIdx,
+      newEndIdx,
+      insertedVnodeQueue,
+    );
   } else if (newStartIdx > newEndIdx) {
     // 如果新节点数组的起始索引大于结束索引，说明新节点数组中有剩余的节点，需要将这些节点添加到 DOM 中。在这种情况下，没有旧节点数组中的节点需要移除，所以不需要执行移除节点的操作。
-    removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx)
+    removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx);
   }
 }
 ```

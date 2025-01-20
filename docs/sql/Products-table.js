@@ -77,7 +77,7 @@ const tableData = `| ProductID | ProductName                      | SupplierID |
 | 75        | Rhönbräu Klosterbier             | 12         | 1          | 24 - 0.5 l bottles   | 7.75   |
 | 76        | Lakkalikööri                     | 23         | 1          | 500 ml               | 18.00  |
 | 77        | Original Frankfurter grüne Soße  | 12         | 2          | 12 boxes             | 13.00  |`;
-const rows = tableData.split('\n');
+const rows = tableData.split("\n");
 rows.shift();
 rows.shift();
 // rows.pop();
@@ -88,10 +88,10 @@ const insertStatements = [];
 // 遍历每一行数据并生成 SQL 插入语句
 rows.forEach((row) => {
   const rowData = row
-    .split('|')
+    .split("|")
     .map((item) => item.trim())
-    .filter((item) => item !== '');
-  console.log(rowData, '🚀'); // [ '74', 'Longlife Tofu', '4', '7', '5 kg pkg.', '10.00' ]
+    .filter((item) => item !== "");
+  console.log(rowData, "🚀"); // [ '74', 'Longlife Tofu', '4', '7', '5 kg pkg.', '10.00' ]
   const productId = parseInt(rowData[0]);
   const productName = rowData[1];
   const supplierId = parseInt(rowData[2]);

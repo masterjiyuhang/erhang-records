@@ -54,13 +54,13 @@ Controllers are responsible for handling incoming requests and returning respons
   - 在 @Controller() 装饰器中使用路径前缀可以轻松地将一组相关的路由分组起来，并减少重复的代码。
 
     - ```ts
-      import { Controller, Get } from '@nestjs/common';
+      import { Controller, Get } from "@nestjs/common";
 
-      @Controller('cats')
+      @Controller("cats")
       export class CatsController {
         @Get()
         findAll(): string {
-          return 'This action returns all cats';
+          return "This action returns all cats";
         }
       }
       ```
@@ -103,14 +103,14 @@ Requset Object
 我们可以通过将 @Req() 装饰器添加到处理程序的签名来指示 Nest 注入请求对象来访问请求对象。
 
 ```tsx
-import { Controller, Get, Req } from '@nestjs/common';
+import { Controller, Get, Req } from "@nestjs/common";
 
-@Controller('cars')
+@Controller("cars")
 export class CarsController {
   @Get()
   findAll(@Req() request: Request): string {
     console.log(request);
-    return 'all cars';
+    return "all cars";
   }
 }
 ```
@@ -233,7 +233,7 @@ POST 路由处理程序中添加 @Body() 装饰器来接收客户端参数。
 
 ```tsx
 // /car/dto/create-car.dto.ts
-import { IsBoolean, IsInt, IsString } from 'class-validator';
+import { IsBoolean, IsInt, IsString } from "class-validator";
 
 export class CrateCarDto {
   @IsString()
@@ -250,24 +250,24 @@ export class CrateCarDto {
 }
 
 // car.controllers.ts
-import { Body, Controller, Get, Header, Post, Req } from '@nestjs/common';
-import { CrateCarDto } from './dto/create-car.dto';
+import { Body, Controller, Get, Header, Post, Req } from "@nestjs/common";
+import { CrateCarDto } from "./dto/create-car.dto";
 
-@Controller('cars')
+@Controller("cars")
 export class CarsController {
   @Get()
   findAll(@Req() request: Request): string {
     console.log(request);
-    return 'all cars';
+    return "all cars";
   }
 
   @Post()
-  @Header('Content-Type', 'application/json')
+  @Header("Content-Type", "application/json")
   create(
-    @Body() { name, color, years, isOverLoad = false }: CrateCarDto
+    @Body() { name, color, years, isOverLoad = false }: CrateCarDto,
   ): string {
     console.log(name, years, color, isOverLoad);
-    return 'create new car ' + name;
+    return "create new car " + name;
   }
 }
 ```
@@ -281,8 +281,8 @@ Controllers 控制器始终属于一个 module 模块，这就是为什么我们
 ```ts
 // car/car.module.ts
 
-import { Module } from '@nestjs/common';
-import { CarsController } from './car.controller';
+import { Module } from "@nestjs/common";
+import { CarsController } from "./car.controller";
 
 @Module({
   controllers: [CarsController],
@@ -309,15 +309,15 @@ Provider 的主要概念是它可以作为依赖项进行注入。对象之间�
 通过将 `@Injectable()` 装饰器应用于`CatsService`类，我们告诉 Nest 框架该类可以被注入到其他类中，以及在需要时可以由 Nest IoC 容器进行实例化和管理。这使得我们可以在其他地方通过依赖注入的方式轻松地访问 `CatsService`，并利用 Nest 框架提供的各种功能来管理它的生命周期和作用域。
 
 ```tsx
-import { Injectable } from '@nestjs/common';
-import { Car } from './interfaces/car.interface';
+import { Injectable } from "@nestjs/common";
+import { Car } from "./interfaces/car.interface";
 
 @Injectable()
 export class CarService {
   private readonly cars: Car[] = [];
 
   create(car: Car) {
-    console.log(car, 'car service created');
+    console.log(car, "car service created");
     this.cars.push(car);
   }
 
@@ -350,40 +350,40 @@ export interface Car {
 现在我们有一个服务类来检索 `car` ，让我们在 `Catrcontroller` 里使用它 ：
 
 ```ts
-import { Body, Controller, Get, Header, Param, Post } from '@nestjs/common';
-import { CrateCarDto } from './dto/create-car.dto';
-import { CarService } from './car.service';
-import { Car } from './interfaces/car.interface';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Header, Param, Post } from "@nestjs/common";
+import { CrateCarDto } from "./dto/create-car.dto";
+import { CarService } from "./car.service";
+import { Car } from "./interfaces/car.interface";
+import { ApiParam, ApiTags } from "@nestjs/swagger";
 
-@ApiTags('Car')
-@Controller('car')
+@ApiTags("Car")
+@Controller("car")
 export class CarController {
   constructor(private readonly carService: CarService) {}
 
-  @Get('list')
+  @Get("list")
   async findAll(): Promise<Car[]> {
     return this.carService.findAll();
   }
 
-  @Get('/:id')
-  @Header('Content-Type', 'application/json')
+  @Get("/:id")
+  @Header("Content-Type", "application/json")
   @ApiParam({
-    name: 'id',
+    name: "id",
     type: Number,
-    description: 'car id',
+    description: "car id",
   })
-  findOne(@Param('id') id: number | string): any {
+  findOne(@Param("id") id: number | string): any {
     return {
       id: id,
-      name: '一个车',
+      name: "一个车",
     };
   }
 
-  @Post('create')
-  @Header('Content-Type', 'application/json')
+  @Post("create")
+  @Header("Content-Type", "application/json")
   create(
-    @Body() { name, color, years, isOverload = false }: CrateCarDto
+    @Body() { name, color, years, isOverload = false }: CrateCarDto,
   ): void {
     return this.carService.create({ name, color, years, isOverload });
   }
@@ -418,9 +418,9 @@ Provider 通常具有与应用程序生命周期同步的生命周期（“作�
 
 ```tsx
 // cars/car.module.ts
-import { Module } from '@nestjs/common';
-import { CarController } from './car.controller';
-import { CarService } from './car.service';
+import { Module } from "@nestjs/common";
+import { CarController } from "./car.controller";
+import { CarService } from "./car.service";
 
 @Module({
   controllers: [CarController],
@@ -429,13 +429,13 @@ import { CarService } from './car.service';
 export class CarModule {}
 
 // app.module.ts
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { CoreModule } from './core/core.module';
-import { CarModule } from './cars/car.module';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
+import { Module } from "@nestjs/common";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
+import { CoreModule } from "./core/core.module";
+import { CarModule } from "./cars/car.module";
+import { AuthModule } from "./auth/auth.module";
+import { UsersModule } from "./users/users.module";
 
 @Module({
   imports: [CoreModule, CarModule, AuthModule, UsersModule],
@@ -467,9 +467,9 @@ export class AppModule {}
 `CarController` 和 `CarService` 属于同一个应用程序域。 应该考虑将它们移动到一个功能模块下，即 `CarModule`。
 
 ```tsx
-import { Module } from '@nestjs/common';
-import { CarController } from './car.controller';
-import { CarService } from './car.service';
+import { Module } from "@nestjs/common";
+import { CarController } from "./car.controller";
+import { CarService } from "./car.service";
 
 @Module({
   controllers: [CarController],
@@ -483,8 +483,8 @@ export class CarModule {}
 我已经创建了 `car.module.ts` 文件，并把与这个模块相关的所有东西都移到了 cars 目录下。我们需要做的最后一件事是将这个模块导入根模块 `(ApplicationModule)`。
 
 ```tsx
-import { Module } from '@nestjs/common';
-import { CarModule } from './cars/car.module';
+import { Module } from "@nestjs/common";
+import { CarModule } from "./cars/car.module";
 
 @Module({
   imports: [CarModule],
@@ -521,9 +521,9 @@ export class CoreModule {}
 > car.module.ts
 
 ```ts
-import { Module } from '@nestjs/common';
-import { CarController } from './car.controller';
-import { CarService } from './car.service';
+import { Module } from "@nestjs/common";
+import { CarController } from "./car.controller";
+import { CarService } from "./car.service";
 
 @Module({
   controllers: [CarController],
@@ -539,9 +539,9 @@ export class CarModule {
 `@Global` 装饰器使模块成为全局作用域。 全局模块应该只注册一次，最好由根或核心模块注册。 在下面的例子中，`CarService` 组件将无处不在，而想要使用 `CarService` 的模块则不需要在 `imports` 数组中导入 `CarModule`。
 
 ```ts
-import { Module, Global } from '@nestjs/common';
-import { CarController } from './car.controller';
-import { CarService } from './car.service';
+import { Module, Global } from "@nestjs/common";
+import { CarController } from "./car.controller";
+import { CarService } from "./car.service";
 
 @Global()
 @Module({
@@ -559,9 +559,9 @@ Nest 的模块系统包括一个称为动态模块的强大功能。此功能可
 以下是一个动态模块定义的示例 `DatabaseModule`：
 
 ```ts
-import { Module, DynamicModule } from '@nestjs/common';
-import { createDatabaseProviders } from './database.providers';
-import { Connection } from './connection.provider';
+import { Module, DynamicModule } from "@nestjs/common";
+import { createDatabaseProviders } from "./database.providers";
+import { Connection } from "./connection.provider";
 
 @Module({
   providers: [Connection],
@@ -613,13 +613,13 @@ Nest 中间件实际上等价于 [express](http://expressjs.com/en/guide/using-m
 > logger.middleware.ts
 
 ```tsx
-import { Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
+import { Injectable, NestMiddleware } from "@nestjs/common";
+import { Request, Response, NextFunction } from "express";
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    console.log('Request...');
+    console.log("Request...");
     next();
   }
 }
@@ -630,16 +630,16 @@ export class LoggerMiddleware implements NestMiddleware {
 `Nest`中间件完全支持依赖注入。 就像提供者和控制器一样，它们能够**注入**属于同一模块的依赖项（通过 `constructor` ）。
 
 ```typescript
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { LoggerMiddleware } from './common/middleware/logger.middleware';
-import { CarModule } from './cars/car.module';
+import { Module, NestModule, MiddlewareConsumer } from "@nestjs/common";
+import { LoggerMiddleware } from "./common/middleware/logger.middleware";
+import { CarModule } from "./cars/car.module";
 
 @Module({
   imports: [CarModule],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('cars');
+    consumer.apply(LoggerMiddleware).forRoutes("cars");
   }
 }
 ```
@@ -651,7 +651,7 @@ export class AppModule implements NestModule {
 路由同样支持模式匹配。例如，星号被用作**通配符**，将匹配任何字符组合。
 
 ```ts
-forRoutes({ path: 'ab*cd', method: RequestMethod.ALL });
+forRoutes({ path: "ab*cd", method: RequestMethod.ALL });
 ```
 
 #### 中间件消费者
@@ -661,10 +661,10 @@ forRoutes({ path: 'ab*cd', method: RequestMethod.ALL });
 > app.module.ts
 
 ```typescript
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { LoggerMiddleware } from './common/middleware/logger.middleware';
-import { CarModule } from './car/car.module';
-import { CarController } from './car/car.controller.ts';
+import { Module, NestModule, MiddlewareConsumer } from "@nestjs/common";
+import { LoggerMiddleware } from "./common/middleware/logger.middleware";
+import { CarModule } from "./car/car.module";
+import { CarController } from "./car/car.controller.ts";
 
 @Module({
   imports: [CarModule],
@@ -684,9 +684,9 @@ export class AppModule implements NestModule {
 consumer
   .apply(LoggerMiddleware)
   .exclude(
-    { path: 'car', method: RequestMethod.GET },
-    { path: 'car', method: RequestMethod.POST },
-    'car/(.*)'
+    { path: "car", method: RequestMethod.GET },
+    { path: "car", method: RequestMethod.POST },
+    "car/(.*)",
   )
   .forRoutes(CatsController);
 ```
@@ -801,7 +801,7 @@ await app.listen(3000);
 ```tsx
 export class ForbiddenException extends HttpException {
   constructor() {
-    super('Forbidden', HttpStatus.FORBIDDEN);
+    super("Forbidden", HttpStatus.FORBIDDEN);
   }
 }
 ```
@@ -824,8 +824,8 @@ import {
   Catch,
   ArgumentsHost,
   HttpException,
-} from '@nestjs/common';
-import { Request, Response } from 'express';
+} from "@nestjs/common";
+import { Request, Response } from "express";
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -895,8 +895,8 @@ bootstrap();
 > app.module.ts
 
 ```typescript
-import { Module } from '@nestjs/common';
-import { APP_FILTER } from '@nestjs/core';
+import { Module } from "@nestjs/common";
+import { APP_FILTER } from "@nestjs/core";
 
 @Module({
   providers: [
@@ -924,7 +924,7 @@ import {
   ArgumentsHost,
   HttpException,
   HttpStatus,
-} from '@nestjs/common';
+} from "@nestjs/common";
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -1070,7 +1070,7 @@ async findOne(@Param('uuid', new ParseUUIDPipe()) uuid: string) {
 > validation.pipe.ts
 
 ```typescript
-import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common';
+import { PipeTransform, Injectable, ArgumentMetadata } from "@nestjs/common";
 
 @Injectable()
 export class ValidationPipe implements PipeTransform {
@@ -1091,7 +1091,7 @@ export class ValidationPipe implements PipeTransform {
 
 ```typescript
 export interface ArgumentMetadata {
-  type: 'body' | 'query' | 'param' | 'custom';
+  type: "body" | "query" | "param" | "custom";
   metatype?: Type<unknown>;
   data?: string;
 }
@@ -1125,7 +1125,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-} from 'class-validator';
+} from "class-validator";
 
 export class CrateCarDto {
   @IsNumber()
@@ -1180,8 +1180,8 @@ import {
   Injectable,
   ArgumentMetadata,
   BadRequestException,
-} from '@nestjs/common';
-import { ObjectSchema } from 'joi';
+} from "@nestjs/common";
+import { ObjectSchema } from "joi";
 
 @Injectable()
 export class JoiValidationPipe implements PipeTransform {
@@ -1190,7 +1190,7 @@ export class JoiValidationPipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata) {
     const { error } = this.schema.validate(value);
     if (error) {
-      throw new BadRequestException('Validation failed');
+      throw new BadRequestException("Validation failed");
     }
     return value;
   }
@@ -1238,7 +1238,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-} from 'class-validator';
+} from "class-validator";
 
 export class CrateCarDto {
   @IsNumber()
@@ -1270,9 +1270,9 @@ import {
   Injectable,
   ArgumentMetadata,
   BadRequestException,
-} from '@nestjs/common';
-import { validate } from 'class-validator';
-import { plainToInstance } from 'class-transformer';
+} from "@nestjs/common";
+import { validate } from "class-validator";
+import { plainToInstance } from "class-transformer";
 
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
@@ -1287,7 +1287,7 @@ export class ValidationPipe implements PipeTransform<any> {
 
     // 这就是一个验证管道，它要么返回值不变，要么抛出异常。
     if (errors.length > 0) {
-      throw new BadRequestException('Validation failed');
+      throw new BadRequestException("Validation failed");
     }
     return value;
   }
@@ -1348,8 +1348,8 @@ app.useGlobalPipes(new ValidationPipe());
 > app.module.ts
 
 ```typescript
-import { Module } from '@nestjs/common';
-import { APP_PIPE } from '@nestjs/core';
+import { Module } from "@nestjs/common";
+import { APP_PIPE } from "@nestjs/core";
 
 @Module({
   providers: [
@@ -1378,14 +1378,14 @@ import {
   Injectable,
   ArgumentMetadata,
   BadRequestException,
-} from '@nestjs/common';
+} from "@nestjs/common";
 
 @Injectable()
 export class ParseIntPipe implements PipeTransform<string, number> {
   transform(value: string, metadata: ArgumentMetadata): number {
     const val = parseInt(value, 10);
     if (isNaN(val)) {
-      throw new BadRequestException('Validation failed');
+      throw new BadRequestException("Validation failed");
     }
     return val;
   }
@@ -1442,21 +1442,24 @@ async findAll(
 > auth.guard.ts
 
 ```tsx
-import { Reflector } from '@nestjs/core';
-import { JwtService } from '@nestjs/jwt';
+import { Reflector } from "@nestjs/core";
+import { JwtService } from "@nestjs/jwt";
 import {
   CanActivate,
   ExecutionContext,
   Injectable,
   UnauthorizedException,
-} from '@nestjs/common';
-import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
-import { jwtConstants } from '../config/index';
-import { Request } from 'express';
+} from "@nestjs/common";
+import { IS_PUBLIC_KEY } from "../decorators/public.decorator";
+import { jwtConstants } from "../config/index";
+import { Request } from "express";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService, private reflector: Reflector) {}
+  constructor(
+    private jwtService: JwtService,
+    private reflector: Reflector,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
@@ -1481,7 +1484,7 @@ export class AuthGuard implements CanActivate {
       });
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
-      request['user'] = payload;
+      request["user"] = payload;
     } catch {
       throw new UnauthorizedException();
     }
@@ -1489,8 +1492,8 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
+    const [type, token] = request.headers.authorization?.split(" ") ?? [];
+    return type === "Bearer" ? token : undefined;
   }
 }
 ```
@@ -1515,13 +1518,13 @@ export class AuthGuard implements CanActivate {
 > roles.guard.ts
 
 ```typescript
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   canActivate(
-    context: ExecutionContext
+    context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     return true;
   }
@@ -1538,7 +1541,7 @@ export class RolesGuard implements CanActivate {
 - 这个装饰器可以使用单个参数，也可以使用逗号分隔的参数列表。也就是说，你可以传递几个守卫并用逗号分隔它们。
 
 ```typescript
-@Controller('car')
+@Controller("car")
 @UseGuards(RolesGuard)
 export class CarController {}
 ```
@@ -1546,7 +1549,7 @@ export class CarController {}
 上例，我们已经传递了 `RolesGuard` 类型而不是实例, 让框架进行实例化，并启用了依赖注入。与管道和异常过滤器一样，我们也可以传递一个实例
 
 ```typescript
-@Controller('car')
+@Controller("car")
 @UseGuards(new RolesGuard())
 export class CarController {}
 ```
@@ -1567,8 +1570,8 @@ app.useGlobalGuards(new RolesGuard());
 > app.module.ts
 
 ```typescript
-import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { Module } from "@nestjs/common";
+import { APP_GUARD } from "@nestjs/core";
 
 @Module({
   providers: [
@@ -1604,9 +1607,9 @@ async create(@Body() createCarDto: CreateCarDto) {
 > roles.decorator.ts
 
 ```typescript
-import { SetMetadata } from '@nestjs/common';
+import { SetMetadata } from "@nestjs/common";
 
-export const Roles = (...roles: string[]) => SetMetadata('roles', roles);
+export const Roles = (...roles: string[]) => SetMetadata("roles", roles);
 ```
 
 这种方法更简洁、更易读，而且是强类型的。现在我们有了一个自定义的 `@Roles()` 装饰器，我们可以使用它来装饰 `create()`方法。
@@ -1626,8 +1629,8 @@ async create(@Body() createCarDto: CreateCarDto) {
 > roles.guard.ts
 
 ```ts
-import { Reflector } from '@nestjs/core';
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { Reflector } from "@nestjs/core";
+import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -1635,11 +1638,11 @@ export class RolesGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const roles = this.reflector.getAllAndOverride<string[] | undefined>(
-      'roles',
+      "roles",
       [
         context.getHandler(), // Method Roles
         context.getClass(), // Controller Roles
-      ]
+      ],
     );
 
     if (!roles) {
@@ -1715,20 +1718,20 @@ import {
   ExecutionContext,
   Injectable,
   NestInterceptor,
-} from '@nestjs/common';
-import { Observable, tap } from 'rxjs';
+} from "@nestjs/common";
+import { Observable, tap } from "rxjs";
 
 @Injectable()
 export class BeforeAfterInterceptor implements NestInterceptor {
   intercept(
     context: ExecutionContext,
-    next: CallHandler<any>
+    next: CallHandler<any>,
   ): Observable<any> | Promise<Observable<any>> {
-    console.log('Before Function Execution...');
+    console.log("Before Function Execution...");
 
     return next
       .handle()
-      .pipe(tap(() => console.log('After Function Execution')));
+      .pipe(tap(() => console.log("After Function Execution")));
   }
 }
 ```
@@ -1753,14 +1756,14 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+} from "@nestjs/common";
+import { Observable } from "rxjs";
+import { tap } from "rxjs/operators";
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    console.log('Before...');
+    console.log("Before...");
 
     const now = Date.now();
     return next
@@ -1819,8 +1822,8 @@ app.useGlobalInterceptors(new LoggingInterceptor());
 > app.module.ts
 
 ```typescript
-import { Module } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { Module } from "@nestjs/common";
+import { APP_INTERCEPTOR } from "@nestjs/core";
 
 @Module({
   providers: [
@@ -1847,9 +1850,9 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+} from "@nestjs/common";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 export interface Response<T> {
   data: T;
@@ -1861,7 +1864,7 @@ export class TransformInterceptor<T>
 {
   intercept(
     context: ExecutionContext,
-    next: CallHandler
+    next: CallHandler,
   ): Observable<Response<T>> {
     return next.handle().pipe(map((data) => ({ data })));
   }
@@ -1884,14 +1887,14 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+} from "@nestjs/common";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 @Injectable()
 export class ExcludeNullInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    return next.handle().pipe(map((value) => (value === null ? '' : value)));
+    return next.handle().pipe(map((value) => (value === null ? "" : value)));
   }
 }
 ```
@@ -1909,9 +1912,9 @@ import {
   ExecutionContext,
   BadGatewayException,
   CallHandler,
-} from '@nestjs/common';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+} from "@nestjs/common";
+import { Observable, throwError } from "rxjs";
+import { catchError } from "rxjs/operators";
 
 @Injectable()
 export class ErrorsInterceptor implements NestInterceptor {
@@ -1941,8 +1944,8 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
-} from '@nestjs/common';
-import { Observable, of } from 'rxjs';
+} from "@nestjs/common";
+import { Observable, of } from "rxjs";
 
 @Injectable()
 export class CacheInterceptor implements NestInterceptor {
@@ -2004,13 +2007,13 @@ const user = req.user;
 > user.decorator.ts
 
 ```typescript
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { createParamDecorator, ExecutionContext } from "@nestjs/common";
 
 export const User = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
     return request.user;
-  }
+  },
 );
 ```
 
@@ -2042,7 +2045,7 @@ async findOne(@User() user: UserEntity) {
 > user.decorator.ts
 
 ```typescript
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { createParamDecorator, ExecutionContext } from "@nestjs/common";
 
 export const User = createParamDecorator(
   (data: string, ctx: ExecutionContext) => {
@@ -2050,7 +2053,7 @@ export const User = createParamDecorator(
     const user = request.user;
 
     return data ? user && user[data] : user;
-  }
+  },
 );
 ```
 
@@ -2085,14 +2088,14 @@ async findOne(@User(new ValidationPipe()) user: UserEntity) {
 `Nest` 提供了一种辅助方法来聚合多个装饰器。例如，假设您要将与身份验证相关的所有装饰器聚合到一个装饰器中。这可以通过以下方法实现：
 
 ```typescript
-import { applyDecorators } from '@nestjs/common';
+import { applyDecorators } from "@nestjs/common";
 
 export function Auth(...roles: Role[]) {
   return applyDecorators(
-    SetMetadata('roles', roles),
+    SetMetadata("roles", roles),
     UseGuards(AuthGuard, RolesGuard),
     ApiBearerAuth(),
-    ApiUnauthorizedResponse({ description: 'Unauthorized"' })
+    ApiUnauthorizedResponse({ description: 'Unauthorized"' }),
   );
 }
 ```

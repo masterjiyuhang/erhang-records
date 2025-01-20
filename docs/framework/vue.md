@@ -2,8 +2,6 @@
 
 前一部分是和Vue3相关的 🤔
 
-
-
 ## 🍇Vue3常见问题
 
 ### Vue2 和 Vue3 的区别
@@ -38,7 +36,7 @@ Vue 3 在与 Vue 2 相比的 diff 算法上进行了一些优化，主要包括�
 
 - 优化的数组更新：
 
-  -  Vue 3 对数组的更新进行了优化，采用了类似 React 的技术，通过索引跟踪和避免遍历整个数组来更高效地处理数组的变化。
+  - Vue 3 对数组的更新进行了优化，采用了类似 React 的技术，通过索引跟踪和避免遍历整个数组来更高效地处理数组的变化。
 
 - Fragment 的支持：
 
@@ -126,13 +124,13 @@ Proxy 相比 Vue 2 的 Object.defineProperty 可以实现更细粒度的依赖�
   - 示例代码：
 
     - ```javascript
-      import { ref } from 'vue'
-      
-      const count = ref(0)
-      console.log(count.value) // Output: 0
-      
-      count.value = 10 // This will trigger reactivity
-      console.log(count.value) // Output: 10
+      import { ref } from "vue";
+
+      const count = ref(0);
+      console.log(count.value); // Output: 0
+
+      count.value = 10; // This will trigger reactivity
+      console.log(count.value); // Output: 10
       ```
 
 - toRefs
@@ -144,19 +142,19 @@ Proxy 相比 Vue 2 的 Object.defineProperty 可以实现更细粒度的依赖�
   - 示例代码：
 
     - ```javascript
-      import { reactive, toRefs } from 'vue'
-      
+      import { reactive, toRefs } from "vue";
+
       const state = reactive({
-        name: 'John',
-        age: 30
-      })
-      
-      const refs = toRefs(state)
-      
-      console.log(refs.name.value) // Output: "John"
-      
-      refs.name.value = 'Alice' // This will trigger reactivity
-      console.log(state.name) // Output: "Alice"
+        name: "John",
+        age: 30,
+      });
+
+      const refs = toRefs(state);
+
+      console.log(refs.name.value); // Output: "John"
+
+      refs.name.value = "Alice"; // This will trigger reactivity
+      console.log(state.name); // Output: "Alice"
       ```
 
 - isRef
@@ -168,13 +166,13 @@ Proxy 相比 Vue 2 的 Object.defineProperty 可以实现更细粒度的依赖�
   - 示例代码：
 
     - ```javascript
-      import { ref, isRef } from 'vue'
-      
-      const count = ref(0)
-      const name = 'John'
-      
-      console.log(isRef(count)) // Output: true
-      console.log(isRef(name)) // Output: false
+      import { ref, isRef } from "vue";
+
+      const count = ref(0);
+      const name = "John";
+
+      console.log(isRef(count)); // Output: true
+      console.log(isRef(name)); // Output: false
       ```
 
 ### readonly isReadOnly shallowReadonly 使用
@@ -187,12 +185,12 @@ Proxy 相比 Vue 2 的 Object.defineProperty 可以实现更细粒度的依赖�
    - 示例代码：
 
 ```javascript
-import { readonly } from 'vue'
+import { readonly } from "vue";
 
-const data = { name: 'John', age: 30 }
-const readonlyData = readonly(data)
+const data = { name: "John", age: 30 };
+const readonlyData = readonly(data);
 
-console.log(readonlyData.name) // Output: "John"
+console.log(readonlyData.name); // Output: "John"
 
 // Attempt to modify readonlyData will throw an error
 // readonlyData.name = 'Alice'; // This will throw an error
@@ -204,13 +202,13 @@ console.log(readonlyData.name) // Output: "John"
    - 示例代码：
 
 ```javascript
-import { readonly, isReadOnly } from 'vue'
+import { readonly, isReadOnly } from "vue";
 
-const data = { name: 'John', age: 30 }
-const readonlyData = readonly(data)
+const data = { name: "John", age: 30 };
+const readonlyData = readonly(data);
 
-console.log(isReadOnly(readonlyData)) // Output: true
-console.log(isReadOnly(data)) // Output: false
+console.log(isReadOnly(readonlyData)); // Output: true
+console.log(isReadOnly(data)); // Output: false
 ```
 
 3. `shallowReadonly`：
@@ -219,13 +217,13 @@ console.log(isReadOnly(data)) // Output: false
    - 示例代码：
 
 ```javascript
-import { shallowReadonly } from 'vue'
+import { shallowReadonly } from "vue";
 
-const data = { name: 'John', info: { age: 30 } }
-const shallowReadonlyData = shallowReadonly(data)
+const data = { name: "John", info: { age: 30 } };
+const shallowReadonlyData = shallowReadonly(data);
 
-console.log(shallowReadonlyData.name) // Output: "John"
-console.log(shallowReadonlyData.info.age) // Output: 30
+console.log(shallowReadonlyData.name); // Output: "John"
+console.log(shallowReadonlyData.info.age); // Output: 30
 
 // Attempt to modify shallowReadonlyData will throw an error
 // shallowReadonlyData.name = 'Alice'; // This will throw an error
@@ -251,39 +249,39 @@ console.log(shallowReadonlyData.info.age) // Output: 30
    - 示例代码：
 
 ```javascript
-import { reactive, onMounted, onUpdated, onUnmounted } from 'vue'
+import { reactive, onMounted, onUpdated, onUnmounted } from "vue";
 
 export default {
   setup() {
     // 声明响应式状态
     const state = reactive({
-      count: 0
-    })
+      count: 0,
+    });
 
     // 组件挂载后执行
     onMounted(() => {
-      console.log('Component mounted')
-    })
+      console.log("Component mounted");
+    });
 
     // 组件更新后执行
     onUpdated(() => {
-      console.log('Component updated')
-    })
+      console.log("Component updated");
+    });
 
     // 组件卸载前执行
     onUnmounted(() => {
-      console.log('Component unmounted')
-    })
+      console.log("Component unmounted");
+    });
 
     // 返回响应式状态和模板中需要使用的方法
     return {
       state,
       increment() {
-        state.count++
-      }
-    }
-  }
-}
+        state.count++;
+      },
+    };
+  },
+};
 ```
 
 2. 生命周期模拟函数：
@@ -503,9 +501,7 @@ watch：
 
 总的来说，Vue 3 对 `<keep-alive>` 组件的内部实现进行了一系列优化措施，包括改进了虚拟 DOM 的 Diff 算法、优化了组件实例的状态保存和恢复，以及优化了缓存策略，从而提高了组件缓存的性能和效率。这些优化措施使得在使用 `<keep-alive>` 缓存组件时，能够更快速、高效地管理组件的状态和渲染，从而提升了整体的性能表现。
 
-
-
-###  什么是函数式组件？ 他和 React 的 hooks有什么区别？
+### 什么是函数式组件？ 他和 React 的 hooks有什么区别？
 
 函数式组件是一种在 Vue 中定义组件的方式，它基于函数而不是基于对象。函数式组件具有以下特点：
 
@@ -530,10 +526,6 @@ watch：
 3. **Hooks 的多样性：** React 的 Hook 提供了一系列的钩子函数，用于处理状态、副作用、上下文等，从而可以实现更复杂的逻辑，而 Vue 的函数式组件则更专注于简单的 UI 渲染。
 
 总的来说，Vue 的函数式组件和 React 的 Hook 都是为了简化组件开发和管理，但它们在实现方式和功能上有一些区别。选择哪种方式取决于你的项目需求和个人喜好。
-
-
-
-
 
 ### Vue3 对于编译做了哪些优化
 
@@ -584,10 +576,10 @@ Teleport 组件可以传递两个属性：
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref } from "vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     // 假设 Modal 是一个组件
     Modal: {
@@ -598,8 +590,8 @@ export default {
             <slot></slot>
           </div>
         </div>
-      `
-    }
+      `,
+    },
   },
   setup() {
     const isModalVisible = ref(false);
@@ -615,9 +607,9 @@ export default {
     return {
       isModalVisible,
       showModal,
-      hideModal
+      hideModal,
     };
-  }
+  },
 };
 </script>
 
@@ -641,17 +633,18 @@ export default {
 ### Vue3 相比较 Vue2 做了哪些升级？ 他为什么比 Vue2 更快？
 
 - 响应式系统优化：
+
   - Vue3 引入了新的响应式系统，这个系统的设计让 Vue3 的渲染函数可以在编译时生成更少的代码，这也就意味着在运行时需要更少的代码来处理虚拟 DOM。
   - 这个新系统的一个重要改进就是**提供了基于 Proxy 实现的响应式机制**，这种机制为开发人员提供更加高效的 API，也减少了一些运行时代码。
 
 - 编译优化：
+
   - Vue3 的编译器对代码进行了优化，包括减少了部分注释、空白符和其他非必要字符的编译，同时也对编译后的代码进行了懒加载优化。
   - 更快的虚拟 DOM：Vue3 对虚拟 DOM 进行了优化，使用了跟 React 类似的 Fiber 算法，这样可以更加高效地更新 DOM 节点，提高性能。
 
 - Composition API：
   - Vue3 引入Composition API，这种 API 通过提供逻辑组合和重用的方法来提升代码的可读性和重用性。
   - 这种 API 不仅可以让 Vue3 应用更好地组织和维护业务逻辑，还可以让开发人员更加轻松地实现优化。
-
 
 ### setup 中如何获取组件的实例信息？
 
@@ -660,8 +653,6 @@ export default {
 `const instance = getCurrentInstance();`
 
 getCurrentInstance() 方法只能在 setup 函数中使用，而不能在组件的生命周期方法（如 created、mounted 等方法）中使用。另外，需要注意的是，如果在 setup 函数返回之前访问了 instance 对象，那么它可能是 undefined ，因此我们需要对其进行处理。
-
-
 
 ### Vue3 怎么实现的响应式
 
@@ -681,13 +672,12 @@ Vue 3 在实现响应式系统时，使用了代理对象和 JavaScript 的 `Pro
 
 总的来说，Vue 3 的代理响应式系统在性能和功能上都相对于 Vue 2 有了明显的提升。这使得开发者在编写组件时能够更自然地操作数据，而无需过多考虑数据的响应式处理。
 
-
-
 ### Vue2 和 Vue3的diff算法
 
 当我们谈论 Vue 2 和 Vue 3 的 diff 算法时，实际上是在谈论它们在处理虚拟 DOM 更新时的策略和技术。下面我将更详细地介绍这两个版本的 diff 算法。
 
 Vue 2 的 Diff 算法：
+
 1. **递归遍历旧节点树**：在每次数据变化时，Vue 2 会递归遍历旧的虚拟 DOM 树。这个过程是递归的，意味着它会一直向下遍历所有节点，直到找到需要更新的节点。
 
 2. **比较新旧节点**：对比新旧节点时，Vue 2 会先判断节点的类型是否相同。如果类型相同，则进一步比较节点的属性和子节点。如果属性或子节点有变化，Vue 2 会执行相应的 DOM 操作来更新节点。
@@ -695,6 +685,7 @@ Vue 2 的 Diff 算法：
 3. **复用已有节点**：Vue 2 的 diff 算法会尽量复用已有的节点，以减少 DOM 操作。但是，如果节点的类型不同，就会直接替换整个节点及其子节点。
 
 Vue 3 的 Diff 算法：
+
 1. **Proxy 代理**：Vue 3 使用了 ES6 的 Proxy 对象来实现数据的“响应式”特性。当数据发生变化时，Proxy 可以捕获到对数据的访问，从而知道哪些地方需要更新。
 
 2. **静态标记和 Patch Flag**：在编译阶段，Vue 3 会对模板进行静态标记。这样一来，Vue 3 就知道哪些部分是静态的，哪些部分是动态的。在更新时，Vue 3 使用 Patch Flag 来标记节点的属性，从而确定需要进行的具体操作，比如只更新文本内容、只更新属性等。
@@ -796,7 +787,7 @@ JS 执行是单线程的，它是基于事件循环的。事件循环大致分�
 - 一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
 - 主线程不断重复上面的第三步。
 
-**主线程的执行过程就是一个 tick，而所有的异步结果都是通过 “任务队列” 来调度。** 
+**主线程的执行过程就是一个 tick，而所有的异步结果都是通过 “任务队列” 来调度。**
 
 消息队列中存放的是一个个的任务（task）。
 
@@ -807,16 +798,16 @@ task 分为两大类，分别是 macro task 和 micro task，并且每个 macro 
 #### Vue2 版本的实现
 
 - `next-tick.js` 申明了 `microTimerFunc` 和 `macroTimerFunc` 2 个变量，它们分别对应的是 micro task 的函数和 macro task 的函数。
+
   - 对于 macro task 的实现，优先检测是否支持原生 `setImmediate`，这是一个高版本 IE 和 Edge 才支持的特性，不支持的话再去检测是否支持原生的 `MessageChannel`，如果也不支持的话就会降级为 `setTimeout 0`；
   - 而对于 micro task 的实现，则检测浏览器是否原生支持 Promise，不支持的话直接指向 macro task 的实现。
 
 - `next-tick.js` 对外暴露了 2 个函数，先来看 `nextTick`，这就是执行 `nextTick(flushSchedulerQueue)` 所用到的函数。
+
   - 它的逻辑也很简单，把传入的回调函数 `cb` 压入 `callbacks` 数组，最后一次性地根据 `useMacroTask` 条件执行 `macroTimerFunc` 或者是 `microTimerFunc`
   - 它们都会在下一个 tick 执行 `flushCallbacks`，`flushCallbacks` 的逻辑非常简单，对 `callbacks` 遍历，然后执行相应的回调函数。
 
 - 使用 `callbacks` 而不是直接在 `nextTick` 中执行回调函数的原因是**保证在同一个 tick 内多次执行 `nextTick`，不会开启多个异步任务，而把这些异步任务都压成一个同步任务，在下一个 tick 执行完毕**。
-
-
 
 ## 4. Vue2 中如何监听对象或者数组某个值的变化？
 
@@ -898,27 +889,23 @@ Virtual DOM 实际上是一个树状结构，每一个 VNode 可能会有若干�
   - 如果是 `string` 类型，则接着判断如果是内置的一些节点，则直接创建一个普通 VNode
   - 如果是为已注册的组件名，则通过 `createComponent` 创建一个组件类型的 VNode
   - 否则创建一个未知的标签的 VNode。
--  如果是 `tag` 一个 `Component` 类型，则直接调用 `createComponent` 创建一个组件类型的 VNode 节点
-
-
+- 如果是 `tag` 一个 `Component` 类型，则直接调用 `createComponent` 创建一个组件类型的 VNode 节点
 
 ## 8. 异步组件使用过吗，什么场景使用的？
 
 在大型项目中，我们可能需要拆分应用为更小的块，并仅在需要时再从服务器加载相关组件。
 
-~~~javascript
-import { defineAsyncComponent } from 'vue'
+```javascript
+import { defineAsyncComponent } from "vue";
 
 const AsyncComp = defineAsyncComponent(() => {
   return new Promise((resolve, reject) => {
     // ...从服务器获取组件
-    resolve(/* 获取到的组件 */)
-  })
-})
+    resolve(/* 获取到的组件 */);
+  });
+});
 // ... 像使用其他一般组件一样使用 `AsyncComp`
-~~~
-
-
+```
 
 仅在页面需要它渲染时才会调用加载内部实际组件的函数。它会将接收到的 props 和插槽传给内部组件，所以你可以使用这个异步的包装组件无缝地替换原始组件，同时实现延迟加载。
 
@@ -952,8 +939,6 @@ Vue 挂载（Mount）过程是指将Vue实例与DOM元素建立联系，使Vue�
 2. **方便调试：** 当项目变得复杂时，不同的组件可能会相互嵌套，使用`name`属性可以使开发者更容易识别每个组件在开发工具中的名称，从而更方便地进行调试。
 3. **优化组件树：** 在一些情况下，Vue会根据组件的`name`属性来优化组件树的更新性能。这涉及到Vue的内部优化策略，它可以根据`name`属性的变化来判断组件是否需要重新渲染。
 
-
-
 ## 11. 怎么在组件中监听路由参数的变化？
 
 在Vue中，你可以使用Vue Router提供的`$route`对象来监听路由参数的变化。`$route`对象包含了当前路由的信息，包括路由路径、参数、查询字符串等。你可以通过`$watch`或使用Vue的生命周期钩子函数来实现监听路由参数的变化。
@@ -969,17 +954,17 @@ Vue 挂载（Mount）过程是指将Vue实例与DOM元素建立联系，使Vue�
        <!-- 组件内容 -->
      </div>
    </template>
-   
+
    <script>
    export default {
-     name: 'MyComponent',
+     name: "MyComponent",
      created() {
-       this.$watch('$route', (to, from) => {
+       this.$watch("$route", (to, from) => {
          // to 和 from 是 $route 对象，你可以在这里处理参数变化的逻辑
-         console.log('路由参数变化:', to.params, from.params);
+         console.log("路由参数变化:", to.params, from.params);
        });
-     }
-   }
+     },
+   };
    </script>
    ```
 
@@ -992,16 +977,16 @@ Vue 挂载（Mount）过程是指将Vue实例与DOM元素建立联系，使Vue�
        <!-- 组件内容 -->
      </div>
    </template>
-   
+
    <script>
    export default {
-     name: 'MyComponent',
+     name: "MyComponent",
      beforeRouteUpdate(to, from, next) {
        // to 和 from 是 $route 对象，你可以在这里处理参数变化的逻辑
-       console.log('路由参数变化:', to.params, from.params);
+       console.log("路由参数变化:", to.params, from.params);
        next();
-     }
-   }
+     },
+   };
    </script>
    ```
 
@@ -1054,8 +1039,6 @@ Vue 单向数据流的几个好处：
 需要注意的是，在 Vue 3 中，由于 Composition API 的引入，组件内部可以使用 `ref` 和 `reactive` 等 API 来进行状态的管理，可能会影响到一些生命周期钩子的使用方式。例如，在 Vue 2 中，可以通过在 `mounted` 钩子中直接操作 DOM 元素，而在 Vue 3 中，你可能会倾向于使用 Composition API 的 `onMounted` 钩子来完成类似的操作。
 
 总的来说，虽然在 Vue 3 中可能会有一些不同的使用模式，但可以直接访问 DOM 的生命周期阶段在两个版本中是基本相同的。
-
-
 
 ## 14. 页面首次加载的时候，会触发哪些钩子函数？
 
@@ -1133,8 +1116,6 @@ Vue 单向数据流的几个好处：
 
 总之，`scoped` 属性是 Vue 中用于实现组件作用域样式的重要特性，可以有效地管理和隔离组件的样式。
 
-
-
 #### 样式穿透的写法
 
 在 Vue 中，如果你需要在一个组件的样式中修改或覆盖子组件的样式（即穿透子组件的样式作用域），你可以使用 `>>>` 或 `/deep/` 或 `::v-deep`（Vue 3）选择器来实现。这些选择器会帮助你突破样式的作用域限制，直接影响到子组件的样式。
@@ -1181,8 +1162,6 @@ Vue 单向数据流的几个好处：
 
 需要注意的是，虽然这些选择器可以实现样式的穿透，但过度使用样式穿透可能会导致样式的混乱和不易维护。在大多数情况下，建议通过适当的组件设计和样式约定来避免过多使用样式穿透。
 
-
-
 ## 16. Vue 自带的动画效果
 
 Vue 自带的动画效果是通过 Vue 的过渡系统实现的。过渡系统可以让你在元素进入或离开 DOM 时自动应用动画效果，以及在一些情况下通过触发 CSS 类来实现动画。
@@ -1223,18 +1202,20 @@ Vue 自带的动画效果是通过 Vue 的过渡系统实现的。过渡系统�
 export default {
   data() {
     return {
-      show: false
+      show: false,
     };
-  }
+  },
 };
 </script>
 
 <style>
 /* 定义过渡效果 */
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 </style>
@@ -1248,15 +1229,10 @@ export default {
 
 ### 简单说一下平时为了提升开发效率封装过哪些组件？
 
+###
 
-
-### 
-
-###  接口没出来的时候，做过 mock 吗， 常见的 mock 语法。
-
-
+### 接口没出来的时候，做过 mock 吗， 常见的 mock 语法。
 
 ### data 属性和 methods 方法可以同名吗
 
 可以，methods 的方法名会被 data 的属性覆盖
-

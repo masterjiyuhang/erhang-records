@@ -219,7 +219,7 @@ export function useMessage() {
 
   - 在外部没有提供任何内容的情况下，可以为插槽指定默认内容。
   - ```javascript
-    <button type='submit'>
+    <button type="submit">
       <slot></slot>
     </button>
     ```
@@ -233,15 +233,15 @@ export function useMessage() {
     - 定义
 
     ```javascript
-    <div class='container'>
+    <div class="container">
       <header>
-        <slot name='header'></slot>
+        <slot name="header"></slot>
       </header>
       <main>
         <slot></slot>
       </main>
       <footer>
-        <slot name='footer'></slot>
+        <slot name="footer"></slot>
       </footer>
     </div>
     ```

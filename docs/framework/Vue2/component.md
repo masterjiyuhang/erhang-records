@@ -5,15 +5,15 @@
 下面这段代码通过 `createElement` 传的参数是一个组件而不是一个原生的标签。
 
 ```js
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from "vue";
+import App from "./App.vue";
 
 var app = new Vue({
-  el: '#app',
+  el: "#app",
   // 这里的 h 是 createElement 方法
-  render: (h) => h(App)
+  render: (h) => h(App),
   // render: (createElement) => createElement(App)
-})
+});
 ```
 
 ## createComponent
@@ -25,24 +25,33 @@ var app = new Vue({
 如果是不是，通过 `createComponent` 方法创建一个 VNode。
 
 ```js
-if (typeof tag === 'string') {
-  let Ctor
-  ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag)
+if (typeof tag === "string") {
+  let Ctor;
+  ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag);
   if (config.isReservedTag(tag)) {
     // platform built-in elements
-    vnode = new VNode(config.parsePlatformTagName(tag), data, children, undefined, undefined, context)
-  } else if (isDef((Ctor = resolveAsset(context.$options, 'components', tag)))) {
+    vnode = new VNode(
+      config.parsePlatformTagName(tag),
+      data,
+      children,
+      undefined,
+      undefined,
+      context,
+    );
+  } else if (
+    isDef((Ctor = resolveAsset(context.$options, "components", tag)))
+  ) {
     // component
-    vnode = createComponent(Ctor, data, context, children, tag)
+    vnode = createComponent(Ctor, data, context, children, tag);
   } else {
     // unknown or unlisted namespaced elements
     // check at runtime because it may get assigned a namespace when its
     // parent normalizes children
-    vnode = new VNode(tag, data, children, undefined, undefined, context)
+    vnode = new VNode(tag, data, children, undefined, undefined, context);
   }
 } else {
   // direct component options / constructor
-  vnode = createComponent(tag, data, context, children)
+  vnode = createComponent(tag, data, context, children);
 }
 ```
 
@@ -66,10 +75,10 @@ export function createComponent(
 // 在最开始初始化Vue的阶段， initGlobalAPI时 会把_base 指向 Vue
 // Vue.options._base = Vue
 // 然后在_init方法执行时，会通过 mergeOptions 将 options 扩展到 vm.$options
-const baseCtor = context.$options._base
+const baseCtor = context.$options._base;
 
 if (isObject(Ctor)) {
-  Ctor = baseCtor.extend(Ctor)
+  Ctor = baseCtor.extend(Ctor);
 }
 ```
 
@@ -82,16 +91,16 @@ if (isObject(Ctor)) {
 3. 实例化 VNode
 
 ```js
-const name = Ctor.options.name || tag
+const name = Ctor.options.name || tag;
 const vnode = new VNode(
-  `vue-component-${Ctor.cid}${name ? `-${name}` : ''}`,
+  `vue-component-${Ctor.cid}${name ? `-${name}` : ""}`,
   data,
   undefined,
   undefined,
   undefined,
   context,
   { Ctor, propsData, listeners, tag, children },
-  asyncFactory
-)
-return vnode
+  asyncFactory,
+);
+return vnode;
 ```

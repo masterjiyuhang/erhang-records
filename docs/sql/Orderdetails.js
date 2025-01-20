@@ -8,11 +8,11 @@ const table = `| 1             | 10248   | 11        | 12       |
 | 8             | 10250   | 65        | 15       |`;
 
 const tableData = [];
-table.split('\n').forEach((item) => {
+table.split("\n").forEach((item) => {
   const r = item
-    .split('|')
+    .split("|")
     .map((subItem) => subItem.trim())
-    .filter((thirdItem) => thirdItem !== '');
+    .filter((thirdItem) => thirdItem !== "");
 
   const OrderDetailID = parseInt(r[0]);
   const OrderID = parseInt(r[1]);
@@ -26,7 +26,7 @@ VALUES`;
 
 tableData.forEach(
   (item, index) =>
-    (resSQL += `${item}${index === tableData.length - 1 ? ';' : ','}`)
+    (resSQL += `${item}${index === tableData.length - 1 ? ";" : ","}`),
 );
 
 console.log(resSQL);

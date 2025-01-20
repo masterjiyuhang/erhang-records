@@ -7,7 +7,7 @@ titleTemplate: 二航的生活记录
 
 hero:
   name: ErHang's 公园
-  text: '👋 '
+  text: "👋 "
   tagline: 欢迎来到我的小破站。
   image:
     src: /logo.png

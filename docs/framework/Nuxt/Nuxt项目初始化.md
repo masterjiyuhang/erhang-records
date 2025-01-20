@@ -83,7 +83,7 @@ app.vue
 
 ```js
 export const useFoo = () => {
-  return useState('foo', () => 'bar');
+  return useState("foo", () => "bar");
 };
 ```
 
@@ -134,16 +134,16 @@ Nuxt 提供了两个全局可用的帮助程序，可以直接从中间件返回
 
 ```ts
 export default defineNuxtRouteMiddleware((to, from) => {
-  if (to.params.id === '1') {
+  if (to.params.id === "1") {
     return;
     abortNavigation();
   }
   // In a real app you would probably not redirect every route to `/`
   // however it is important to check `to.path` before redirecting or you
   // might get an infinite redirect loop
-  if (to.path !== '/') {
+  if (to.path !== "/") {
     return;
-    navigateTo('/');
+    navigateTo("/");
   }
 });
 ```
@@ -208,10 +208,10 @@ pages/app.vue
 
 ```vue
 <script setup lang="ts">
-  const route = useRoute();
+const route = useRoute();
 
-  // When accessing /posts/1, route.params.id will be 1
-  console.log(route.params.id);
+// When accessing /posts/1, route.params.id will be 1
+console.log(route.params.id);
 </script>
 ```
 
@@ -228,7 +228,7 @@ Nuxt 提供了一个可在整个应用程序中使用的可自定义路由中间
 export default defineNuxtRouteMiddleware((to, from) => {
   // isAuthenticated() is an example method verifying if a user is authenticated
   if (isAuthenticated() === false) {
-    return navigateTo('/login');
+    return navigateTo("/login");
   }
 });
 ```
@@ -244,14 +244,12 @@ validate 属性接受路由`route`作为参数。您可以返回一个布尔值�
 
 ```vue
 <script setup lang="ts">
-  definePageMeta({
-    validate: async (route) => {
-      // Check if the id is made up of digits
-      return (
-        typeof route.params.id === 'string' && /^\d+$/.test(route.params.id)
-      );
-    },
-  });
+definePageMeta({
+  validate: async (route) => {
+    // Check if the id is made up of digits
+    return typeof route.params.id === "string" && /^\d+$/.test(route.params.id);
+  },
+});
 </script>
 ```
 
@@ -277,14 +275,14 @@ useState 是 SSR 友好的 ref 替代品。
 确保使用 `npx nuxi@latest module add pinia` 安装 Pinia 模块或遵循模块的安装步骤。
 
 ```ts
-export const useWebsiteStore = defineStore('websiteStore', {
+export const useWebsiteStore = defineStore("websiteStore", {
   state: () => ({
-    name: '',
-    description: '',
+    name: "",
+    description: "",
   }),
   actions: {
     async fetch() {
-      const infos = await $fetch('https://api.nuxt.com/modules/pinia');
+      const infos = await $fetch("https://api.nuxt.com/modules/pinia");
 
       this.name = infos.name;
       this.description = infos.description;
@@ -297,9 +295,9 @@ app.vue
 
 ```vue
 <script setup lang="ts">
-  const website = useWebsiteStore();
+const website = useWebsiteStore();
 
-  await callOnce(website.fetch);
+await callOnce(website.fetch);
 </script>
 
 <template>
@@ -349,7 +347,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ['@erhang/eslint-config/nuxt'],
+  extends: ["@erhang/eslint-config/nuxt"],
 };
 ```
 
@@ -362,21 +360,21 @@ module.exports = {
 ```ts
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxtjs/eslint-module', '@pinia/nuxt'], // add moudles
+  modules: ["@nuxtjs/eslint-module", "@pinia/nuxt"], // add moudles
 });
 ```
 
 `mkidir stores` =>` cd stores` => `touch user.ts`
 
 ```ts
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
 
 export const useMyUserStore = defineStore({
-  id: 'myUserStore',
+  id: "myUserStore",
   state: () => ({
     userInfo: {
-      name: 'qe',
-      token: '',
+      name: "qe",
+      token: "",
     },
   }),
   actions: {},
@@ -392,7 +390,7 @@ export const useMyUserStore = defineStore({
 ```ts
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxtjs/eslint-module', '@pinia/nuxt', '@nuxtjs/tailwindcss'], // add moudles
+  modules: ["@nuxtjs/eslint-module", "@pinia/nuxt", "@nuxtjs/tailwindcss"], // add moudles
 });
 ```
 
@@ -414,8 +412,8 @@ export default defineNuxtConfig({
 export default {
   // Defaults options
   tailwindcss: {
-    cssPath: ['~/assets/css/tailwind.css', { injectPosition: 'first' }],
-    configPath: 'tailwind.config',
+    cssPath: ["~/assets/css/tailwind.css", { injectPosition: "first" }],
+    configPath: "tailwind.config",
     exposeConfig: {
       level: 2,
     },
@@ -431,12 +429,12 @@ export default {
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    './components/**/*.{js,vue,ts}',
-    './layouts/**/*.vue',
-    './pages/**/*.vue',
-    './plugins/**/*.{js,ts}',
-    './nuxt.config.{js,ts}',
-    './app.vue',
+    "./components/**/*.{js,vue,ts}",
+    "./layouts/**/*.vue",
+    "./pages/**/*.vue",
+    "./plugins/**/*.{js,ts}",
+    "./nuxt.config.{js,ts}",
+    "./app.vue",
   ],
   theme: {
     extend: {},

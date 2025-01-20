@@ -125,13 +125,13 @@ HTML5 History API 的优点在于可以操作浏览器历史记录，使得路�
 
      ```javascript
      // 字符串路径
-     router.push('/about');
+     router.push("/about");
 
      // 对象形式的位置描述
-     router.push({ path: '/about' });
+     router.push({ path: "/about" });
 
      // 命名的路由
-     router.push({ name: 'about' });
+     router.push({ name: "about" });
      ```
 
    - 使用 `router.replace()` 方法：与 `push` 方法类似，但不会留下历史记录。
@@ -145,15 +145,15 @@ HTML5 History API 的优点在于可以操作浏览器历史记录，使得路�
    const router = new VueRouter({
      routes: [
        {
-         path: '/about',
-         name: 'about',
+         path: "/about",
+         name: "about",
          component: AboutComponent,
        },
      ],
    });
 
    // 使用命名路由进行导航
-   router.push({ name: 'about' });
+   router.push({ name: "about" });
    ```
 
 4. **动态路径参数**：
@@ -161,7 +161,7 @@ HTML5 History API 的优点在于可以操作浏览器历史记录，使得路�
 
    ```javascript
    // 动态路径参数
-   router.push('/users/' + userId);
+   router.push("/users/" + userId);
    ```
 
    这将会导航到 `/users/:userId` 路径，并将 `userId` 参数传递给路由组件。
@@ -188,13 +188,13 @@ HTML5 History API 的优点在于可以操作浏览器历史记录，使得路�
 
    ```javascript
    // 使用路径进行跳转
-   router.push('/about');
+   router.push("/about");
 
    // 使用命名路由进行跳转
-   router.push({ name: 'about' });
+   router.push({ name: "about" });
 
    // 替换当前路由
-   router.replace('/about');
+   router.replace("/about");
 
    // 后退/前进
    router.go(-1);
@@ -206,15 +206,15 @@ HTML5 History API 的优点在于可以操作浏览器历史记录，使得路�
    const router = new VueRouter({
      routes: [
        {
-         path: '/user/:id',
-         name: 'user',
+         path: "/user/:id",
+         name: "user",
          component: User,
        },
      ],
    });
 
    // 通过名称进行导航
-   router.push({ name: 'user', params: { id: 123 } });
+   router.push({ name: "user", params: { id: 123 } });
    ```
 
 4. **重定向和别名**：在路由配置中可以设置重定向和别名，通过这些设置可以实现自动跳转到其他路由或为路由设置别名。
@@ -241,7 +241,7 @@ HTML5 History API 的优点在于可以操作浏览器历史记录，使得路�
 router.beforeEach((to, from, next) => {
   // 获取即将要跳转到的页面的 hash 值
   const toHash = to.hash;
-  console.log('目标页面的 hash:', toHash);
+  console.log("目标页面的 hash:", toHash);
   next();
 });
 ```
@@ -261,7 +261,7 @@ router.beforeEach((to, from, next) => {
    ```javascript
    // 路由配置
    const router = new VueRouter({
-     routes: [{ path: '/user/:id', component: User }],
+     routes: [{ path: "/user/:id", component: User }],
    });
 
    // 获取参数值
@@ -277,7 +277,7 @@ router.beforeEach((to, from, next) => {
    ```javascript
    // 路由配置
    const router = new VueRouter({
-     routes: [{ path: '/user', component: User }],
+     routes: [{ path: "/user", component: User }],
    });
 
    // 获取参数值

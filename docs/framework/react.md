@@ -12,8 +12,8 @@
 
 ```javascript
 const memoizedCallback = useCallback(() => {
-  console.log('callback run...')
-}, [counter, list])
+  console.log("callback run...");
+}, [counter, list]);
 ```
 
 `useMemo`
@@ -22,8 +22,8 @@ const memoizedCallback = useCallback(() => {
 
 ```javascript
 const memoizedValue = useMemo(() => {
-  return 'some value'
-}, [dependency1, dependency2])
+  return "some value";
+}, [dependency1, dependency2]);
 ```
 
 useMemo 接收两个参数：计算函数和依赖项数组。

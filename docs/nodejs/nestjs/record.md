@@ -17,13 +17,13 @@ pnpm i @nestjs/swagger
 const swaggerDocument = SwaggerModule.createDocument(
   app,
   new DocumentBuilder()
-    .setTitle('API Document')
-    .setDescription('erhang server descriptions')
-    .setVersion('1.0')
+    .setTitle("API Document")
+    .setDescription("erhang server descriptions")
+    .setVersion("1.0")
     .addBearerAuth()
-    .build()
+    .build(),
 );
-SwaggerModule.setup('/swagger', app, swaggerDocument);
+SwaggerModule.setup("/swagger", app, swaggerDocument);
 ```
 
 ### 初始化 CROS 配置跨域
@@ -43,17 +43,17 @@ app.enableCors({
 `pnpm i @nestjs/config`
 
 ```ts
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { DogsController } from '@modules/dogs/dogs.controller';
-import { CatsController } from '@modules/cats/cats.controller';
-import { BirdsModule } from '@modules/birds/birds.module';
-import { ConfigModule } from '@nestjs/config'; // 新增
+import { Module } from "@nestjs/common";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
+import { DogsController } from "@modules/dogs/dogs.controller";
+import { CatsController } from "@modules/cats/cats.controller";
+import { BirdsModule } from "@modules/birds/birds.module";
+import { ConfigModule } from "@nestjs/config"; // 新增
 
 const envConfig = {
-  dev: '.env.dev',
-  prod: '.env.prod',
+  dev: ".env.dev",
+  prod: ".env.prod",
 }; // 新增
 
 // 应用程序的根模块。
@@ -62,7 +62,7 @@ const envConfig = {
     BirdsModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: envConfig[process.env.NODE_ENV] || '.env',
+      envFilePath: envConfig[process.env.NODE_ENV] || ".env",
       load: [DefaultConfig, BaseConfig],
       cache: false,
     }), // 新增
@@ -75,21 +75,21 @@ export class AppModule {}
 
 ```ts
 // src/common/config/index.ts
-import { registerAs } from '@nestjs/config';
+import { registerAs } from "@nestjs/config";
 
 export const DefaultConfig = () => ({
-  jwtSecret: '1Q2e3W4!4%!!@*^sq123s',
-  jwtRefreshSecret: 'qwe@s#F43K*&sqw4@^2^21q',
+  jwtSecret: "1Q2e3W4!4%!!@*^sq123s",
+  jwtRefreshSecret: "qwe@s#F43K*&sqw4@^2^21q",
 
   serverPort: process.env.PORT || 3000,
 });
 
-export const BaseConfig = registerAs('BaseConfig', () => ({
+export const BaseConfig = registerAs("BaseConfig", () => ({
   dbConfig: {
     host: process.env.DATABASE_HOST || `127.0.0.1`,
     port: process.env.DATABASE_PORT || 3306,
-    username: process.env.DATABASE_USER || 'root',
-    password: process.env.DATABASE_PASSWORD || '123456',
+    username: process.env.DATABASE_USER || "root",
+    password: process.env.DATABASE_PASSWORD || "123456",
   },
 }));
 ```
@@ -101,20 +101,20 @@ export const BaseConfig = registerAs('BaseConfig', () => ({
 配置全局的限流策略
 
 ```ts
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { DogsController } from '@modules/dogs/dogs.controller';
-import { CatsController } from '@modules/cats/cats.controller';
-import { BirdsModule } from '@modules/birds/birds.module';
-import { ConfigModule } from '@nestjs/config';
-import { BaseConfig, DefaultConfig } from '~common/config';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'; // 新增
-import { APP_GUARD } from '@nestjs/core'; // 新增
+import { Module } from "@nestjs/common";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
+import { DogsController } from "@modules/dogs/dogs.controller";
+import { CatsController } from "@modules/cats/cats.controller";
+import { BirdsModule } from "@modules/birds/birds.module";
+import { ConfigModule } from "@nestjs/config";
+import { BaseConfig, DefaultConfig } from "~common/config";
+import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler"; // 新增
+import { APP_GUARD } from "@nestjs/core"; // 新增
 
 const envConfig = {
-  dev: '.env.dev',
-  prod: '.env.prod',
+  dev: ".env.dev",
+  prod: ".env.prod",
 };
 
 // 应用程序的根模块。
@@ -122,7 +122,7 @@ const envConfig = {
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: envConfig[process.env.NODE_ENV] || '.env',
+      envFilePath: envConfig[process.env.NODE_ENV] || ".env",
       load: [DefaultConfig, BaseConfig],
       cache: false,
     }),
@@ -156,8 +156,8 @@ export class AppModule {}
 
 ```typescript
 // app.module.ts
-import { Module } from '@nestjs/common';
-import { ScheduleModule } from '@nestjs/schedule';
+import { Module } from "@nestjs/common";
+import { ScheduleModule } from "@nestjs/schedule";
 
 @Module({
   imports: [ScheduleModule.forRoot()],
@@ -169,36 +169,36 @@ export class AppModule {}
 
 ```ts
 // src/core/cron-job/cron-job.service.ts
-import { Injectable, Logger } from '@nestjs/common';
-import { Cron, CronExpression, Interval } from '@nestjs/schedule';
+import { Injectable, Logger } from "@nestjs/common";
+import { Cron, CronExpression, Interval } from "@nestjs/schedule";
 
 @Injectable()
 export class CronJobService {
   private readonly logger = new Logger(CronJobService.name);
 
-  private static readonly EVERY_MONDAY_AT_2AM = '0 2 * * 1';
+  private static readonly EVERY_MONDAY_AT_2AM = "0 2 * * 1";
   @Cron(CronJobService.EVERY_MONDAY_AT_2AM)
   async resetRankListWeekly() {
-    this.logger.debug('每周一两点执行一次。');
+    this.logger.debug("每周一两点执行一次。");
   }
 
   // 要声明一个以一定间隔运行的方法，使用@Interval()装饰器前缀
   @Interval(60000 * 5)
   handleInterval() {
-    this.logger.debug('每间隔 5 m 执行');
+    this.logger.debug("每间隔 5 m 执行");
   }
 
-  @Cron('*/6 * * * * *', {
-    name: 'sixCron',
-    timeZone: 'Europe/Paris',
+  @Cron("*/6 * * * * *", {
+    name: "sixCron",
+    timeZone: "Europe/Paris",
   })
   triggerNotifications() {
-    this.logger.debug('six cron 每6s执行一次～');
+    this.logger.debug("six cron 每6s执行一次～");
   }
 
   @Cron(CronExpression.EVERY_30_SECONDS)
   handleCron() {
-    this.logger.debug('Called every 30 seconds');
+    this.logger.debug("Called every 30 seconds");
   }
 }
 ```
@@ -237,17 +237,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 ```ts
 // src/core/core.module.ts
 
-import { Module } from '@nestjs/common';
-import { CronJobModule } from '@core/cron-job/cron-job.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigService } from '@nestjs/config';
+import { Module } from "@nestjs/common";
+import { CronJobModule } from "@core/cron-job/cron-job.module";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { ConfigService } from "@nestjs/config";
 
 @Module({
   imports: [
     CronJobModule,
     TypeOrmModule.forRootAsync({
       useFactory: (config: ConfigService) => {
-        return config.get('BaseConfig')['dbConfig'];
+        return config.get("BaseConfig")["dbConfig"];
       },
       inject: [ConfigService],
     }),
@@ -274,12 +274,12 @@ import {
   Patch,
   Param,
   Delete,
-} from '@nestjs/common';
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+} from "@nestjs/common";
+import { UserService } from "./user.service";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
 
-@Controller('user')
+@Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -293,18 +293,18 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get(":id")
+  findOne(@Param("id") id: string) {
     return this.userService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  @Patch(":id")
+  update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete(":id")
+  remove(@Param("id") id: string) {
     return this.userService.remove(+id);
   }
 }
@@ -314,12 +314,12 @@ export class UserController {
 
 ```ts
 // src/modules/user/user.module.ts
-import { Module } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserController } from './user.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
-import { UserSubscriber } from './user.subscriber';
+import { Module } from "@nestjs/common";
+import { UserService } from "./user.service";
+import { UserController } from "./user.controller";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { User } from "./entities/user.entity";
+import { UserSubscriber } from "./user.subscriber";
 
 @Module({
   // 要开始使用 User 实体，我们需要通过将其插入模块 forRoot() 方法选项中的实体数组来让 TypeORM 使用它
@@ -334,19 +334,19 @@ export class UserModule {}
 
 ```ts
 // src/modules/user/user.service.ts
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
-import { DataSource, Repository } from 'typeorm';
+import { Injectable } from "@nestjs/common";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { User } from "./entities/user.entity";
+import { DataSource, Repository } from "typeorm";
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-    private dataSource: DataSource
+    private dataSource: DataSource,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<string | User> {
@@ -356,7 +356,7 @@ export class UserService {
     });
 
     if (existUser) {
-      return '存在用户了';
+      return "存在用户了";
     }
 
     const newUser = this.usersRepository.create({
@@ -413,7 +413,7 @@ export class UserService {
       await this.usersRepository.save(res);
       return res;
     } else {
-      return '用户不存在';
+      return "用户不存在";
     }
   }
 
@@ -428,8 +428,8 @@ export class UserService {
 
 ```ts
 // src/modules/user/entities/user.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { CustomerEntity } from '../../../common/entities/customer.entity';
+import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { CustomerEntity } from "../../../common/entities/customer.entity";
 
 /**
  * user 实体
@@ -460,43 +460,43 @@ export class User extends CustomerEntity {
 
 ```ts
 //src/modules/user/dto/create-user.dto.ts
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateUserDto {
   @ApiProperty({
-    example: 'erhang',
-    description: 'The username of the user',
+    example: "erhang",
+    description: "The username of the user",
   })
   username: string; // 用户名
 
   @ApiProperty({
-    example: 'john.doe@example.com',
-    description: 'The email of the user',
+    example: "john.doe@example.com",
+    description: "The email of the user",
   })
   email: string; // 邮箱
 
   @ApiProperty({
-    example: '15512349876',
-    description: 'The phone of the user',
+    example: "15512349876",
+    description: "The phone of the user",
   })
   phone: string; // 电话
 
   @ApiProperty({
-    example: '123456',
-    description: 'The password of the user',
+    example: "123456",
+    description: "The password of the user",
   })
   password: string; // 密码
 }
 
 // src/modules/user/dto/update-user.dto.ts
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateUserDto } from './create-user.dto';
-import { ApiProperty } from '@nestjs/swagger';
+import { PartialType } from "@nestjs/mapped-types";
+import { CreateUserDto } from "./create-user.dto";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
   @ApiProperty({
-    example: '1234567',
-    description: 'The new password of the user',
+    example: "1234567",
+    description: "The new password of the user",
   })
   password: string; // 密码
 }
@@ -505,15 +505,15 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 #### 测试表关联
 
 ```ts
-import { Role } from '@modules/roles/entities/role.entity';
+import { Role } from "@modules/roles/entities/role.entity";
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   ManyToMany,
   JoinTable,
-} from 'typeorm';
-import { CustomerEntity } from '~common/entities/customer.entity';
+} from "typeorm";
+import { CustomerEntity } from "~common/entities/customer.entity";
 
 /**
  * user 实体
@@ -541,19 +541,19 @@ export class User extends CustomerEntity {
   // 新增
   @ManyToMany(() => Role)
   @JoinTable({
-    name: 'user_role_relation',
+    name: "user_role_relation",
   })
   roles: Role[];
 }
 
 // src/modules/user/user.module.ts
-import { Module } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserController } from './user.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
-import { UserSubscriber } from './user.subscriber';
-import { Role } from '@modules/roles/entities/role.entity';
+import { Module } from "@nestjs/common";
+import { UserService } from "./user.service";
+import { UserController } from "./user.controller";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { User } from "./entities/user.entity";
+import { UserSubscriber } from "./user.subscriber";
+import { Role } from "@modules/roles/entities/role.entity";
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Role])], // 新增 Role
@@ -582,12 +582,12 @@ export enum ApiErrorCode {
 }
 
 // src/common/filters/exception-list.ts
-import { HttpException, HttpStatus } from '@nestjs/common';
-import { ApiErrorCode } from '../enums/api-error-code.enum';
+import { HttpException, HttpStatus } from "@nestjs/common";
+import { ApiErrorCode } from "../enums/api-error-code.enum";
 
 export class ForbiddenException extends HttpException {
   constructor() {
-    super('Forbidden', HttpStatus.FORBIDDEN);
+    super("Forbidden", HttpStatus.FORBIDDEN);
   }
 }
 
@@ -598,7 +598,7 @@ export class ApiException extends HttpException {
   constructor(
     errorMessage: string,
     errorCode: ApiErrorCode,
-    statusCode: HttpStatus = HttpStatus.OK
+    statusCode: HttpStatus = HttpStatus.OK,
   ) {
     super(errorMessage, statusCode);
     this.errorMessage = errorMessage;
@@ -620,9 +620,9 @@ import {
   Catch,
   ExceptionFilter,
   HttpException,
-} from '@nestjs/common';
-import { Request, Response } from 'express';
-import { ApiException } from './exception-list';
+} from "@nestjs/common";
+import { Request, Response } from "express";
+import { ApiException } from "./exception-list";
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -657,7 +657,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
 ```ts
 // main.ts
-import { HttpExceptionFilter } from '~common/filters/http-exception.filter';
+import { HttpExceptionFilter } from "~common/filters/http-exception.filter";
 
 // ...
 
@@ -676,17 +676,17 @@ app.useGlobalFilters(new HttpExceptionFilter());
 ```ts
 //src/common/middlewares/logger.middleware.ts
 
-import { Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response } from 'express';
-import { blue, italic, red, yellow } from '~common/utils';
+import { Injectable, NestMiddleware } from "@nestjs/common";
+import { Request, Response } from "express";
+import { blue, italic, red, yellow } from "~common/utils";
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: (error?: any) => void) {
     console.log(
-      italic(red('⏰ Logger middle wares was running.....')),
-      yellow('请求方法：' + req.method),
-      blue('请求路径：' + req.url)
+      italic(red("⏰ Logger middle wares was running.....")),
+      yellow("请求方法：" + req.method),
+      blue("请求路径：" + req.url),
     );
     next();
   }
@@ -702,9 +702,9 @@ import {
   ExecutionContext,
   Injectable,
   NestInterceptor,
-} from '@nestjs/common';
-import { Response } from 'express';
-import { Observable, map } from 'rxjs';
+} from "@nestjs/common";
+import { Response } from "express";
+import { Observable, map } from "rxjs";
 
 @Injectable()
 export class TransformInterceptor<T>
@@ -717,16 +717,16 @@ export class TransformInterceptor<T>
 
   intercept(
     context: ExecutionContext,
-    next: CallHandler<T>
+    next: CallHandler<T>,
   ): Observable<any> | Promise<Observable<any>> {
     return next.handle().pipe(
       map((data) => {
         return {
           code: 200,
           data,
-          msg: '请求成功！',
+          msg: "请求成功！",
         };
-      })
+      }),
     );
   }
 }
@@ -736,24 +736,24 @@ import {
   ExecutionContext,
   Injectable,
   NestInterceptor,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import * as colors from 'picocolors';
+} from "@nestjs/common";
+import { Observable } from "rxjs";
+import { tap } from "rxjs/operators";
+import * as colors from "picocolors";
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    console.log(colors.bgCyan('LoggingInterceptor Before....'));
+    console.log(colors.bgCyan("LoggingInterceptor Before...."));
     const now = Date.now();
     return next
       .handle()
       .pipe(
         tap(() =>
           console.log(
-            colors.bgCyan(`LoggingInterceptor After... ${Date.now() - now}ms`)
-          )
-        )
+            colors.bgCyan(`LoggingInterceptor After... ${Date.now() - now}ms`),
+          ),
+        ),
       );
   }
 }
@@ -767,22 +767,22 @@ import {
   Module,
   NestModule,
   RequestMethod,
-} from '@nestjs/common';
-import { CronJobModule } from '@core/cron-job/cron-job.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigService } from '@nestjs/config';
-import { DataSource } from 'typeorm';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { LoggingInterceptor } from '~common/interceptors/logging.interceptor';
-import { TransformInterceptor } from '~common/interceptors/transform.interceptor';
-import { LoggerMiddleware } from '~common/middlewares/logger.middleware';
+} from "@nestjs/common";
+import { CronJobModule } from "@core/cron-job/cron-job.module";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { ConfigService } from "@nestjs/config";
+import { DataSource } from "typeorm";
+import { APP_INTERCEPTOR } from "@nestjs/core";
+import { LoggingInterceptor } from "~common/interceptors/logging.interceptor";
+import { TransformInterceptor } from "~common/interceptors/transform.interceptor";
+import { LoggerMiddleware } from "~common/middlewares/logger.middleware";
 
 @Module({
   imports: [
     CronJobModule,
     TypeOrmModule.forRootAsync({
       useFactory: (config: ConfigService) => {
-        return config.get('BaseConfig')['dbConfig'];
+        return config.get("BaseConfig")["dbConfig"];
       },
       inject: [ConfigService],
     }),
@@ -796,7 +796,7 @@ export class CoreModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     // 全局应用中间件
     consumer.apply(LoggerMiddleware).forRoutes({
-      path: '*',
+      path: "*",
       method: RequestMethod.ALL,
     });
   }
@@ -807,7 +807,7 @@ export class CoreModule implements NestModule {
 ### 初始化自定义装饰器
 
 ```ts
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { createParamDecorator, ExecutionContext } from "@nestjs/common";
 
 export const User = createParamDecorator(
   (data: string, ctx: ExecutionContext) => {
@@ -815,7 +815,7 @@ export const User = createParamDecorator(
     const user = request.user;
     console.log(user);
     return data ? user?.[data] : user;
-  }
+  },
 );
 ```
 
@@ -837,7 +837,7 @@ Tips: 通常情况下，在发送这个请求进行测试时。不需要额外�
 
 ```ts
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
+export class JwtAuthGuard extends AuthGuard("jwt") {
   constructor(private reflector: Reflector) {
     super();
   }
@@ -871,9 +871,9 @@ Nest 会自动将 JwtAuthGuard 绑定到所有接口。
 声明公共路由
 
 ```ts
-import { SetMetadata } from '@nestjs/common';
+import { SetMetadata } from "@nestjs/common";
 
-export const IS_PUBLIC_KEY = 'isPublic';
+export const IS_PUBLIC_KEY = "isPublic";
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
 ```
 
@@ -889,7 +889,7 @@ findAll() {
 
 ```ts
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
+export class JwtAuthGuard extends AuthGuard("jwt") {
   constructor(private reflector: Reflector) {
     super();
   }
@@ -929,8 +929,8 @@ $ pnpm install --save-dev @types/passport-local
 创建 `validateUser()` 方法用于检索用户和校验密码
 
 ```ts
-import { Injectable, Dependencies } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { Injectable, Dependencies } from "@nestjs/common";
+import { UsersService } from "../users/users.service";
 
 @Injectable()
 @Dependencies(UsersService)
@@ -956,10 +956,10 @@ export class AuthService {
 
 ```ts
 // local.strategy.ts
-import { Strategy } from 'passport-local';
-import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { Strategy } from "passport-local";
+import { PassportStrategy } from "@nestjs/passport";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { AuthService } from "./auth.service";
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -988,11 +988,11 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 #### 使用 passport local 认证策略
 
 ```ts
-import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { UsersModule } from '../users/users.module';
-import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './local.strategy';
+import { Module } from "@nestjs/common";
+import { AuthService } from "./auth.service";
+import { UsersModule } from "../users/users.module";
+import { PassportModule } from "@nestjs/passport";
+import { LocalStrategy } from "./local.strategy";
 
 @Module({
   imports: [UsersModule, PassportModule],
@@ -1028,12 +1028,12 @@ $ pnpm install --save-dev @types/passport @types/passport-jwt
 在 `AuthModule` 中引入 `JwtModule` 并配置过期时间
 
 ```ts
-import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { UserModule } from '@modules/user/user.module';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
+import { Module } from "@nestjs/common";
+import { AuthService } from "./auth.service";
+import { AuthController } from "./auth.controller";
+import { UserModule } from "@modules/user/user.module";
+import { JwtModule } from "@nestjs/jwt";
+import { ConfigService } from "@nestjs/config";
 
 @Module({
   imports: [
@@ -1042,8 +1042,8 @@ import { ConfigService } from '@nestjs/config';
       global: true,
       useFactory: (config: ConfigService) => {
         return {
-          secret: config.get('jwtSecret'),
-          signOptions: { expiresIn: '7d' },
+          secret: config.get("jwtSecret"),
+          signOptions: { expiresIn: "7d" },
         };
       },
       inject: [ConfigService],
@@ -1064,16 +1064,16 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-} from '@nestjs/common';
+} from "@nestjs/common";
 // import { CreateAuthDto } from './dto/create-auth.dto';
 // import { UpdateAuthDto } from './dto/update-auth.dto';
-import { LoginUserDto } from '@modules/user/dto/login-user.dto';
-import { UserService } from '@modules/user/user.service';
-import { Token } from './dto/update-auth.dto';
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto } from '@modules/user/dto/create-user.dto';
-import { User } from '@modules/user/entities/user.entity';
+import { LoginUserDto } from "@modules/user/dto/login-user.dto";
+import { UserService } from "@modules/user/user.service";
+import { Token } from "./dto/update-auth.dto";
+import { ConfigService } from "@nestjs/config";
+import { JwtService } from "@nestjs/jwt";
+import { CreateUserDto } from "@modules/user/dto/create-user.dto";
+import { User } from "@modules/user/entities/user.entity";
 
 export type userId = number | string;
 export type generateTokenPayload = {
@@ -1085,20 +1085,20 @@ export class AuthService {
   constructor(
     private usersService: UserService,
     private configService: ConfigService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
   async login(dto: LoginUserDto) {
     const user = await this.usersService.findByUsername(dto);
 
     if (!user) {
-      throw new HttpException('用户不存在', HttpStatus.NOT_FOUND);
+      throw new HttpException("用户不存在", HttpStatus.NOT_FOUND);
     }
 
     const passwordValid = await this.usersService.verifyUserPassword(dto, user);
 
     if (!passwordValid) {
-      throw new BadRequestException('Invalid password');
+      throw new BadRequestException("Invalid password");
     }
 
     return this.generateTokens({
@@ -1111,7 +1111,7 @@ export class AuthService {
     const user = await this.usersService.findByUsername(dto);
 
     if (user) {
-      throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+      throw new HttpException("User already exists", HttpStatus.BAD_REQUEST);
     }
     const res: User = await this.usersService.create(dto);
     const payload = { userId: res.id, username: res.username };
@@ -1136,15 +1136,15 @@ export class AuthService {
 
   private generateRefreshToken(payload: generateTokenPayload): string {
     return this.jwtService.sign(payload, {
-      secret: this.configService.get('jwtRefreshSecret'),
-      expiresIn: '7d', // Set greater than the expiresIn of the access_token
+      secret: this.configService.get("jwtRefreshSecret"),
+      expiresIn: "7d", // Set greater than the expiresIn of the access_token
     });
   }
 
   private generateAccessToken(payload: generateTokenPayload): string {
     return this.jwtService.sign(payload, {
-      secret: this.configService.get('jwtSecret'),
-      expiresIn: '1d', // Set greater than the expiresIn of the access_token
+      secret: this.configService.get("jwtSecret"),
+      expiresIn: "1d", // Set greater than the expiresIn of the access_token
     });
   }
 }
@@ -1153,22 +1153,25 @@ export class AuthService {
 ##### 全局 `AuthGuard` 自定义守卫
 
 ```ts
-import { generateTokenPayload } from '@core/auth/auth.service';
+import { generateTokenPayload } from "@core/auth/auth.service";
 import {
   CanActivate,
   ExecutionContext,
   Injectable,
   UnauthorizedException,
-} from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
-import { DefaultConfig } from '~common/config';
-import { IS_PUBLIC_KEY } from '~common/decorators/public.decorator';
+} from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
+import { JwtService } from "@nestjs/jwt";
+import { Request } from "express";
+import { DefaultConfig } from "~common/config";
+import { IS_PUBLIC_KEY } from "~common/decorators/public.decorator";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService, private reflector: Reflector) {}
+  constructor(
+    private jwtService: JwtService,
+    private reflector: Reflector,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
@@ -1188,17 +1191,17 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    console.log('global auth guard is executed.');
+    console.log("global auth guard is executed.");
 
     try {
       const payload: generateTokenPayload = await this.jwtService.verifyAsync(
         token,
         {
           secret: DefaultConfig().jwtSecret,
-        }
+        },
       );
 
-      request['user'] = payload;
+      request["user"] = payload;
     } catch {
       throw new UnauthorizedException();
     }
@@ -1206,8 +1209,8 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
+    const [type, token] = request.headers.authorization?.split(" ") ?? [];
+    return type === "Bearer" ? token : undefined;
   }
 }
 ```
@@ -1233,23 +1236,23 @@ export class AuthGuard implements CanActivate {
 - 最后，基于 JWT 签名的工作方式，我们可以确信我们收到的是一个有效的令牌，而且这个令牌曾经是我们之前签发给一个合法用户的。这是因为 JWT 签名是使用私钥进行的，而验证是使用相应的公钥进行的。只有使用正确的私钥才能成功地签名 JWT，而只有使用相应的公钥才能成功地验证 JWT。因此，当我们在 `validate()` 方法中接收到解码后的 JSON 数据时，我们可以放心地信任这个令牌是有效的，并且是之前签发给一个合法用户的。
 
 ```ts
-import { UserService } from '@modules/user/user.service';
-import { ExtractJwt, Strategy } from 'passport-jwt';
-import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { generateTokenPayload } from './auth.service';
+import { UserService } from "@modules/user/user.service";
+import { ExtractJwt, Strategy } from "passport-jwt";
+import { PassportStrategy } from "@nestjs/passport";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { generateTokenPayload } from "./auth.service";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     readonly configService: ConfigService,
-    private userService: UserService
+    private userService: UserService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // 提供从请求中提取 JWT 的方法。我们将使用在 API 请求的授权头中提供token的标准方法。
       ignoreExpiration: false,
-      secretOrKey: configService.get('jwtSecret'),
+      secretOrKey: configService.get("jwtSecret"),
     });
   }
 
@@ -1308,43 +1311,43 @@ import {
   Get,
   UseGuards,
   Request,
-} from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Public } from '~common/decorators/public.decorator';
-import { LoginUserDto } from '@modules/user/dto/login-user.dto';
-import { CreateUserDto } from '@modules/user/dto/create-user.dto';
-import { User } from '~common/decorators/user.decorator';
+} from "@nestjs/common";
+import { AuthService } from "./auth.service";
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Public } from "~common/decorators/public.decorator";
+import { LoginUserDto } from "@modules/user/dto/login-user.dto";
+import { CreateUserDto } from "@modules/user/dto/create-user.dto";
+import { User } from "~common/decorators/user.decorator";
 import {
   CustomerAuthGuard,
   JwtAuthGuard,
   LocalAuthGuard,
   // LocalAuthGuard,
-} from '~common/guards/auth.guard';
+} from "~common/guards/auth.guard";
 
-@Controller('auth')
-@ApiTags('Authentication 认证')
+@Controller("auth")
+@ApiTags("Authentication 认证")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('login')
+  @Post("login")
   @Public()
   @HttpCode(HttpStatus.OK)
   login(@Body() dto: LoginUserDto) {
     return this.authService.login(dto);
   }
 
-  @Post('signup')
+  @Post("signup")
   @Public()
   @HttpCode(HttpStatus.OK)
   signUp(@Body() dto: CreateUserDto) {
     return this.authService.signUp(dto);
   }
 
-  @Get('userInfo')
+  @Get("userInfo")
   @UseGuards(CustomerAuthGuard)
   @ApiBearerAuth()
-  @ApiOperation({ summary: '用于校验用户自定义 CustomerAuthGuard' })
+  @ApiOperation({ summary: "用于校验用户自定义 CustomerAuthGuard" })
   getUserInfo(@User() user: any) {
     return user;
   }
@@ -1355,8 +1358,8 @@ export class AuthController {
    * @returns
    */
   @UseGuards(LocalAuthGuard)
-  @Post('localTest')
-  @ApiOperation({ summary: '用于测试 passport local' })
+  @Post("localTest")
+  @ApiOperation({ summary: "用于测试 passport local" })
   async loginLocal(@Body() dto: LoginUserDto) {
     return this.authService.login(dto);
   }
@@ -1367,9 +1370,9 @@ export class AuthController {
    * @returns
    */
   @UseGuards(JwtAuthGuard)
-  @Get('profile')
+  @Get("profile")
   @ApiBearerAuth()
-  @ApiOperation({ summary: '用于测试 passport-jwt' })
+  @ApiOperation({ summary: "用于测试 passport-jwt" })
   getProfile(@Request() req: any) {
     return req.user;
   }
@@ -1383,23 +1386,23 @@ export class AuthController {
 JWT 策略守卫：JWT 策略守卫是一种用于保护路由的守卫（guard），它基于 JWT 实现身份验证和授权。当用户尝试访问受保护的路由时，JWT 策略守卫会检查请求中的 JWT 是否有效，并验证其中的用户信息。如果 JWT 有效且包含了足够的授权信息，则允许用户访问路由，否则拒绝访问并返回相应的错误信息。
 
 ```ts
-import { Controller, Get, Request, Post, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
-import { LocalAuthGuard } from './auth/local-auth.guard';
-import { AuthService } from './auth/auth.service';
+import { Controller, Get, Request, Post, UseGuards } from "@nestjs/common";
+import { JwtAuthGuard } from "./auth/jwt-auth.guard";
+import { LocalAuthGuard } from "./auth/local-auth.guard";
+import { AuthService } from "./auth/auth.service";
 
 @Controller()
 export class AppController {
   constructor(private authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
-  @Post('auth/login')
+  @Post("auth/login")
   async login(@Request() req) {
     return this.authService.login(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('profile')
+  @Get("profile")
   getProfile(@Request() req) {
     return req.user;
   }

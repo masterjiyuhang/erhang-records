@@ -5,6 +5,7 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
+    "prettier": "3.4.2",
     "scss": "^0.2.4",
     "stylus": "^0.59.0",
     "vitepress": "1.0.0-rc.44",

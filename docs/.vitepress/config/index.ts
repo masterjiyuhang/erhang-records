@@ -1,10 +1,9 @@
-import { defineConfig } from 'vitepress';
+import { defineConfig } from 'vitepress'
 import { getSidebarConfig } from '../../util/index'
 
-const rControl = /[\u0000-\u001f]/g;
-const rSpecial = /[\s~`!@#$%^&*()\-_+=[\]{}|\\;:"'“”‘’<>,.?/]+/g;
-const rCombining = /[\u0300-\u036F]/g;
-
+const rControl = /[\u0000-\u001f]/g
+const rSpecial = /[\s~`!@#$%^&*()\-_+=[\]{}|\\;:"'“”‘’<>,.?/]+/g
+const rCombining = /[\u0300-\u036F]/g
 
 /**
  * Default slugification function
@@ -19,7 +18,7 @@ export const slugify = (str: string): string =>
     // Replace special characters
     .replace(rSpecial, '-')
     // ensure it doesn't start with a number
-    .replace(/^(\d)/, '_$1');
+    .replace(/^(\d)/, '_$1')
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -89,7 +88,9 @@ export default defineConfig({
     sidebar: {
       '/titles/': [
         { text: '概述', link: '/titles/' },
-       getSidebarConfig('/titles/202501')
+        getSidebarConfig('/titles/202501'),
+        getSidebarConfig('/titles/热评总结'),
+        getSidebarConfig('/titles/类型'),
       ],
       '/interviewBook/': [
         {
@@ -130,9 +131,7 @@ export default defineConfig({
         },
         {
           text: 'Locks',
-          items: [
-            { text: 'Lock Comp Examples', link: '/locks/demo01' },
-          ],
+          items: [{ text: 'Lock Comp Examples', link: '/locks/demo01' }],
         },
         {
           text: '软考',
@@ -383,7 +382,8 @@ export default defineConfig({
     // ],
     footer: {
       copyright: 'Copyright © 2019-present ErHang',
-      message: ' <a href="https://beian.miit.gov.cn/" target="_blank">辽ICP备2023008348号-3 </a>',
+      message:
+        ' <a href="https://beian.miit.gov.cn/" target="_blank">辽ICP备2023008348号-3 </a>',
     },
     docFooter: {
       prev: '上一页',
@@ -394,4 +394,4 @@ export default defineConfig({
     ],
   },
   lastUpdated: true,
-});
+})
