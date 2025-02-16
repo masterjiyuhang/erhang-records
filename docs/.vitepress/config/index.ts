@@ -116,6 +116,10 @@ export default defineConfig({
                   text: '高频CSS面试题',
                   link: '/interviewBook/css',
                 },
+                {
+                  text: '面试',
+                  link: '/interviewBook/面试',
+                },
               ],
             },
           ],
