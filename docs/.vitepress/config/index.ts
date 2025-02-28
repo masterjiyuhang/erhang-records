@@ -92,6 +92,7 @@ export default defineConfig({
         getSidebarConfig('/titles/热评总结'),
         getSidebarConfig('/titles/类型'),
         getSidebarConfig('/titles/资料分析'),
+        getSidebarConfig('/titles/常见成语'),
       ],
       '/interviewBook/': [
         {
