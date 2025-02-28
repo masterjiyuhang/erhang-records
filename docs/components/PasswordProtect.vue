@@ -17,23 +17,23 @@
 export default {
   data() {
     return {
-      password: "",
+      password: '',
       authenticated: false,
       error: false,
-    };
+    }
   },
   methods: {
     checkPassword() {
-      const correctPassword = "123456"; // 设置正确的密码
+      const correctPassword = '123456' // 设置正确的密码
       if (this.password === correctPassword) {
-        this.authenticated = true;
-        this.error = false;
+        this.authenticated = true
+        this.error = false
       } else {
-        this.error = true;
+        this.error = true
       }
     },
   },
-};
+}
 </script>
 
 <style scoped>
