@@ -88,7 +88,7 @@ export default defineConfig({
     sidebar: {
       '/titles/': [
         { text: '概述', link: '/titles/' },
-        getSidebarConfig('/titles/202501'),
+        getSidebarConfig('/titles/2025'),
         getSidebarConfig('/titles/热评总结'),
         getSidebarConfig('/titles/类型'),
         getSidebarConfig('/titles/资料分析'),
