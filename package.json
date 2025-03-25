@@ -5,6 +5,7 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "prettier": "3.4.2",
     "scss": "^0.2.4",
     "stylus": "^0.59.0",
@@ -14,9 +15,11 @@
   "scripts": {
     "docs": "vitepress dev docs",
     "dev": "vitepress dev docs --port 5566",
+    "buildc": "cross-env NUTTER=cch vitepress build docs",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "previewc": "cross-env NUTTER=cch vitepress preview docs"
   },
   "packageManager": "pnpm@8.15.4"
 }

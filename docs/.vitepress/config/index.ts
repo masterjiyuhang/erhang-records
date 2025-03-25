@@ -20,9 +20,12 @@ export const slugify = (str: string): string =>
     // ensure it doesn't start with a number
     .replace(/^(\d)/, '_$1')
 
+const dir = process.env.NUTTER === 'cch' ? '/' : '/erhang-records/'
+console.log('🍉 ~ index.ts:24 ~ dir:', dir)
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  base: '/erhang-records/',
+  base: dir,
   title: 'ErHang Records',
   description: 'A VitePress Site',
   appearance: 'dark',
@@ -51,11 +54,7 @@ export default defineConfig({
       y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
   })(window, document, "clarity", "script", "lnisp1k6mx");`,
     ],
-    // ['link', { rel: 'icon', type: 'image/svg+xml', href: '/erhang-records/logo.svg' }],
-    [
-      'link',
-      { rel: 'icon', type: 'image/png', href: '/erhang-records/logo.png' },
-    ],
+    ['link', { rel: 'icon', type: 'image/png', href: `${dir}logo.png` }],
   ],
   themeConfig: {
     logo: '/logo.png',
