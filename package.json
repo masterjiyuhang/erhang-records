@@ -5,6 +5,7 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
+    "@types/node": "^22.15.17",
     "cross-env": "^7.0.3",
     "prettier": "3.4.2",
     "scss": "^0.2.4",
