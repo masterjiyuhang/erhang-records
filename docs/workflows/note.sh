@@ -18,7 +18,7 @@ if [ -n "$1" ]; then
     osascript -e 'display alert "目标目录不存在！" message "请检查路径是否正确：'$directory'" as critical'
   fi
 else
-  # 无参数时，打开默认项目并创建新笔记
+  # 无参数时，打开默认项目并创建/打开笔记
   project_name="$default_project"
   directory="$base_path/$project_name"
 
@@ -26,7 +26,7 @@ else
   if [ -d "$directory" ]; then
     open -a "Visual Studio Code" "$directory"
 
-    # 创建笔记文件
+    # 准备笔记文件
     note_path="$directory/$note_dir"
     date_format=$(date +%Y-%m-%d)
     filename="$date_format.md"
@@ -35,19 +35,22 @@ else
     # 确保笔记目录存在
     mkdir -p "$note_path"
 
-    # 创建笔记文件
-    cat >"$file_path" <<EOF
+    # 检查文件是否存在
+    if [ -f "$file_path" ]; then
+      # 文件已存在，直接打开
+      open -a "Visual Studio Code" "$file_path"
+      osascript -e "display notification \"已打开现有笔记\" with title \"$filename\""
+    else
+      # 文件不存在，创建新笔记
+      cat >"$file_path" <<EOF
 # $(date +%Y年%m月%d日)
 
 ## 今日笔记
 
 EOF
-
-    # 可选：在 VSCode 中打开新创建的笔记
-    open -a "Visual Studio Code" "$file_path"
-
-    # 显示通知
-    osascript -e "display notification \"已创建笔记：$filename\" with title \"笔记创建成功\""
+      open -a "Visual Studio Code" "$file_path"
+      osascript -e "display notification \"已创建新笔记\" with title \"$filename\""
+    fi
   else
     osascript -e 'display alert "默认项目目录不存在！" message "请检查路径是否正确：'$directory'" as critical'
   fi
