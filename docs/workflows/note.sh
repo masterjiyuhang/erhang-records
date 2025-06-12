@@ -5,6 +5,12 @@ base_path="/Users/erhang/Documents/workspace/github"
 default_project="erhang-records"
 note_dir="docs/note"
 
+# 获取当前日期信息
+current_year=$(date +%Y)
+current_month=$(date +%m)
+date_format=$(date +%Y-%m-%d)
+filename="$date_format.md"
+
 # 处理参数
 if [ -n "$1" ]; then
   # 有参数时，直接打开指定项目
@@ -26,13 +32,11 @@ else
   if [ -d "$directory" ]; then
     open -a "Visual Studio Code" "$directory"
 
-    # 准备笔记文件
-    note_path="$directory/$note_dir"
-    date_format=$(date +%Y-%m-%d)
-    filename="$date_format.md"
+    # 构建完整的笔记路径（年份/月份）
+    note_path="$directory/$note_dir/$current_year/$current_month"
     file_path="$note_path/$filename"
 
-    # 确保笔记目录存在
+    # 确保完整路径存在（包括年份和月份目录）
     mkdir -p "$note_path"
 
     # 检查文件是否存在
