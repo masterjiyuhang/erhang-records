@@ -88,13 +88,16 @@ export default defineConfig({
       '/titles/': [
         { text: '概述', link: '/titles/' },
         getSidebarConfig('/titles/2025'),
-        getSidebarConfig('/titles/2025/25副省'),
         getSidebarConfig('/titles/热评总结'),
-        getSidebarConfig('/titles/类型'),
-        getSidebarConfig('/titles/资料分析'),
-        getSidebarConfig('/titles/常见成语'),
+        getSidebarConfig('/titles/题目类型'),
         getSidebarConfig('/titles/规范词'),
         getSidebarConfig('/titles/单一题'),
+        getSidebarConfig('/titles/常见成语'),
+        getSidebarConfig('/titles/资料分析'),
+        getSidebarConfig('/titles/言语理解'),
+        getSidebarConfig('/titles/判断推理'),
+        getSidebarConfig('/titles/数量关系'),
+        getSidebarConfig('/titles/政治理论'),
       ],
       '/interviewBook/': [
         {
