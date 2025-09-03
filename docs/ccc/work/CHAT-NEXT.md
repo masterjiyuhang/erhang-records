@@ -74,7 +74,7 @@
 - 克隆仓库：`git clone https://github.com/Yidadaa/ChatGPT-Next-Web.git`
 - 进入目录并安装依赖：`yarn install`（或 `npm install`）
 - 新建 `.env` 并填写 `OPENAI_API_KEY`（或设置 `BASE_URL` 指向本地代理）
-- 启动：`yarn dev` → 打开 http://localhost:3000
+- 启动：`yarn dev` → 打开 `http://localhost:3000`
 
 **Speaker notes**
  现场演示会按这组命令执行；把 `.env` 的关键字段示例放在下一页以便复制粘贴。
