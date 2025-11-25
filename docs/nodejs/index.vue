@@ -130,12 +130,12 @@
       </el-table-column>
       <el-table-column align="center" label="起始地" prop="fromCityNameList">
         <template slot-scope="scope">{{
-          scope.row.fromCityNameList ? scope.row.fromCityNameList.join( "，" ) : ""
+          scope.row.fromCityNameList ? scope.row.fromCityNameList.join( "," ) : ""
         }}</template>
       </el-table-column>
       <el-table-column align="center" label="目的地" prop="toCityNameList">
         <template slot-scope="scope">{{
-          scope.row.toCityNameList ? scope.row.toCityNameList.join( "，" ) : ""
+          scope.row.toCityNameList ? scope.row.toCityNameList.join( "," ) : ""
         }}</template>
       </el-table-column>
       <el-table-column align="center" label="来源渠道" prop="sourceChannel">
@@ -366,74 +366,6 @@ export default {
         .then((res) => {
           this.loading = false;
           this.tableData = res.data.records;
-          // this.tableData = [
-          //   {
-          //     "id": 78,
-          //     "wecomUserName": "宁03",
-          //     "wecomCompName": "宁03公司",
-          //     "compId": 3031189,
-          //     "compName": null,
-          //     "userId": 3014409,
-          //     "userName": null,
-          //     "publisherHeadSculpture": null,
-          //     "content": "自行车，不带电，到土耳其双清包税，143*74*20cm，15kg，16140 Nilufer  Bursa Tr，Turkey City Bursa，请分别报两台车和四台车的价格 qq:6237816387912",
-          //     "fromCityNameList": [],
-          //     "toCityNameList": [],
-          //     publisherIdentityList: ['', 'qwer'],
-          //     "sourceChannel": "",
-          //     "sourceGroup": null,
-          //     "publicationType": "0",
-          //     "publicationMode": null,
-          //     "releaseTime": "2024-12-03 20:00:00",
-          //     "delState": null,
-          //     "delType": null,
-          //     "delReason": null
-          //   },
-          //   {
-          //     "id": 78,
-          //     "wecomUserName": "宁03",
-          //     "wecomCompName": "宁03公司",
-          //     "compId": 3031189,
-          //     "compName": null,
-          //     "userId": 3014409,
-          //     "userName": null,
-          //     "publisherHeadSculpture": null,
-          //     "content": "自行车，不带电，到土耳其双清包税，143*74*20cm，15kg，16140 Nilufer  Bursa Tr，Turkey City Bursa，请分别报两台车和四台车的价格 qq:6237816387912",
-          //     "fromCityNameList": [],
-          //     "toCityNameList": [],
-          //     publisherIdentityList: ['', 'qwer'],
-          //     "sourceChannel": "",
-          //     "sourceGroup": null,
-          //     "publicationType": "0",
-          //     "publicationMode": null,
-          //     "releaseTime": "2024-12-03 20:00:00",
-          //     "delState": null,
-          //     "delType": null,
-          //     "delReason": null
-          //   },
-          //   {
-          //     "id": 78,
-          //     "wecomUserName": "宁03",
-          //     "wecomCompName": "宁03公司",
-          //     "compId": 3031189,
-          //     "compName": null,
-          //     "userId": 3014409,
-          //     "userName": null,
-          //     "publisherHeadSculpture": null,
-          //     "content": "自行车，不带电，到土耳其双清包税，143*74*20cm，15kg，16140 Nilufer  Bursa Tr，Turkey City Bursa，请分别报两台车和四台车的价格 qq:6237816387912",
-          //     "fromCityNameList": [],
-          //     "toCityNameList": [],
-          //     publisherIdentityList: ['', 'qwer'],
-          //     "sourceChannel": "",
-          //     "sourceGroup": null,
-          //     "publicationType": "0",
-          //     "publicationMode": null,
-          //     "releaseTime": "2024-12-03 20:00:00",
-          //     "delState": null,
-          //     "delType": null,
-          //     "delReason": null
-          //   },
-          // ]
           this.total = res.data.total;
         })
         .catch((err) => {
